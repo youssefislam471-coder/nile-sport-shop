@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NILE SPORT - نايل سبورت للملابس الرياضية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #f97316;
+            --secondary: #0284c7;
+            --dark: #0f172a;
+            --light-bg: #f8fafc;
+            --white: #ffffff;
+            --text-dark: #1e293b;
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
+            --header-bg: linear-gradient(135deg, #0f172a, #1e293b);
+            --admin-panel-bg: #fffbeb;
+            --admin-border: #f59e0b;
+        }
+
+        /* إعدادات الوضع الليلي (Dark Mode) */
+        body.dark-mode {
+            --light-bg: #0f172a;
+            --text-dark: #f1f5f9;
+            --white: #1e293b;
+            --card-bg: #1e293b;
+            --border-color: #334155;
+            --header-bg: linear-gradient(135deg, #020617, #0f172a);
+            --admin-panel-bg: #1e293b;
+            --admin-border: #f59e0b;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; transition: background-color 0.3s, color 0.3s, border-color 0.3s; }
+        body { background-color: var(--light-bg); color: var(--text-dark); direction: rtl; overflow-x: hidden; padding-bottom: 70px; }
+
+        .welcome-banner {
+            background: linear-gradient(90deg, #ff6b6b, #f97316, #25d366, #0284c7, #a855f7);
+            background-size: 300% 300%;
+            animation: gradientMove 4s ease infinite;
+            color: white; text-align: center; padding: 12px;
+            font-weight: 900; font-size: 1.1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        @keyframes gradientMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+
+        .welcome-popup {
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-150%);
+            background: linear-gradient(135deg, #0f172a, #1e293b); color: #fff;
+            padding: 14px 24px; border-radius: 50px; border: 3px solid var(--primary);
+            box-shadow: 0 10px 30px rgba(249, 115, 22, 0.5); z-index: 9999;
+            font-weight: 800; font-size: 1rem; transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            white-space: nowrap;
+        }
+        .welcome-popup.show { transform: translateX(-50%) translateY(0); }
+        .welcome-popup span { background: linear-gradient(90deg, #f97316, #38bdf8, #4ade80); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 900; }
+
+        header {
+            background: var(--header-bg); color: var(--white);
+            padding: 2rem 1rem; text-align: center; border-bottom: 4px solid var(--primary); user-select: none;
+            position: relative;
+        }
+
+        /* زر الوضع الليلي في الهيدر */
+        .theme-toggle-btn {
+            position: absolute; top: 20px; left: 20px;
+            background: rgba(255, 255, 255, 0.1); border: 2px solid var(--primary);
+            color: var(--white); width: 42px; height: 42px; border-radius: 50%;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; transition: transform 0.2s;
+        }
+        .theme-toggle-btn:hover { transform: scale(1.1); }
+
+        .logo-box {
+            width: 95px; height: 95px; background: #fff; border-radius: 50%; margin: 0 auto 1rem;
+            display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4); overflow: hidden;
+        }
+        header h1 { font-size: 2rem; font-weight: 900; color: var(--primary); letter-spacing: 1px; cursor: pointer; }
+        header p { font-size: 1.1rem; color: #94a3b8; margin-top: 5px; }
+
+        .container { max-width: 950px; margin: 0 auto; padding: 1.5rem 1rem; }
+        .contact-bar { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 2rem; }
+        .btn {
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            padding: 0.9rem; border-radius: 12px; font-weight: 700; text-decoration: none; color: #ffffff; font-size: 1rem;
+        }
+        .btn-whatsapp { background-color: #25d366; }
+        .btn-phone { background-color: var(--secondary); }
+
+        .section-title {
+            font-size: 1.4rem; font-weight: 800; margin-bottom: 1.2rem;
+            color: var(--text-dark); border-right: 4px solid var(--primary); padding-right: 10px;
+        }
+
+        .admin-panel {
+            display: none; background: var(--admin-panel-bg); border: 2px solid var(--admin-border); border-radius: 16px;
+            padding: 1.2rem; margin-bottom: 2rem; box-shadow: 0 6px 20px rgba(245, 158, 11, 0.15);
+        }
+        body.admin-mode .admin-panel { display: block; }
+        .admin-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #fde68a; padding-bottom: 10px; margin-bottom: 15px; flex-wrap: wrap; gap: 10px; }
+        .admin-stats { background: #0f172a; color: #38bdf8; padding: 6px 14px; border-radius: 20px; font-size: 0.9rem; font-weight: 700; }
+        .admin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 15px; }
+        .admin-card { background: var(--card-bg); padding: 12px; border-radius: 10px; border: 1px solid var(--border-color); }
+        .admin-card h4 { color: var(--primary); margin-bottom: 8px; font-size: 0.95rem; }
+        .admin-input { width: 100%; padding: 8px; border: 1px solid var(--border-color); background: var(--card-bg); color: var(--text-dark); border-radius: 8px; margin-bottom: 8px; font-size: 0.9rem; }
+        .admin-action-btn { padding: 8px 14px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 5px; }
+        .btn-add { background: #0284c7; color: white; width: 100%; justify-content: center; }
+        .btn-exit { background: #dc2626; color: white; }
+
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
+        .product-card {
+            background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06); transition: transform 0.2s; position: relative;
+        }
+        .product-card:hover { transform: translateY(-5px); }
+        .product-img {
+            width: 100%; height: 240px; background: #e2e8f0;
+            display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;
+        }
+        .product-img img { width: 100%; height: 100%; object-fit: cover; }
+
+        .price-badge {
+            position: absolute; top: 10px; right: 10px; background: var(--primary); color: white;
+            padding: 4px 12px; border-radius: 20px; font-weight: 800; font-size: 0.95rem; box-shadow: 0 2px 8px rgba(0,0,0,0.2); z-index: 5;
+        }
+
+        .card-admin-tools { display: none; background: var(--card-bg); padding: 10px; border-top: 1px dashed var(--border-color); }
+        body.admin-mode .card-admin-tools { display: block; }
+        .delete-product-btn {
+            position: absolute; top: 10px; left: 10px; background: #dc2626; color: white;
+            border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer;
+            display: none; align-items: center; justify-content: center; z-index: 10;
+        }
+        body.admin-mode .delete-product-btn { display: flex; }
+
+        .product-info { padding: 1.2rem; }
+        .product-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.4rem; color: var(--text-dark); }
+        .product-desc { color: #94a3b8; font-size: 0.95rem; min-height: 40px; }
+        .product-btn {
+            width: 100%; background-color: var(--primary); color: white; border: none;
+            padding: 0.8rem; border-radius: 10px; font-weight: 700; cursor: pointer;
+            text-decoration: none; display: block; text-align: center; margin-top: 1rem;
+        }
+
+        .floating-wa {
+            position: fixed; bottom: 20px; left: 20px; background: #25d366; color: white;
+            width: 58px; height: 58px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 2rem; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.5); z-index: 999; text-decoration: none;
+        }
+
+        footer { text-align: center; padding: 1.5rem; color: #94a3b8; font-size: 0.9rem; margin-top: 2rem; border-top: 1px solid var(--border-color); }
+        @media (max-width: 600px) { .contact-bar { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+    <div id="welcomePopup" class="welcome-popup">
+        ✨ <span>أهلاً وسهلاً نورت NILE SPORT</span> ✨
+    </div>
+
+    <div class="welcome-banner">
+        <span>🎉 أهلاً وسهلاً نورت متجر NILE SPORT للملابس الرياضية 🎉</span>
+    </div>
+
+    <header>
+        <!-- زر الوضع الليلي -->
+        <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleTheme()" title="تغيير الوضع المظلم والفاتح">🌙</button>
+        
+        <div class="logo-box">
+            <canvas id="logoCanvas" width="95" height="95"></canvas>
+        </div>
+        <h1 id="storeTitle">NILE SPORT</h1>
+        <p>تحت إدارة الكابتن / محمد خليل</p>
+    </header>
+
+    <div class="container">
+        <!-- لوحة التحكم -->
+        <div class="admin-panel" id="adminPanel">
+            <div class="admin-header">
+                <span style="font-weight: 900; color: #f59e0b; font-size: 1.1rem;">⚙️ لوحة تحكم الكابتن محمد خليل</span>
+                <div class="admin-stats">👁️ الزيارات: <span id="visitCounter">1</span></div>
+                <button class="admin-action-btn btn-exit" onclick="exitAdmin()"><i class="fas fa-sign-out-alt"></i> خروج</button>
+            </div>
+
+            <div class="admin-grid">
+                <div class="admin-card">
+                    <h4>➕ إضافة منتج جديد</h4>
+                    <input type="text" id="newTitle" class="admin-input" placeholder="اسم المنتج">
+                    <input type="text" id="newPrice" class="admin-input" placeholder="السعر (مثلاً: 150 ج.م)">
+                    <input type="text" id="newDesc" class="admin-input" placeholder="وصف المنتج">
+                    <input type="file" id="newImg" accept="image/*" class="admin-input">
+                    <button class="admin-action-btn btn-add" onclick="addNewProduct()"><i class="fas fa-plus"></i> إضافة للمتجر</button>
+                </div>
+
+                <div class="admin-card">
+                    <h4>📱 رقم الواتساب</h4>
+                    <input type="text" id="adminPhoneInput" class="admin-input" placeholder="مثلاً: 201009171678">
+                    <button class="admin-action-btn btn-add" style="background:#16a34a;" onclick="updateStorePhone()"><i class="fas fa-check"></i> حفظ الرقم</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="contact-bar">
+            <a id="topWaBtn" href="https://wa.me/201009171678" target="_blank" class="btn btn-whatsapp">
+                <i class="fab fa-whatsapp"></i> تواصل عبر الواتساب
+            </a>
+            <a id="topCallBtn" href="tel:01009171678" class="btn btn-phone">
+                <i class="fas fa-phone-alt"></i> اتصل بنا <span id="displayPhone">01009171678</span>
+            </a>
+        </div>
+
+        <h2 class="section-title">أحدث المنتجات الرياضية</h2>
+
+        <div class="products-grid" id="productsContainer"></div>
+    </div>
+
+    <a id="floatWaBtn" href="https://wa.me/201009171678" target="_blank" class="floating-wa">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <footer>
+        جميع الحقوق محفوظة &copy; Nile Sport 2026
+    </footer>
+
+    <script>
+        // نظام الوضع الليلي (Dark Mode)
+        const body = document.body;
+        const themeBtn = document.getElementById('themeToggleBtn');
+
+        if (localStorage.getItem('nileTheme') === 'dark') {
+            body.classList.add('dark-mode');
+            themeBtn.innerText = '☀️';
+        }
+
+        function toggleTheme() {
+            body.classList.toggle('dark-mode');
+            if (body.classList.contains('dark-mode')) {
+                localStorage.setItem('nileTheme', 'dark');
+                themeBtn.innerText = '☀️';
+            } else {
+                localStorage.setItem('nileTheme', 'light');
+                themeBtn.innerText = '🌙';
+            }
+        }
+
+        // بيانات المتجر
+        let storeData = {
+            phone: "201009171678",
+            products: JSON.parse(localStorage.getItem('nileProducts')) || [
+                { id: 1, title: "كاب نايل سبورت الأصلي", price: "150 ج.م", desc: "كاب رياضي خامة ممتازة مع شعار Nile Sport", img: "" },
+                { id: 2, title: "ترنج رياضي كامل", price: "450 ج.م", desc: "خامة خفيفة ومناسبة للتمارين والجيم", img: "" },
+                { id: 3, title: "تيشرتات أندية ومستلزمات", price: "250 ج.م", desc: "جميع المقاسات والخامات الرياضية", img: "" }
+            ]
+        };
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const popup = document.getElementById('welcomePopup');
+            setTimeout(() => popup.classList.add('show'), 300);
+            setTimeout(() => popup.classList.remove('show'), 4500);
+
+            let visits = parseInt(localStorage.getItem('nileSportVisits') || '0') + 1;
+            localStorage.setItem('nileSportVisits', visits);
+            document.getElementById('visitCounter').innerText = visits;
+
+            document.getElementById('adminPhoneInput').value = storeData.phone;
+            applyPhoneLinks();
+            renderProducts();
+        });
+
+        const canvas = document.getElementById('logoCanvas');
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#0f172a'; ctx.fillRect(0, 0, 95, 95);
+        ctx.font = '900 38px Arial';
+        ctx.fillStyle = '#0284c7'; ctx.fillText('N', 34, 54);
+        ctx.fillStyle = '#f97316'; ctx.fillText('N', 30, 50);
+        ctx.font = 'bold 10px Arial'; ctx.fillStyle = '#ffffff'; ctx.textAlign = 'center';
+        ctx.fillText('NILE SPORT', 47.5, 72);
+
+        let clickCount = 0, clickTimer;
+        document.getElementById('storeTitle').addEventListener('click', () => {
+            clickCount++;
+            clearTimeout(clickTimer);
+            clickTimer = setTimeout(() => { clickCount = 0; }, 2000);
+            if (clickCount === 5) {
+                clickCount = 0;
+                const pass = prompt("أدخل الرقم السري للإدارة:");
+                if (pass === "1234") {
+                    document.body.classList.add('admin-mode');
+                    alert("أهلاً يا كابتن! تم تفعيل لوحة التحكم.");
+                } else if (pass !== null) {
+                    alert("الرقم السري غير صحيح!");
+                }
+            }
+        });
+
+        function exitAdmin() { document.body.classList.remove('admin-mode'); }
+
+        function saveToStorage() {
+            localStorage.setItem('nileProducts', JSON.stringify(storeData.products));
+        }
+
+        function renderProducts() {
+            const container = document.getElementById('productsContainer');
+            container.innerHTML = '';
+
+            storeData.products.forEach((prod, index) => {
+                const waMsg = encodeURIComponent(`السلام عليكم، عايز أطلب: ${prod.title} (${prod.price})`);
+                const imgContent = prod.img
+                    ? `<img src="${prod.img}" alt="${prod.title}">`
+                    : `<i class="fas fa-tshirt fa-4x" style="color:#94a3b8;"></i>`;
+
+                const card = document.createElement('div');
+                card.className = 'product-card';
+                card.innerHTML = `
+                    <button class="delete-product-btn" onclick="deleteProduct(${index})" title="حذف"><i class="fas fa-trash"></i></button>
+                    <div class="product-img">
+                        <span class="price-badge">${prod.price}</span>
+                        ${imgContent}
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">${prod.title}</h3>
+                        <p class="product-desc">${prod.desc}</p>
+                        <a href="https://wa.me/${storeData.phone}?text=${waMsg}" target="_blank" class="product-btn">
+                            <i class="fab fa-whatsapp"></i> اطلب الآن عبر الواتساب
+                        </a>
+                    </div>
+                    <div class="card-admin-tools">
+                        <input type="text" class="admin-input" value="${prod.title}" onchange="editProduct(${index}, 'title', this.value)" placeholder="اسم المنتج">
+                        <input type="text" class="admin-input" value="${prod.price}" onchange="editProduct(${index}, 'price', this.value)" placeholder="السعر">
+                        <input type="text" class="admin-input" value="${prod.desc}" onchange="editProduct(${index}, 'desc', this.value)" placeholder="وصف المنتج">
+                        <label style="display:block; background:#0f172a; color:#fff; text-align:center; padding:6px; border-radius:6px; cursor:pointer; font-size:0.85rem; margin-top:5px;">
+                            <i class="fas fa-camera"></i> تغيير صورة المنتج
+                            <input type="file" accept="image/*" style="display:none;" onchange="changeProductImg(event, ${index})">
+                        </label>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function editProduct(index, field, value) {
+            storeData.products[index][field] = value;
+            saveToStorage();
+        }
+
+        function changeProductImg(event, index) {
+            const file = event.target.files[0];
+            if (!file) return;
+            compressImage(file, (base64) => {
+                storeData.products[index].img = base64;
+                saveToStorage();
+                renderProducts();
+            });
+        }
+
+        function addNewProduct() {
+            const title = document.getElementById('newTitle').value.trim();
+            const price = document.getElementById('newPrice').value.trim() || "اتصل للسعر";
+            const desc = document.getElementById('newDesc').value.trim() || "منتج رياضي عالي الجودة";
+            const fileInput = document.getElementById('newImg');
+
+            if (!title) { alert("اكتب اسم المنتج الأول يا كابتن!"); return; }
+
+            if (fileInput.files[0]) {
+                compressImage(fileInput.files[0], (base64) => {
+                    storeData.products.unshift({ id: Date.now(), title, price, desc, img: base64 });
+                    saveToStorage();
+                    clearInputs();
+                    renderProducts();
+                });
+            } else {
+                storeData.products.unshift({ id: Date.now(), title, price, desc, img: "" });
+                saveToStorage();
+                clearInputs();
+                renderProducts();
+            }
+        }
+
+        function clearInputs() {
+            document.getElementById('newTitle').value = '';
+            document.getElementById('newPrice').value = '';
+            document.getElementById('newDesc').value.value = '';
+            document.getElementById('newImg').value = '';
+        }
+
+        function deleteProduct(index) {
+            if (confirm("متأكد من حذف المنتج ده؟")) {
+                storeData.products.splice(index, 1);
+                saveToStorage();
+                renderProducts();
+            }
+        }
+
+        function updateStorePhone() {
+            const newPhone = document.getElementById('adminPhoneInput').value.trim();
+            if (newPhone) {
+                storeData.phone = newPhone;
+                applyPhoneLinks();
+                alert("تم تحديث رقم الواتساب بنجاح!");
+            }
+        }
+
+        function applyPhoneLinks() {
+            const localNum = storeData.phone.startsWith('20') ? '0' + storeData.phone.slice(2) : storeData.phone;
+            document.getElementById('topWaBtn').href = `https://wa.me/${storeData.phone}`;
+            document.getElementById('floatWaBtn').href = `https://wa.me/${storeData.phone}`;
+            document.getElementById('topCallBtn').href = `tel:${localNum}`;
+            document.getElementById('displayPhone').innerText = localNum;
+        }
+
+        function compressImage(file, callback) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const maxW = 500;
+                    const scale = maxW / img.width;
+                    canvas.width = maxW;
+                    canvas.height = img.height * scale;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    callback(canvas.toDataURL('image/jpeg', 0.75));
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    </script>
+</body>
+</html>
