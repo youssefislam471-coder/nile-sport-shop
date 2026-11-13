@@ -109,11 +109,20 @@
         .btn-exit { background: #dc2626; color: white; }
 
         .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
+        
+        /* تأثير 3D خفيف وبسيط على الكروت الأصلية */
         .product-card {
             background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.06); transition: transform 0.2s; position: relative;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06); 
+            transform: perspective(1000px) rotateX(0deg) rotateY(0deg);
+            transition: transform 0.3s ease, box-shadow 0.3s ease; 
+            position: relative;
         }
-        .product-card:hover { transform: translateY(-5px); }
+        .product-card:hover { 
+            transform: perspective(1000px) rotateX(2deg) rotateY(-2deg) translateY(-8px) translateZ(5px);
+            box-shadow: 0 15px 30px rgba(249, 115, 22, 0.15);
+        }
+        
         .product-img {
             width: 100%; height: 240px; background: #e2e8f0;
             display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;
@@ -380,17 +389,5 @@
         function clearInputs() {
             document.getElementById('newTitle').value = '';
             document.getElementById('newPrice').value = '';
-            document.getElementById('newDesc').value.value = '';
-            document.getElementById('newImg').value = '';
-        }
-
-        function deleteProduct(index) {
-            if (confirm("متأكد من حذف المنتج ده؟")) {
-                storeData.products.splice(index, 1);
-                saveToStorage();
-                renderProducts();
-            }
-        }
-
-        function updateStorePhone() {
-            const newPhone = documen
+            document.getElementById('newDesc').value = '';
+            document.getElementById('newImg'
