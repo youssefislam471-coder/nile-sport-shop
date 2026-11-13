@@ -10,43 +10,38 @@
         :root {
             --primary: #f97316;
             --secondary: #0284c7;
-            --dark: #0b0f19;
-            --light-bg: #f4f6f9;
+            --dark: #0f172a;
+            --light-bg: #f8fafc;
             --white: #ffffff;
             --text-dark: #1e293b;
             --card-bg: #ffffff;
             --border-color: #e2e8f0;
-            --header-bg: linear-gradient(135deg, #0b0f19, #1e293b);
+            --header-bg: linear-gradient(135deg, #0f172a, #1e293b);
             --admin-panel-bg: #fffbeb;
             --admin-border: #f59e0b;
-            --shadow: 0 15px 35px rgba(0, 0, 0, 0.08), 0 5px 15px rgba(0, 0, 0, 0.05);
         }
 
+        /* إعدادات الوضع الليلي (Dark Mode) */
         body.dark-mode {
-            --light-bg: #07090e;
+            --light-bg: #0f172a;
             --text-dark: #f1f5f9;
-            --white: #131c2e;
-            --card-bg: #131c2e;
-            --border-color: #1e293b;
-            --header-bg: linear-gradient(135deg, #020617, #0b0f19);
-            --admin-panel-bg: #131c2e;
+            --white: #1e293b;
+            --card-bg: #1e293b;
+            --border-color: #334155;
+            --header-bg: linear-gradient(135deg, #020617, #0f172a);
+            --admin-panel-bg: #1e293b;
             --admin-border: #f59e0b;
-            --shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 0 5px 15px rgba(249, 115, 22, 0.1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; transition: background-color 0.3s, color 0.3s, border-color 0.3s; }
-        body { background-color: var(--light-bg); color: var(--text-dark); direction: rtl; overflow-x: hidden; padding-bottom: 70px; position: relative; }
-
-        body::before {
-            content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: radial-gradient(var(--border-color) 1.5px, transparent 1.5px);
-            background-size: 35px 35px; opacity: 0.3; z-index: -1;
-        }
+        body { background-color: var(--light-bg); color: var(--text-dark); direction: rtl; overflow-x: hidden; padding-bottom: 70px; }
 
         .welcome-banner {
             background: linear-gradient(90deg, #ff6b6b, #f97316, #25d366, #0284c7, #a855f7);
-            background-size: 300% 300%; animation: gradientMove 4s ease infinite;
-            color: white; text-align: center; padding: 12px; font-weight: 900; font-size: 1.1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            background-size: 300% 300%;
+            animation: gradientMove 4s ease infinite;
+            color: white; text-align: center; padding: 12px;
+            font-weight: 900; font-size: 1.1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
         @keyframes gradientMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
@@ -64,43 +59,41 @@
         header {
             background: var(--header-bg); color: var(--white);
             padding: 2.5rem 1rem; text-align: center; border-bottom: 4px solid var(--primary); user-select: none;
-            position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+            position: relative;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
         }
 
+        /* زر الوضع الليلي في الهيدر */
         .theme-toggle-btn {
             position: absolute; top: 20px; left: 20px;
             background: rgba(255, 255, 255, 0.1); border: 2px solid var(--primary);
             color: var(--white); width: 42px; height: 42px; border-radius: 50%;
             cursor: pointer; display: flex; align-items: center; justify-content: center;
-            font-size: 1.2rem; backdrop-filter: blur(5px);
+            font-size: 1.2rem; transition: transform 0.2s;
         }
         .theme-toggle-btn:hover { transform: scale(1.1); }
 
         .logo-box {
-            width: 100px; height: 100px; background: #0f172a; border-radius: 50%; margin: 0 auto 1rem;
+            width: 95px; height: 95px; background: #fff; border-radius: 50%; margin: 0 auto 1rem;
             display: flex; align-items: center; justify-content: center; 
-            box-shadow: 0 8px 25px rgba(249, 115, 22, 0.5); 
-            border: 3px solid var(--primary);
-            font-size: 2.5rem; font-weight: 900; color: var(--primary);
-            text-shadow: 0 2px 10px rgba(249, 115, 22, 0.6);
+            box-shadow: 0 8px 25px rgba(249, 115, 22, 0.4); overflow: hidden;
+            transform: perspective(500px) translateZ(10px);
         }
-
         header h1 { 
-            font-size: 2.3rem; font-weight: 900; color: var(--primary); letter-spacing: 2px; cursor: pointer; 
-            text-shadow: 2px 4px 15px rgba(249, 115, 22, 0.4);
+            font-size: 2.2rem; font-weight: 900; color: var(--primary); letter-spacing: 1.5px; cursor: pointer; 
+            text-shadow: 2px 3px 10px rgba(249, 115, 22, 0.3);
         }
-        header p { font-size: 1.1rem; color: #94a3b8; margin-top: 5px; font-weight: 600; }
+        header p { font-size: 1.1rem; color: #94a3b8; margin-top: 5px; }
 
         .container { max-width: 950px; margin: 0 auto; padding: 1.5rem 1rem; }
-        .contact-bar { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 2rem; }
+        .contact-bar { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 2rem; }
         .btn {
             display: flex; align-items: center; justify-content: center; gap: 8px;
-            padding: 0.95rem; border-radius: 14px; font-weight: 700; text-decoration: none; color: #ffffff; font-size: 1rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08); transition: transform 0.2s, opacity 0.2s;
+            padding: 0.9rem; border-radius: 12px; font-weight: 700; text-decoration: none; color: #ffffff; font-size: 1rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
-        .btn:hover { transform: translateY(-2px); opacity: 0.95; }
-        .btn-whatsapp { background: linear-gradient(135deg, #22c55e, #16a34a); }
-        .btn-phone { background: linear-gradient(135deg, #0284c7, #0369a1); }
+        .btn-whatsapp { background-color: #25d366; }
+        .btn-phone { background-color: var(--secondary); }
 
         .section-title {
             font-size: 1.4rem; font-weight: 800; margin-bottom: 1.2rem;
@@ -109,73 +102,78 @@
 
         .admin-panel {
             display: none; background: var(--admin-panel-bg); border: 2px solid var(--admin-border); border-radius: 16px;
-            padding: 1.2rem; margin-bottom: 2rem; box-shadow: 0 8px 25px rgba(245, 158, 11, 0.18);
+            padding: 1.2rem; margin-bottom: 2rem; box-shadow: 0 6px 20px rgba(245, 158, 11, 0.15);
         }
         body.admin-mode .admin-panel { display: block; }
         .admin-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #fde68a; padding-bottom: 10px; margin-bottom: 15px; flex-wrap: wrap; gap: 10px; }
         .admin-stats { background: #0f172a; color: #38bdf8; padding: 6px 14px; border-radius: 20px; font-size: 0.9rem; font-weight: 700; }
         .admin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 15px; }
-        .admin-card { background: var(--card-bg); padding: 14px; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
+        .admin-card { background: var(--card-bg); padding: 12px; border-radius: 10px; border: 1px solid var(--border-color); }
         .admin-card h4 { color: var(--primary); margin-bottom: 8px; font-size: 0.95rem; }
-        .admin-input { width: 100%; padding: 9px; border: 1px solid var(--border-color); background: var(--card-bg); color: var(--text-dark); border-radius: 8px; margin-bottom: 8px; font-size: 0.9rem; outline: none; }
-        .admin-input:focus { border-color: var(--primary); }
-        .admin-action-btn { padding: 9px 14px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 5px; }
+        .admin-input { width: 100%; padding: 8px; border: 1px solid var(--border-color); background: var(--card-bg); color: var(--text-dark); border-radius: 8px; margin-bottom: 8px; font-size: 0.9rem; }
+        .admin-action-btn { padding: 8px 14px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 5px; }
         .btn-add { background: #0284c7; color: white; width: 100%; justify-content: center; }
         .btn-exit { background: #dc2626; color: white; }
 
-        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin-top: 10px; }
+        /* تعديل 3D خفيف وفخم على كروت المنتجات */
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
         .product-card {
-            background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 18px; overflow: hidden;
-            box-shadow: var(--shadow);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease; position: relative;
+            background: var(--card-bg); 
+            border: 1px solid var(--border-color); 
+            border-radius: 16px; 
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.06), 0 3px 10px rgba(0,0,0,0.04); 
+            transform: perspective(1000px) rotateX(0deg) rotateY(0deg);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease; 
+            position: relative;
         }
         .product-card:hover { 
-            transform: translateY(-8px); 
-            box-shadow: 0 25px 50px rgba(249, 115, 22, 0.2), 0 10px 20px rgba(0,0,0,0.15); 
-            border-color: var(--primary); 
+            transform: perspective(1000px) rotateX(3deg) rotateY(-3deg) translateY(-8px); 
+            box-shadow: 0 20px 40px rgba(249, 115, 22, 0.2), 0 8px 15px rgba(0,0,0,0.1); 
+            border-color: var(--primary);
         }
         .product-img {
             width: 100%; height: 240px; background: #e2e8f0;
             display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;
         }
         .product-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
-        .product-card:hover .product-img img { transform: scale(1.06); }
+        .product-card:hover .product-img img { transform: scale(1.05); }
 
         .price-badge {
-            position: absolute; top: 12px; right: 12px; background: var(--primary); color: white;
-            padding: 5px 14px; border-radius: 20px; font-weight: 800; font-size: 0.95rem; box-shadow: 0 3px 10px rgba(0,0,0,0.25); z-index: 5;
+            position: absolute; top: 10px; right: 10px; background: var(--primary); color: white;
+            padding: 4px 12px; border-radius: 20px; font-weight: 800; font-size: 0.95rem; box-shadow: 0 3px 10px rgba(0,0,0,0.25); z-index: 5;
         }
 
-        .card-admin-tools { display: none; background: var(--card-bg); padding: 12px; border-top: 1px dashed var(--border-color); }
+        .card-admin-tools { display: none; background: var(--card-bg); padding: 10px; border-top: 1px dashed var(--border-color); }
         body.admin-mode .card-admin-tools { display: block; }
         .delete-product-btn {
-            position: absolute; top: 12px; left: 12px; background: #dc2626; color: white;
-            border: none; width: 34px; height: 34px; border-radius: 50%; cursor: pointer;
+            position: absolute; top: 10px; left: 10px; background: #dc2626; color: white;
+            border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer;
             display: none; align-items: center; justify-content: center; z-index: 10;
-            box-shadow: 0 3px 10px rgba(220,38,38,0.4);
         }
         body.admin-mode .delete-product-btn { display: flex; }
 
-        .product-info { padding: 1.3rem; }
+        .product-info { padding: 1.2rem; }
         .product-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.4rem; color: var(--text-dark); }
         .product-desc { color: #94a3b8; font-size: 0.95rem; min-height: 40px; }
         .product-btn {
-            width: 100%; background: linear-gradient(135deg, #22c55e, #16a34a); color: white; border: none;
-            padding: 0.85rem; border-radius: 12px; font-weight: 700; cursor: pointer;
+            width: 100%; background-color: var(--primary); color: white; border: none;
+            padding: 0.8rem; border-radius: 10px; font-weight: 700; cursor: pointer;
             text-decoration: none; display: block; text-align: center; margin-top: 1rem;
-            box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3); transition: transform 0.2s, opacity 0.2s;
+            box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+            transition: transform 0.2s;
         }
-        .product-btn:hover { transform: translateY(-2px); opacity: 0.95; }
+        .product-btn:hover { transform: translateY(-2px); }
 
         .floating-wa {
-            position: fixed; bottom: 25px; left: 25px; background: #25d366; color: white;
-            width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-size: 2rem; box-shadow: 0 10px 25px rgba(37, 211, 102, 0.4); z-index: 999; text-decoration: none;
-            transition: transform 0.3s ease;
+            position: fixed; bottom: 20px; left: 20px; background: #25d366; color: white;
+            width: 58px; height: 58px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 2rem; box-shadow: 0 6px 20px rgba(37, 211, 102, 0.5); z-index: 999; text-decoration: none;
+            transition: transform 0.3s;
         }
         .floating-wa:hover { transform: scale(1.1) rotate(10deg); }
 
-        footer { text-align: center; padding: 1.5rem; color: #94a3b8; font-size: 0.9rem; margin-top: 2rem; border-top: 1px solid var(--border-color); font-weight: 600; }
+        footer { text-align: center; padding: 1.5rem; color: #94a3b8; font-size: 0.9rem; margin-top: 2rem; border-top: 1px solid var(--border-color); }
         @media (max-width: 600px) { .contact-bar { grid-template-columns: 1fr; } }
     </style>
 </head>
@@ -190,14 +188,18 @@
     </div>
 
     <header>
+        <!-- زر الوضع الليلي -->
         <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleTheme()" title="تغيير الوضع المظلم والفاتح">🌙</button>
         
-        <div class="logo-box">NS</div>
+        <div class="logo-box">
+            <canvas id="logoCanvas" width="95" height="95"></canvas>
+        </div>
         <h1 id="storeTitle">NILE SPORT</h1>
         <p>تحت إدارة الكابتن / محمد خليل</p>
     </header>
 
     <div class="container">
+        <!-- لوحة التحكم -->
         <div class="admin-panel" id="adminPanel">
             <div class="admin-header">
                 <span style="font-weight: 900; color: #f59e0b; font-size: 1.1rem;">⚙️ لوحة تحكم الكابتن محمد خليل</span>
@@ -246,6 +248,7 @@
     </footer>
 
     <script>
+        // نظام الوضع الليلي (Dark Mode)
         const body = document.body;
         const themeBtn = document.getElementById('themeToggleBtn');
 
@@ -265,6 +268,7 @@
             }
         }
 
+        // بيانات المتجر
         let storeData = {
             phone: "201009171678",
             products: JSON.parse(localStorage.getItem('nileProducts')) || [
@@ -287,6 +291,15 @@
             applyPhoneLinks();
             renderProducts();
         });
+
+        const canvas = document.getElementById('logoCanvas');
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#0f172a'; ctx.fillRect(0, 0, 95, 95);
+        ctx.font = '900 38px Arial';
+        ctx.fillStyle = '#0284c7'; ctx.fillText('N', 34, 54);
+        ctx.fillStyle = '#f97316'; ctx.fillText('N', 30, 50);
+        ctx.font = 'bold 10px Arial'; ctx.fillStyle = '#ffffff'; ctx.textAlign = 'center';
+        ctx.fillText('NILE SPORT', 47.5, 72);
 
         let clickCount = 0, clickTimer;
         document.getElementById('storeTitle').addEventListener('click', () => {
@@ -374,4 +387,4 @@
             if (!title) { alert("اكتب اسم المنتج الأول يا كابتن!"); return; }
 
             if (fileInput.files[0]) {
-                compressImage(fileInput.files[0], (base64)
+         
