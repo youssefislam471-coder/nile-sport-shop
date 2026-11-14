@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -6,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#101b32">
 <title>NILE SPORT | الملابس الرياضية</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -23,23 +23,64 @@
 --bg:#f5f7fb;
 --shadow:0 12px 35px rgba(16,27,50,.08);
 }
+
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
+
 body{
-margin:0;background:var(--bg);color:var(--ink);
+margin:0;
+background:var(--bg);
+color:var(--ink);
 font-family:'Cairo',Tahoma,Arial,sans-serif
 }
+
 button,input,textarea{font:inherit}
 button{cursor:pointer}
 
+/* شريط الترحيب المتحرك */
 .welcome{
-padding:10px 14px;text-align:center;color:#fff;font-weight:800;
-font-size:14px;
-background:linear-gradient(100deg,#078bc7,#19bd68)
+height:48px;
+overflow:hidden;
+display:flex;
+align-items:center;
+background:linear-gradient(100deg,#101b32,#20395e,#101b32);
+border-bottom:2px solid var(--orange);
+color:#fff;
+white-space:nowrap;
+position:relative;
 }
 
+.welcome-track{
+display:flex;
+width:max-content;
+animation:welcomeMove 22s linear infinite;
+}
+
+.welcome-track span{
+flex-shrink:0;
+padding-left:45px;
+font-size:15px;
+font-weight:800;
+letter-spacing:.3px;
+}
+
+.welcome-track span strong{color:var(--orange)}
+
+@keyframes welcomeMove{
+from{transform:translateX(0)}
+to{transform:translateX(50%)}
+}
+
+.welcome:hover .welcome-track{
+animation-play-state:paused;
+}
+
+/* الواجهة الرئيسية */
 .hero{
-position:relative;overflow:hidden;text-align:center;color:#fff;
+position:relative;
+overflow:hidden;
+text-align:center;
+color:#fff;
 padding:38px 18px 35px;
 background:
 radial-gradient(circle at 15% 20%,#29456e 0,transparent 35%),
@@ -47,228 +88,519 @@ radial-gradient(circle at 90% 80%,#263754 0,transparent 32%),
 linear-gradient(135deg,#0b1427,#172744);
 border-bottom:5px solid var(--orange)
 }
+
 .hero:before,.hero:after{
-content:"";position:absolute;border:1px solid #ffffff12;
-border-radius:50%;width:290px;height:290px;pointer-events:none
+content:"";
+position:absolute;
+border:1px solid #ffffff12;
+border-radius:50%;
+width:290px;
+height:290px;
+pointer-events:none
 }
+
 .hero:before{top:-205px;right:-90px}
 .hero:after{bottom:-250px;left:-80px;width:360px;height:360px}
 
 .brandmark{
-position:relative;z-index:1;margin:0 auto 13px;
-width:94px;height:94px;border-radius:50%;
-display:grid;place-items:center;
+position:relative;
+z-index:1;
+margin:0 auto 13px;
+width:94px;
+height:94px;
+border-radius:50%;
+display:grid;
+place-items:center;
 background:linear-gradient(145deg,#1a2b49,#091326);
 border:2px solid #435674;
 box-shadow:0 0 0 7px #ffffff08,0 12px 32px #0005
 }
-.brandmark b{
-font-family:Arial,sans-serif;font-size:51px;line-height:1;
-color:var(--orange);text-shadow:4px 0 #078bc7;font-style:italic
-}
-.brandmark span{
-position:absolute;bottom:13px;font-size:9px;
-font-weight:900;letter-spacing:2px;color:#fff
-}
-.hero h1{
-position:relative;z-index:1;margin:0;color:var(--orange);
-font:900 clamp(32px,6vw,49px)/1.2 Arial,sans-serif;
-letter-spacing:1.8px;cursor:pointer;user-select:none
-}
-.hero p{
-position:relative;z-index:1;margin:12px 0 0;
-color:#d0d9e8;font-size:clamp(14px,2.5vw,18px);
-font-weight:600;cursor:pointer;user-select:none
-}
-.hero .tagline{
-display:inline-block;margin-top:17px;padding:7px 17px;
-border:1px solid #ffffff27;border-radius:50px;
-color:#e4ebf5;font-size:12px
-}
-.hero-cta{
-position:relative;z-index:1;display:inline-flex;
-align-items:center;justify-content:center;
-margin-top:20px;padding:11px 27px;border-radius:12px;
-background:var(--orange);color:#fff;text-decoration:none;
-font-size:15px;font-weight:900;
-box-shadow:0 7px 20px #f4771240;transition:.2s
-}
-.hero-cta:hover{background:var(--orange2);transform:translateY(-2px)}
 
-main{width:min(1100px,100%);margin:30px auto 0;padding:0 18px}
+.brandmark b{
+font-family:Arial,sans-serif;
+font-size:51px;
+line-height:1;
+color:var(--orange);
+text-shadow:4px 0 #078bc7;
+font-style:italic
+}
+
+.brandmark span{
+position:absolute;
+bottom:13px;
+font-size:9px;
+font-weight:900;
+letter-spacing:2px;
+color:#fff
+}
+
+.hero h1{
+position:relative;
+z-index:1;
+margin:0;
+color:var(--orange);
+font:900 clamp(32px,6vw,49px)/1.2 Arial,sans-serif;
+letter-spacing:1.8px;
+cursor:pointer;
+user-select:none
+}
+
+.hero p{
+position:relative;
+z-index:1;
+margin:12px 0 0;
+color:#d0d9e8;
+font-size:clamp(14px,2.5vw,18px);
+font-weight:600;
+cursor:pointer;
+user-select:none
+}
+
+.hero .tagline{
+display:inline-block;
+margin-top:17px;
+padding:7px 17px;
+border:1px solid #ffffff27;
+border-radius:50px;
+color:#e4ebf5;
+font-size:12px
+}
+
+.hero-cta{
+position:relative;
+z-index:1;
+display:inline-flex;
+align-items:center;
+justify-content:center;
+margin-top:20px;
+padding:11px 27px;
+border-radius:12px;
+background:var(--orange);
+color:#fff;
+text-decoration:none;
+font-size:15px;
+font-weight:900;
+box-shadow:0 7px 20px #f4771240;
+transition:.2s
+}
+
+.hero-cta:hover{
+background:var(--orange2);
+transform:translateY(-2px)
+}
+
+main{
+width:min(1100px,100%);
+margin:30px auto 0;
+padding:0 18px
+}
 
 /* لوحة الإدارة */
 .admin{
-display:none;background:#fff;border:2px solid #f0a21c;
-border-radius:23px;padding:clamp(16px,3vw,27px);
-box-shadow:var(--shadow);margin-bottom:27px
+display:none;
+background:#fff;
+border:2px solid #f0a21c;
+border-radius:23px;
+padding:clamp(16px,3vw,27px);
+box-shadow:var(--shadow);
+margin-bottom:27px
 }
+
 .admin.admin-open{display:block}
-.admin-heading{text-align:center;margin-bottom:19px}
-.admin-heading .gear{
-display:inline-grid;place-items:center;width:47px;height:47px;
-border-radius:15px;background:#fff0d8;color:#e88c12;
-font-size:23px;margin-bottom:8px
+
+.admin-heading{
+text-align:center;
+margin-bottom:19px
 }
+
+.admin-heading .gear{
+display:inline-grid;
+place-items:center;
+width:47px;
+height:47px;
+border-radius:15px;
+background:#fff0d8;
+color:#e88c12;
+font-size:23px;
+margin-bottom:8px
+}
+
 .admin-heading h2{
-margin:0;color:#d98612;font-size:clamp(20px,3.5vw,27px);
+margin:0;
+color:#d98612;
+font-size:clamp(20px,3.5vw,27px);
 font-weight:900
 }
-.admin-heading p{margin:5px 0 0;color:#8b8b83;font-size:13px}
+
+.admin-heading p{
+margin:5px 0 0;
+color:#8b8b83;
+font-size:13px
+}
+
 .admin-top{
-display:flex;justify-content:space-between;align-items:center;
-gap:12px;flex-wrap:wrap;padding:13px 15px;background:#fffaf1;
-border:1px solid #f0e7d4;border-radius:14px;margin-bottom:15px
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:12px;
+flex-wrap:wrap;
+padding:13px 15px;
+background:#fffaf1;
+border:1px solid #f0e7d4;
+border-radius:14px;
+margin-bottom:15px
 }
-.admin-top .status{font-size:13px;color:#667286;font-weight:700}
+
+.admin-top .status{
+font-size:13px;
+color:#667286;
+font-weight:700
+}
+
 .admin-top .status i{
-display:inline-block;width:8px;height:8px;background:var(--green);
-border-radius:50%;margin-left:6px
+display:inline-block;
+width:8px;
+height:8px;
+background:var(--green);
+border-radius:50%;
+margin-left:6px
 }
-.admin-top .limit{color:#d17a12;font-weight:900}
+
 .toggle{
-border:0;background:var(--navy);color:#fff;border-radius:10px;
-padding:9px 13px;font-weight:800;font-size:12px
+border:0;
+background:var(--navy);
+color:#fff;
+border-radius:10px;
+padding:9px 13px;
+font-weight:800;
+font-size:12px
 }
+
 .panel{
-background:#fff;border:1px solid var(--line);border-radius:17px;
-padding:clamp(14px,2.5vw,22px);margin-top:14px
+background:#fff;
+border:1px solid var(--line);
+border-radius:17px;
+padding:clamp(14px,2.5vw,22px);
+margin-top:14px
 }
+
 .panel h3{
-display:flex;align-items:center;gap:9px;margin:0 0 16px;
-color:var(--orange);font-size:18px;font-weight:900
+display:flex;
+align-items:center;
+gap:9px;
+margin:0 0 16px;
+color:var(--orange);
+font-size:18px;
+font-weight:900
 }
+
 .panel h3 span{
-display:grid;place-items:center;width:33px;height:33px;
-border-radius:10px;background:#fff2e6
+display:grid;
+place-items:center;
+width:33px;
+height:33px;
+border-radius:10px;
+background:#fff2e6
 }
-.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.field{display:flex;flex-direction:column;gap:6px}
+
+.fields{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px
+}
+
+.field{
+display:flex;
+flex-direction:column;
+gap:6px
+}
+
 .field.wide{grid-column:1/-1}
-.field label{font-size:13px;font-weight:800;color:#4b5870}
+
+.field label{
+font-size:13px;
+font-weight:800;
+color:#4b5870
+}
+
 .field input,.field textarea,.phone-input{
-width:100%;padding:12px 14px;border:1.5px solid #e4e8ef;
-border-radius:11px;background:#fbfcfe;color:var(--ink);outline:0
+width:100%;
+padding:12px 14px;
+border:1.5px solid #e4e8ef;
+border-radius:11px;
+background:#fbfcfe;
+color:var(--ink);
+outline:0
 }
+
 .field input:focus,.field textarea:focus,.phone-input:focus{
-border-color:#078bc7;background:#fff;box-shadow:0 0 0 3px #078bc71a
+border-color:#078bc7;
+background:#fff;
+box-shadow:0 0 0 3px #078bc71a
 }
-.field textarea{min-height:82px;resize:vertical}
-.field input[type=file]{padding:9px;background:#fff}
-.hint{font-size:11px;color:#8c96a7}
+
+.field textarea{
+min-height:82px;
+resize:vertical
+}
+
+.field input[type=file]{
+padding:9px;
+background:#fff
+}
+
+.hint{
+font-size:11px;
+color:#8c96a7
+}
+
 .primary,.save{
-width:100%;border:0;border-radius:11px;padding:13px 15px;
-color:#fff;font-weight:900;font-size:15px;transition:.18s
+width:100%;
+border:0;
+border-radius:11px;
+padding:13px 15px;
+color:#fff;
+font-weight:900;
+font-size:15px;
+transition:.18s
 }
-.primary{background:linear-gradient(100deg,#078bc7,#0877b4)}
-.save{background:linear-gradient(100deg,#19b85f,#13a653);margin-top:10px}
-.primary:disabled{opacity:.5;cursor:not-allowed}
-.phone-input{font-size:17px;direction:ltr;text-align:right}
+
+.primary{
+background:linear-gradient(100deg,#078bc7,#0877b4)
+}
+
+.save{
+background:linear-gradient(100deg,#19b85f,#13a653);
+margin-top:10px
+}
+
+.phone-input{
+font-size:17px;
+direction:ltr;
+text-align:right
+}
+
 .admin-hidden{display:none!important}
 
-/* أزرار التواصل */
+/* التواصل */
 .contact{
-display:grid;grid-template-columns:1fr 1fr;
-gap:13px;margin:24px 0 42px
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:13px;
+margin:24px 0 42px
 }
+
 .contact a{
-min-height:65px;display:flex;justify-content:center;align-items:center;
-gap:11px;text-decoration:none;color:#fff;border-radius:14px;
-font-size:clamp(15px,2.5vw,19px);font-weight:900;
-box-shadow:0 8px 20px #0000000c;transition:.2s
+min-height:65px;
+display:flex;
+justify-content:center;
+align-items:center;
+gap:11px;
+text-decoration:none;
+color:#fff;
+border-radius:14px;
+font-size:clamp(15px,2.5vw,19px);
+font-weight:900;
+box-shadow:0 8px 20px #0000000c;
+transition:.2s
 }
+
 .contact a:hover{transform:translateY(-3px)}
-.contact .wa{background:linear-gradient(110deg,#20c96b,#13ae5a)}
-.contact .call{background:linear-gradient(110deg,#078bc7,#0879b8)}
+
+.contact .wa{
+background:linear-gradient(110deg,#20c96b,#13ae5a)
+}
+
+.contact .call{
+background:linear-gradient(110deg,#078bc7,#0879b8)
+}
+
 .contact .ico{font-size:23px}
 
 /* عنوان المنتجات */
 .section-head{
-display:flex;align-items:center;justify-content:space-between;
-gap:12px;margin:0 0 19px
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:12px;
+margin:0 0 19px
 }
+
 .section-title{
-margin:0;padding:5px 13px 5px 0;
+margin:0;
+padding:5px 13px 5px 0;
 border-right:6px solid var(--orange);
-font-size:clamp(21px,4vw,30px);font-weight:900;line-height:1.4
-}
-.count{
-background:#eaf3fa;color:#087fb5;border-radius:30px;
-padding:7px 12px;font-size:12px;font-weight:900;white-space:nowrap
+font-size:clamp(21px,4vw,30px);
+font-weight:900;
+line-height:1.4
 }
 
 /* المنتجات */
 .products{
-display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+display:grid;
+grid-template-columns:repeat(3,minmax(0,1fr));
 gap:19px
 }
+
 .product{
-position:relative;background:#fff;border:1px solid #e8ebf1;
-border-radius:18px;overflow:hidden;
+position:relative;
+background:#fff;
+border:1px solid #e8ebf1;
+border-radius:18px;
+overflow:hidden;
 box-shadow:0 7px 22px #18243b09;
 transition:transform .2s,box-shadow .2s
 }
+
 .product:hover{
 transform:translateY(-4px);
 box-shadow:0 15px 30px #18243b14
 }
+
 .photo{
-height:260px;background:linear-gradient(145deg,#f3f5f9,#e6ebf3);
-display:grid;place-items:center;overflow:hidden;padding:8px
+height:260px;
+background:linear-gradient(145deg,#f3f5f9,#e6ebf3);
+display:grid;
+place-items:center;
+overflow:hidden;
+padding:8px
 }
+
 .photo img{
-width:100%;height:100%;object-fit:contain;display:block;
+width:100%;
+height:100%;
+object-fit:contain;
+display:block;
 mix-blend-mode:multiply
 }
-.placeholder{font-size:80px;color:#94a4bd}
+
+.placeholder{
+font-size:80px;
+color:#94a4bd
+}
+
 .price{
-position:absolute;top:12px;left:12px;
-background:var(--orange);color:#fff;border-radius:30px;
-padding:7px 12px;font-weight:900;font-size:15px;
+position:absolute;
+top:12px;
+left:12px;
+background:var(--orange);
+color:#fff;
+border-radius:30px;
+padding:7px 12px;
+font-weight:900;
+font-size:15px;
 box-shadow:0 4px 12px #f4771230
 }
+
 .delete{
-position:absolute;top:11px;right:11px;background:#e52d32;color:#fff;
-border:0;border-radius:50%;width:36px;height:36px;
-font-size:17px;display:none
+position:absolute;
+top:11px;
+right:11px;
+background:#e52d32;
+color:#fff;
+border:0;
+border-radius:50%;
+width:36px;
+height:36px;
+font-size:17px;
+display:none
 }
+
 .admin-mode .delete{display:block}
+
 .details{padding:14px 15px 16px}
-.details h3{margin:0 0 5px;font-size:17px;font-weight:900}
+
+.details h3{
+margin:0 0 5px;
+font-size:17px;
+font-weight:900
+}
+
 .details p{
-margin:0;color:var(--muted);line-height:1.7;
-font-size:12px;min-height:22px
+margin:0;
+color:var(--muted);
+line-height:1.7;
+font-size:12px;
+min-height:22px
 }
+
 .buy{
-display:flex;justify-content:center;align-items:center;gap:7px;
-text-decoration:none;background:linear-gradient(100deg,#f47712,#f28b1b);
-color:#fff;border-radius:10px;padding:10px;margin-top:13px;
-font-weight:900;font-size:13px;transition:.2s
+display:flex;
+justify-content:center;
+align-items:center;
+gap:7px;
+text-decoration:none;
+background:linear-gradient(100deg,#f47712,#f28b1b);
+color:#fff;
+border-radius:10px;
+padding:10px;
+margin-top:13px;
+font-weight:900;
+font-size:13px;
+transition:.2s
 }
+
 .buy:hover{filter:brightness(1.06)}
+
 .empty{
-grid-column:1/-1;text-align:center;color:#8792a4;padding:40px 18px;
-background:#fff;border:1px dashed #d6dce7;border-radius:17px
+grid-column:1/-1;
+text-align:center;
+color:#8792a4;
+padding:40px 18px;
+background:#fff;
+border:1px dashed #d6dce7;
+border-radius:17px
 }
-.empty b{display:block;color:#536176;font-size:16px;margin-bottom:5px}
+
+.empty b{
+display:block;
+color:#536176;
+font-size:16px;
+margin-bottom:5px
+}
 
 .float-wa{
-position:fixed;bottom:20px;left:18px;width:58px;height:58px;
-border-radius:50%;display:grid;place-items:center;
-background:#20c96b;color:#fff;text-decoration:none;font-size:27px;
-box-shadow:0 8px 24px #20c96b66;z-index:5;
+position:fixed;
+bottom:20px;
+left:18px;
+width:58px;
+height:58px;
+border-radius:50%;
+display:grid;
+place-items:center;
+background:#20c96b;
+color:#fff;
+text-decoration:none;
+font-size:27px;
+box-shadow:0 8px 24px #20c96b66;
+z-index:5;
 border:4px solid #ffffffb8
 }
+
 .footer{
-margin-top:50px;text-align:center;color:#929bad;
-padding:23px 12px 28px;background:#fff;
-border-top:1px solid #edf0f4;font-size:13px
+margin-top:50px;
+text-align:center;
+color:#929bad;
+padding:23px 12px 28px;
+background:#fff;
+border-top:1px solid #edf0f4;
+font-size:13px
 }
+
 .footer b{color:#26354d}
 
+/* الموبايل */
 @media(max-width:760px){
-main{margin-top:22px;padding:0 14px}
-.products{grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+main{
+margin-top:22px;
+padding:0 14px
+}
+
+.products{
+grid-template-columns:repeat(2,minmax(0,1fr));
+gap:13px
+}
+
 .photo{height:210px}
 .details{padding:12px}
 .details h3{font-size:15px}
@@ -278,36 +610,85 @@ main{margin-top:22px;padding:0 14px}
 .admin{border-radius:19px}
 .panel{padding:14px}
 }
+
 @media(max-width:480px){
 .hero{padding:30px 14px 28px}
 .brandmark{width:84px;height:84px}
 .brandmark b{font-size:45px}
 .brandmark span{bottom:12px}
-.contact{gap:9px;margin:19px 0 32px}
-.contact a{min-height:57px;font-size:14px}
+
+.welcome{height:44px}
+.welcome-track span{font-size:13px}
+
+.contact{
+gap:9px;
+margin:19px 0 32px
+}
+
+.contact a{
+min-height:57px;
+font-size:14px
+}
+
 .fields{grid-template-columns:1fr}
 .field.wide{grid-column:auto}
-.products{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.photo{height:175px;padding:5px}
+
+.products{
+grid-template-columns:repeat(2,minmax(0,1fr));
+gap:10px
+}
+
+.photo{
+height:175px;
+padding:5px
+}
+
 .details{padding:10px}
 .details h3{font-size:14px;line-height:1.5}
 .details p{font-size:10px;line-height:1.6}
-.buy{font-size:11px;padding:9px 5px;margin-top:10px}
-.price{top:8px;left:8px;font-size:11px;padding:5px 8px}
-.delete{top:7px;right:7px;width:29px;height:29px;font-size:14px}
+
+.buy{
+font-size:11px;
+padding:9px 5px;
+margin-top:10px
+}
+
+.price{
+top:8px;
+left:8px;
+font-size:11px;
+padding:5px 8px
+}
+
+.delete{
+top:7px;
+right:7px;
+width:29px;
+height:29px;
+font-size:14px
+}
+
 .section-head{align-items:center}
 .section-title{font-size:20px}
-.count{font-size:10px;padding:6px 9px}
-.float-wa{width:52px;height:52px;bottom:13px;left:12px}
+
+.float-wa{
+width:52px;
+height:52px;
+bottom:13px;
+left:12px
+}
 }
 </style>
 </head>
 
 <body>
 
+<!-- شريط الترحيب المتحرك -->
 <div class="welcome">
-🎉 أهلاً وسهلاً بنورت متجر NILE SPORT 🎉
-<br>للملابس الرياضية
+  <div class="welcome-track">
+    <span>✦ <strong>أهلاً وسهلاً بيكم</strong> في NILE SPORT ✦ ملابس رياضية بجودة وأناقة ✦</span>
+    <span>✦ <strong>أهلاً وسهلاً بيكم</strong> في NILE SPORT ✦ ملابس رياضية بجودة وأناقة ✦</span>
+  </div>
 </div>
 
 <header class="hero">
@@ -329,8 +710,7 @@ main{margin-top:22px;padding:0 14px}
 
 <div class="admin-top">
 <span class="status"><i></i> لوحة التحكم جاهزة</span>
-<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
-<span class="limit" id="adminLimit">0 / 20 منتج</span>
+<div style="display:flex;gap:8px;flex-wrap:wrap">
 <button class="toggle" id="exportBtn" type="button">⬇ تنزيل الموقع بالتعديلات</button>
 <button class="toggle" id="modeBtn" type="button">🔒 تسجيل الخروج</button>
 </div>
@@ -339,24 +719,29 @@ main{margin-top:22px;padding:0 14px}
 <div id="adminContent">
 <div class="panel">
 <h3><span>＋</span> إضافة منتج جديد</h3>
+
 <form id="productForm" class="fields">
 <div class="field">
 <label for="pname">اسم المنتج</label>
 <input id="pname" placeholder="مثال: تيشيرت رياضي" required maxlength="70">
 </div>
+
 <div class="field">
 <label for="pprice">السعر بالجنيه</label>
 <input id="pprice" type="number" min="0" step="1" placeholder="150" required>
 </div>
+
 <div class="field wide">
 <label for="pdesc">وصف المنتج</label>
 <textarea id="pdesc" placeholder="اكتب وصفاً مختصراً للمنتج..."></textarea>
 </div>
+
 <div class="field wide">
 <label for="pimage">صورة المنتج</label>
 <input id="pimage" type="file" accept="image/*">
 <span class="hint">اختر صورة من جهازك، أو اتركها فارغة لاستخدام الصورة الافتراضية. الحد الأقصى 1.5 ميجابايت.</span>
 </div>
+
 <button class="primary wide" id="addProductBtn" type="submit">＋ إضافة المنتج للمتجر</button>
 </form>
 </div>
@@ -373,6 +758,7 @@ main{margin-top:22px;padding:0 14px}
 <a class="wa" id="whatsapp" href="https://wa.me/201009171678" target="_blank" rel="noopener">
 <span class="ico">◉</span>تواصل عبر الواتساب
 </a>
+
 <a class="call" id="call" href="tel:+201009171678">
 <span class="ico">☎</span>اتصل بنا 01009171678
 </a>
@@ -380,10 +766,10 @@ main{margin-top:22px;padding:0 14px}
 
 <div class="section-head">
 <h2 class="section-title">أحدث المنتجات الرياضية</h2>
-<span class="count" id="productCount">0 / 20 منتجات</span>
 </div>
 
 <section class="products" id="products"></section>
+
 </main>
 
 <a class="float-wa" id="floatWa" href="https://wa.me/201009171678" target="_blank" rel="noopener" aria-label="تواصل واتساب">◉</a>
@@ -395,7 +781,6 @@ main{margin-top:22px;padding:0 14px}
 <script>
 const $=id=>document.getElementById(id);
 const ADMIN_PASSWORD='600600';
-const MAX_PRODUCTS=20;
 
 let products=[];
 let phone='201009171678';
@@ -430,7 +815,6 @@ $('admin').classList.add('admin-open');
 $('adminContent').classList.remove('admin-hidden');
 document.body.classList.add('admin-mode');
 $('modeBtn').textContent='🔒 تسجيل الخروج';
-updateLimit();
 $('admin').scrollIntoView({behavior:'smooth',block:'start'});
 alert('تم تسجيل الدخول بنجاح');
 }else{
@@ -456,45 +840,43 @@ phone=localStorage.getItem('nile_phone')||phone;
 products=[];
 }
 
-products=Array.isArray(products)?products.slice(0,MAX_PRODUCTS):[];
+products=Array.isArray(products)?products:[];
 $('phone').value=phone;
 
+/* حفظ المنتجات */
 function persist(){
 try{
 localStorage.setItem('nile_products',JSON.stringify(products));
 }catch(e){
-alert('مساحة التخزين ممتلئة. جرّب صورة أصغر.');
+alert('مساحة التخزين ممتلئة. جرّب صورة أصغر أو عدد صور أقل.');
 }
 }
 
-function updateLimit(){
-const count=products.length;
-$('adminLimit').textContent=count+' / '+MAX_PRODUCTS+' منتج';
-$('productCount').textContent=count+' / '+MAX_PRODUCTS+' منتجات';
-$('addProductBtn').disabled=count>=MAX_PRODUCTS;
-$('addProductBtn').textContent=count>=MAX_PRODUCTS
-?'اكتمل الحد الأقصى للمنتجات'
-:'＋ إضافة المنتج للمتجر';
-}
-
+/* تنزيل نسخة الموقع */
 function exportSite(){
 try{
 persist();
 localStorage.setItem('nile_phone',phone);
+
 const data={products,phone};
 let html='<!DOCTYPE html>'+document.documentElement.outerHTML;
+
 const marker='<script>';
 const payload='<script>window.NILE_EXPORTED_DATA='+JSON.stringify(data).replace(/</g,'\\u003c')+';<\/script>';
+
 html=html.replace(marker,payload+marker);
 
 const blob=new Blob([html],{type:'text/html;charset=utf-8'});
 const url=URL.createObjectURL(blob);
+
 const a=document.createElement('a');
 a.href=url;
 a.download='nile-sport-updated.html';
+
 document.body.appendChild(a);
 a.click();
 a.remove();
+
 setTimeout(()=>URL.revokeObjectURL(url),1500);
 
 alert('تم تنزيل نسخة جديدة من الموقع بالتعديلات الحالية. ارفع ملف nile-sport-updated.html مكان النسخة القديمة.');
@@ -507,14 +889,17 @@ function cleanPhone(v){
 return String(v).replace(/\D/g,'');
 }
 
+/* تحديث بيانات التواصل */
 function updateContact(){
 const n=cleanPhone(phone);
+
 $('whatsapp').href='https://wa.me/'+n;
 $('floatWa').href='https://wa.me/'+n;
 $('call').href='tel:+'+n;
 $('call').innerHTML='<span class="ico">☎</span> اتصل بنا '+phone;
 }
 
+/* حماية النصوص */
 function escapeHtml(v){
 return String(v??'').replace(/[&<>"']/g,c=>({
 '&':'&amp;',
@@ -525,13 +910,13 @@ return String(v??'').replace(/[&<>"']/g,c=>({
 }[c]));
 }
 
+/* عرض المنتجات */
 function render(){
 const root=$('products');
 root.innerHTML='';
 
 if(!products.length){
 root.innerHTML='<div class="empty"><b>لسه مفيش منتجات مضافة</b>قريباً هتلاقوا أحدث المنتجات الرياضية هنا 👕</div>';
-updateLimit();
 return;
 }
 
@@ -565,19 +950,11 @@ render();
 
 root.appendChild(card);
 });
-
-updateLimit();
 }
 
-/* إضافة منتج مع حد أقصى 20 */
+/* إضافة منتج جديد بدون حد أقصى */
 $('productForm').addEventListener('submit',async e=>{
 e.preventDefault();
-
-if(products.length>=MAX_PRODUCTS){
-alert('وصلت للحد الأقصى: 20 منتج فقط.');
-updateLimit();
-return;
-}
 
 const file=$('pimage').files[0];
 let image='';
@@ -587,6 +964,7 @@ if(!file.type.startsWith('image/')){
 alert('من فضلك اختر ملف صورة صحيح');
 return;
 }
+
 if(file.size>1500000){
 alert('حجم الصورة كبير. اختر صورة أقل من 1.5 ميجابايت');
 return;
@@ -612,10 +990,12 @@ render();
 e.target.reset();
 
 document.querySelector('.section-head').scrollIntoView({
-behavior:'smooth',block:'start'
+behavior:'smooth',
+block:'start'
 });
 });
 
+/* حفظ رقم التواصل */
 $('savePhone').addEventListener('click',()=>{
 const value=$('phone').value.trim();
 
@@ -632,8 +1012,10 @@ render();
 alert('تم حفظ رقم التواصل داخل المتصفح. اضغط تنزيل الموقع بالتعديلات لتنزيل نسخة محدثة.');
 });
 
+/* تنزيل الموقع */
 $('exportBtn').addEventListener('click',exportSite);
 
+/* تسجيل الخروج */
 $('modeBtn').addEventListener('click',()=>{
 adminMode=false;
 $('admin').classList.remove('admin-open');
@@ -642,9 +1024,11 @@ document.body.classList.remove('admin-mode');
 adminClicks=0;
 });
 
+/* تشغيل الموقع */
 updateContact();
 render();
 </script>
+
 </body>
   </html>
   
