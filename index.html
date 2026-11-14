@@ -85,6 +85,7 @@
         .admin-action-btn { padding: 8px 14px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 5px; }
         .btn-add { background: #0284c7; color: white; width: 100%; justify-content: center; }
         .btn-exit { background: #dc2626; color: white; }
+        .btn-save-file { background: #16a34a; color: white; width: 100%; justify-content: center; margin-top: 10px; }
 
         .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
         .product-card {
@@ -150,7 +151,7 @@
     </header>
 
     <div class="container">
-        <!-- لوحة التحكم -->
+        <!-- لوحة التحكم مع زر حفظ وتنزيل التعديلات -->
         <div class="admin-panel" id="adminPanel">
             <div class="admin-header">
                 <span style="font-weight: 900; color: #f59e0b; font-size: 1.1rem;">⚙️ لوحة تحكم الكابتن محمد خليل</span>
@@ -169,9 +170,11 @@
                 </div>
 
                 <div class="admin-card">
-                    <h4>📱 رقم الواتساب</h4>
+                    <h4>📱 إعدادات المتجر ورقم الواتساب</h4>
                     <input type="text" id="adminPhoneInput" class="admin-input" placeholder="مثلاً: 201009171678">
-                    <button class="admin-action-btn btn-add" style="background:#16a34a;" onclick="updateStorePhone()"><i class="fas fa-check"></i> حفظ الرقم</button>
+                    <button class="admin-action-btn btn-add" style="background:#16a34a; margin-bottom: 8px;" onclick="updateStorePhone()"><i class="fas fa-check"></i> حفظ الرقم</button>
+                    <!-- زر حفظ وتنزيل التعديلات للزباين -->
+                    <button class="admin-action-btn btn-save-file" onclick="downloadUpdatedFile()"><i class="fas fa-download"></i> حفظ وتنزيل ملف التحديث للزباين</button>
                 </div>
             </div>
         </div>
@@ -199,7 +202,6 @@
     </footer>
 
     <script>
-        // بيانات المتجر
         let storeData = {
             phone: "201009171678",
             products: JSON.parse(localStorage.getItem('nileProducts')) || [
@@ -378,10 +380,4 @@
                     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                     callback(canvas.toDataURL('image/jpeg', 0.75));
                 };
-                img.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
-    </script>
-</body>
-</html>
+                img.src = e.t
