@@ -4,93 +4,95 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NILE SPORT - نايل سبورت للملابس الرياضية</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary: #ff7a18;
-            --secondary: #00a8ff;
-            --dark: #0b1329;
-            --light-bg: #f4f6f9;
+            --primary: #f97316;
+            --secondary: #0284c7;
+            --dark: #0f172a;
+            --light-bg: #f8fafc;
             --white: #ffffff;
             --text-dark: #1e293b;
             --card-bg: #ffffff;
             --border-color: #e2e8f0;
-            --header-bg: linear-gradient(135deg, #0b1329, #1e293b);
+            --header-bg: linear-gradient(135deg, #0f172a, #1e293b);
             --admin-panel-bg: #fffbeb;
             --admin-border: #f59e0b;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; transition: all 0.2s ease; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
         body { background-color: var(--light-bg); color: var(--text-dark); direction: rtl; overflow-x: hidden; padding-bottom: 70px; }
 
         .welcome-banner {
-            background: linear-gradient(90deg, #ff7a18, #00a8ff, #ff7a18);
-            background-size: 200% 200%;
-            animation: gradientMove 5s ease infinite;
-            color: white; text-align: center; padding: 10px;
-            font-weight: 800; font-size: 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            background: linear-gradient(90deg, #ff6b6b, #f97316, #25d366, #0284c7, #a855f7);
+            background-size: 300% 300%;
+            animation: gradientMove 4s ease infinite;
+            color: white; text-align: center; padding: 12px;
+            font-weight: 900; font-size: 1.1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
         @keyframes gradientMove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
+        .welcome-popup {
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-150%);
+            background: linear-gradient(135deg, #0f172a, #1e293b); color: #fff;
+            padding: 14px 24px; border-radius: 50px; border: 3px solid var(--primary);
+            box-shadow: 0 10px 30px rgba(249, 115, 22, 0.5); z-index: 9999;
+            font-weight: 800; font-size: 1rem; transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            white-space: nowrap;
+        }
+        .welcome-popup.show { transform: translateX(-50%) translateY(0); }
+        .welcome-popup span { background: linear-gradient(90deg, #f97316, #38bdf8, #4ade80); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 900; }
+
         header {
             background: var(--header-bg); color: var(--white);
-            padding: 2.5rem 1rem; text-align: center; border-bottom: 4px solid var(--primary); user-select: none;
+            padding: 2rem 1rem; text-align: center; border-bottom: 4px solid var(--primary); user-select: none;
             position: relative;
         }
 
         .logo-box {
-            width: 95px; height: 95px; background: #ffffff; border-radius: 50%; margin: 0 auto 1rem;
-            display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            box-shadow: 0 8px 25px rgba(255, 122, 24, 0.4); border: 3px solid var(--primary);
+            width: 95px; height: 95px; background: #fff; border-radius: 50%; margin: 0 auto 1rem;
+            display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4); overflow: hidden;
         }
-        .logo-box .logo-n { font-size: 2.2rem; font-weight: 900; color: var(--primary); line-height: 1; }
-        .logo-box .logo-sub { font-size: 0.5rem; font-weight: 800; color: var(--dark); letter-spacing: 1px; }
+        header h1 { font-size: 2rem; font-weight: 900; color: var(--primary); letter-spacing: 1px; cursor: pointer; }
+        header p { font-size: 1.1rem; color: #94a3b8; margin-top: 5px; }
 
-        header h1 { font-size: 2.2rem; font-weight: 900; color: var(--primary); letter-spacing: 1px; cursor: pointer; text-shadow: 0 2px 10px rgba(255,122,24,0.3); }
-        header p { font-size: 1.1rem; color: #94a3b8; margin-top: 5px; font-weight: 600; }
-
-        .container { max-width: 1000px; margin: 0 auto; padding: 1.5rem 1rem; }
-        
+        .container { max-width: 950px; margin: 0 auto; padding: 1.5rem 1rem; }
         .contact-bar { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 2rem; }
         .btn {
             display: flex; align-items: center; justify-content: center; gap: 8px;
-            padding: 0.9rem; border-radius: 12px; font-weight: 800; text-decoration: none; color: #ffffff; font-size: 1rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 0.9rem; border-radius: 12px; font-weight: 700; text-decoration: none; color: #ffffff; font-size: 1rem;
         }
         .btn-whatsapp { background-color: #25d366; }
         .btn-phone { background-color: var(--secondary); }
 
         .section-title {
-            font-size: 1.4rem; font-weight: 900; margin-bottom: 1.2rem;
+            font-size: 1.4rem; font-weight: 800; margin-bottom: 1.2rem;
             color: var(--text-dark); border-right: 4px solid var(--primary); padding-right: 10px;
         }
 
-        /* لوحة التحكم المخفية */
         .admin-panel {
             display: none; background: var(--admin-panel-bg); border: 2px solid var(--admin-border); border-radius: 16px;
             padding: 1.2rem; margin-bottom: 2rem; box-shadow: 0 6px 20px rgba(245, 158, 11, 0.15);
         }
         body.admin-mode .admin-panel { display: block; }
         .admin-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #fde68a; padding-bottom: 10px; margin-bottom: 15px; flex-wrap: wrap; gap: 10px; }
-        .admin-stats { background: var(--dark); color: var(--secondary); padding: 6px 14px; border-radius: 20px; font-size: 0.9rem; font-weight: 700; }
-        .admin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-bottom: 15px; }
+        .admin-stats { background: #0f172a; color: #38bdf8; padding: 6px 14px; border-radius: 20px; font-size: 0.9rem; font-weight: 700; }
+        .admin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 15px; }
         .admin-card { background: var(--card-bg); padding: 12px; border-radius: 10px; border: 1px solid var(--border-color); }
-        .admin-card h4 { color: var(--primary); margin-bottom: 8px; font-size: 0.95rem; font-weight: 800; }
+        .admin-card h4 { color: var(--primary); margin-bottom: 8px; font-size: 0.95rem; }
         .admin-input { width: 100%; padding: 8px; border: 1px solid var(--border-color); background: var(--card-bg); color: var(--text-dark); border-radius: 8px; margin-bottom: 8px; font-size: 0.9rem; }
-        .admin-action-btn { padding: 8px 14px; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 5px; }
-        .btn-add { background: var(--secondary); color: white; width: 100%; justify-content: center; }
-        .btn-exit { background: #dc2626; color: white; }
-        .btn-save-file { background: #16a34a; color: white; width: 100%; justify-content: center; margin-top: 10px; }
+        .admin-action-btn { padding: 8px 14px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 5px; width: 100%; justify-content: center; margin-top: 5px; }
+        .btn-add { background: #0284c7; color: white; }
+        .btn-download { background: #16a34a; color: white; font-size: 1rem; padding: 12px; }
+        .btn-exit { background: #dc2626; color: white; width: auto; margin: 0; }
 
-        /* شبكة المنتجات وكرواتها */
         .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
         .product-card {
             background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.06); transition: transform 0.3s, box-shadow 0.3s; position: relative;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06); transition: transform 0.2s; position: relative;
         }
-        .product-card:hover { transform: translateY(-6px); box-shadow: 0 12px 30px rgba(255, 122, 24, 0.18); border-color: var(--primary); }
-        
+        .product-card:hover { transform: translateY(-5px); }
         .product-img {
             width: 100%; height: 240px; background: #e2e8f0;
             display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;
@@ -99,67 +101,62 @@
 
         .price-badge {
             position: absolute; top: 10px; right: 10px; background: var(--primary); color: white;
-            padding: 5px 14px; border-radius: 20px; font-weight: 900; font-size: 0.95rem; box-shadow: 0 3px 10px rgba(0,0,0,0.2); z-index: 5;
+            padding: 4px 12px; border-radius: 20px; font-weight: 800; font-size: 0.95rem; box-shadow: 0 2px 8px rgba(0,0,0,0.2); z-index: 5;
         }
 
-        .card-admin-tools { display: none; background: var(--card-bg); padding: 12px; border-top: 1px dashed var(--border-color); }
+        .card-admin-tools { display: none; background: var(--card-bg); padding: 10px; border-top: 1px dashed var(--border-color); }
         body.admin-mode .card-admin-tools { display: block; }
         .delete-product-btn {
             position: absolute; top: 10px; left: 10px; background: #dc2626; color: white;
-            border: none; width: 34px; height: 34px; border-radius: 50%; cursor: pointer;
+            border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer;
             display: none; align-items: center; justify-content: center; z-index: 10;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
         }
         body.admin-mode .delete-product-btn { display: flex; }
 
         .product-info { padding: 1.2rem; }
-        .product-title { font-size: 1.2rem; font-weight: 800; margin-bottom: 0.4rem; color: var(--text-dark); }
-        .product-desc { color: #64748b; font-size: 0.95rem; min-height: 40px; font-weight: 600; }
-        
+        .product-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.4rem; color: var(--text-dark); }
+        .product-desc { color: #94a3b8; font-size: 0.95rem; min-height: 40px; }
         .product-btn {
             width: 100%; background-color: var(--primary); color: white; border: none;
-            padding: 0.85rem; border-radius: 10px; font-weight: 800; cursor: pointer;
+            padding: 0.8rem; border-radius: 10px; font-weight: 700; cursor: pointer;
             text-decoration: none; display: block; text-align: center; margin-top: 1rem;
-            box-shadow: 0 4px 12px rgba(255, 122, 24, 0.3);
         }
-        .product-btn:hover { background-color: #e06912; }
 
         .floating-wa {
             position: fixed; bottom: 20px; left: 20px; background: #25d366; color: white;
-            width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-size: 2.2rem; box-shadow: 0 6px 20px rgba(37, 211, 102, 0.5); z-index: 999; text-decoration: none;
+            width: 58px; height: 58px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 2rem; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.5); z-index: 999; text-decoration: none;
         }
 
-        footer { text-align: center; padding: 1.8rem; color: #94a3b8; font-size: 0.95rem; margin-top: 3rem; border-top: 1px solid var(--border-color); font-weight: 700; }
+        footer { text-align: center; padding: 1.5rem; color: #94a3b8; font-size: 0.9rem; margin-top: 2rem; border-top: 1px solid var(--border-color); }
         @media (max-width: 600px) { .contact-bar { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
-    <div id="welcomePopup" class="welcome-popup" style="position: fixed; top: 20px; left: 50%; transform: translateX(-50%) translateY(-150%); background: var(--dark); color: #fff; padding: 14px 24px; border-radius: 50px; border: 3px solid var(--primary); box-shadow: 0 10px 30px rgba(255,122,24,0.5); z-index: 9999; font-weight: 800; transition: transform 0.5s ease;">
-        ⚡ اتمرّن بطريقتك مع <span style="color:var(--primary);">NILE SPORT</span> ⚡
+    <div id="welcomePopup" class="welcome-popup">
+        ✨ <span>أهلاً وسهلاً نورت NILE SPORT</span> ✨
     </div>
 
     <div class="welcome-banner">
-        <span>«اتمرّن بطريقتك» — اختار تجهيزك، والباقي علينا 🚀</span>
+        <span>🎉 أهلاً وسهلاً نورت متجر NILE SPORT للملابس الرياضية 🎉</span>
     </div>
 
     <header>
         <div class="logo-box">
-            <span class="logo-n">N</span>
-            <span class="logo-sub">NILE SPORT</span>
+            <canvas id="logoCanvas" width="95" height="95"></canvas>
         </div>
         <h1 id="storeTitle">NILE SPORT</h1>
         <p>تحت إدارة الكابتن / محمد خليل</p>
     </header>
 
     <div class="container">
-        <!-- لوحة التحكم المخفية (تفتح بالضغط 5 مرات على اسم المتجر والباسورد 1234) -->
+        <!-- لوحة التحكم -->
         <div class="admin-panel" id="adminPanel">
             <div class="admin-header">
-                <span style="font-weight: 900; color: #d97706; font-size: 1.1rem;">⚙️ لوحة تحكم الكابتن محمد خليل</span>
+                <span style="font-weight: 900; color: #f59e0b; font-size: 1.1rem;">⚙️ لوحة تحكم الكابتن محمد خليل</span>
                 <div class="admin-stats">👁️ الزيارات: <span id="visitCounter">1</span></div>
-                <button class="admin-action-btn btn-exit" onclick="exitAdmin()"><i class="fas fa-sign-out-alt"></i> إغلاق</button>
+                <button class="admin-action-btn btn-exit" onclick="exitAdmin()"><i class="fas fa-sign-out-alt"></i> خروج</button>
             </div>
 
             <div class="admin-grid">
@@ -173,11 +170,13 @@
                 </div>
 
                 <div class="admin-card">
-                    <h4>📱 إعدادات الواتساب وتصدير التحديثات</h4>
+                    <h4>📱 رقم الواتساب وحفظ التحديثات</h4>
                     <input type="text" id="adminPhoneInput" class="admin-input" placeholder="مثلاً: 201009171678">
-                    <button class="admin-action-btn btn-add" style="background:#16a34a; margin-bottom: 8px;" onclick="updateStorePhone()"><i class="fas fa-check"></i> حفظ الرقم</button>
-                    <!-- زر حفظ وتنزيل التعديلات للزباين -->
-                    <button class="admin-action-btn btn-save-file" onclick="downloadUpdatedFile()"><i class="fas fa-download"></i> حفظ وتنزيل ملف التحديث للزباين</button>
+                    <button class="admin-action-btn btn-add" style="background:#0284c7;" onclick="updateStorePhone()"><i class="fas fa-check"></i> حفظ الرقم</button>
+                    
+                    <button class="admin-action-btn btn-download" onclick="downloadUpdatedCode()">
+                        <i class="fas fa-download"></i> 📥 تنزيل ملف الكود المحدث (ارفعه لجيت هاب)
+                    </button>
                 </div>
             </div>
         </div>
@@ -201,7 +200,7 @@
     </a>
 
     <footer>
-        جميع الحقوق محفوظة &copy; Nile Sport 2026 — اتمرّن بطريقتك
+        جميع الحقوق محفوظة &copy; Nile Sport 2026
     </footer>
 
     <script>
@@ -216,8 +215,8 @@
 
         window.addEventListener('DOMContentLoaded', () => {
             const popup = document.getElementById('welcomePopup');
-            setTimeout(() => popup.style.transform = 'translateX(-50%) translateY(0)', 400);
-            setTimeout(() => popup.style.transform = 'translateX(-50%) translateY(-150%)', 4500);
+            setTimeout(() => popup.classList.add('show'), 300);
+            setTimeout(() => popup.classList.remove('show'), 4500);
 
             let visits = parseInt(localStorage.getItem('nileSportVisits') || '0') + 1;
             localStorage.setItem('nileSportVisits', visits);
@@ -227,6 +226,15 @@
             applyPhoneLinks();
             renderProducts();
         });
+
+        const canvas = document.getElementById('logoCanvas');
+        const ctx = canvas.getContext('2d');
+        ctx.fillStyle = '#0f172a'; ctx.fillRect(0, 0, 95, 95);
+        ctx.font = '900 38px Arial';
+        ctx.fillStyle = '#0284c7'; ctx.fillText('N', 34, 54);
+        ctx.fillStyle = '#f97316'; ctx.fillText('N', 30, 50);
+        ctx.font = 'bold 10px Arial'; ctx.fillStyle = '#ffffff'; ctx.textAlign = 'center';
+        ctx.fillText('NILE SPORT', 47.5, 72);
 
         let clickCount = 0, clickTimer;
         document.getElementById('storeTitle').addEventListener('click', () => {
@@ -238,7 +246,7 @@
                 const pass = prompt("أدخل الرقم السري للإدارة:");
                 if (pass === "1234") {
                     document.body.classList.add('admin-mode');
-                    alert("أهلاً يا كابتن! تم تفعيل لوحة التحكم بنجاح.");
+                    alert("أهلاً يا كابتن! تم تفعيل لوحة التحكم.");
                 } else if (pass !== null) {
                     alert("الرقم السري غير صحيح!");
                 }
@@ -253,7 +261,6 @@
 
         function renderProducts() {
             const container = document.getElementById('productsContainer');
-            if(!container) return;
             container.innerHTML = '';
 
             storeData.products.forEach((prod, index) => {
@@ -281,7 +288,7 @@
                         <input type="text" class="admin-input" value="${prod.title}" onchange="editProduct(${index}, 'title', this.value)" placeholder="اسم المنتج">
                         <input type="text" class="admin-input" value="${prod.price}" onchange="editProduct(${index}, 'price', this.value)" placeholder="السعر">
                         <input type="text" class="admin-input" value="${prod.desc}" onchange="editProduct(${index}, 'desc', this.value)" placeholder="وصف المنتج">
-                        <label style="display:block; background:var(--dark); color:#fff; text-align:center; padding:7px; border-radius:6px; cursor:pointer; font-size:0.85rem; margin-top:5px; font-weight:700;">
+                        <label style="display:block; background:#0f172a; color:#fff; text-align:center; padding:6px; border-radius:6px; cursor:pointer; font-size:0.85rem; margin-top:5px;">
                             <i class="fas fa-camera"></i> تغيير صورة المنتج
                             <input type="file" accept="image/*" style="display:none;" onchange="changeProductImg(event, ${index})">
                         </label>
@@ -337,7 +344,7 @@
         }
 
         function deleteProduct(index) {
-            if (confirm("متأكد من حذف المنتج ده يا كابتن؟")) {
+            if (confirm("متأكد من حذف المنتج ده؟")) {
                 storeData.products.splice(index, 1);
                 saveToStorage();
                 renderProducts();
@@ -372,4 +379,8 @@
                     canvas.width = maxW;
                     canvas.height = img.height * scale;
                     const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    callback(canvas.toDataURL('image/jpeg', 0.75));
+                };
+                img.src = e.target.result;
+ 
