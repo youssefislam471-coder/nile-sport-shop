@@ -380,7 +380,6 @@
         }
 
         function downloadUpdatedCode() {
-            let currentDataScript = `let storeData = ${JSON.stringify(storeData, null, 4)};`;
-            
+            let currentDataScript = "let storeData = " + JSON.stringify(storeData, null, 4) + ";";
             let fullHtml = document.documentElement.outerHTML;
-            fullHtml = fullHtml.replace(/let storeData = 
+            fullHtml = fullHtml.replace(/let storeData = \{[\s\S]
