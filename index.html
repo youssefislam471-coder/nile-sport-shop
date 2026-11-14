@@ -173,19 +173,15 @@
                     <h4>📱 رقم الواتساب وحفظ التحديثات</h4>
                     <input type="text" id="adminPhoneInput" class="admin-input" placeholder="مثلاً: 201009171678">
                     <button class="admin-action-btn btn-add" style="background:#0284c7;" onclick="updateStorePhone()"><i class="fas fa-check"></i> حفظ الرقم</button>
-                    
-                    <button class="admin-action-btn btn-download" onclick="downloadUpdatedCode()">
-                        <i class="fas fa-download"></i> 📥 تنزيل ملف الكود المحدث (ارفعه لجيت هاب)
-                    </button>
                 </div>
             </div>
         </div>
 
         <div class="contact-bar">
-            <a id="topWaBtn" href="https://wa.me/201009171678" target="_blank" class="btn btn-whatsapp">
+            <a id="topWaBtn" href="#" target="_blank" class="btn btn-whatsapp">
                 <i class="fab fa-whatsapp"></i> تواصل عبر الواتساب
             </a>
-            <a id="topCallBtn" href="tel:01009171678" class="btn btn-phone">
+            <a id="topCallBtn" href="#" class="btn btn-phone">
                 <i class="fas fa-phone-alt"></i> اتصل بنا <span id="displayPhone">01009171678</span>
             </a>
         </div>
@@ -195,7 +191,7 @@
         <div class="products-grid" id="productsContainer"></div>
     </div>
 
-    <a id="floatWaBtn" href="https://wa.me/201009171678" target="_blank" class="floating-wa">
+    <a id="floatWaBtn" href="#" target="_blank" class="floating-wa">
         <i class="fab fa-whatsapp"></i>
     </a>
 
@@ -204,9 +200,9 @@
     </footer>
 
     <script>
-        let storeData = {
+        let storeData = JSON.parse(localStorage.getItem('nileStoreData')) || {
             phone: "201009171678",
-            products: JSON.parse(localStorage.getItem('nileProducts')) || [
+            products: [
                 { id: 1, title: "كاب نايل سبورت الأصلي", price: "150 ج.م", desc: "كاب رياضي خامة ممتازة مع شعار Nile Sport", img: "" },
                 { id: 2, title: "ترنج رياضي كامل", price: "450 ج.م", desc: "خامة خفيفة ومناسبة للتمارين والجيم", img: "" },
                 { id: 3, title: "تيشرتات أندية ومستلزمات", price: "250 ج.م", desc: "جميع المقاسات والخامات الرياضية", img: "" }
@@ -256,7 +252,7 @@
         function exitAdmin() { document.body.classList.remove('admin-mode'); }
 
         function saveToStorage() {
-            localStorage.setItem('nileProducts', JSON.stringify(storeData.products));
+            localStorage.setItem('nileStoreData', JSON.stringify(storeData));
         }
 
         function renderProducts() {
@@ -355,8 +351,9 @@
             const newPhone = document.getElementById('adminPhoneInput').value.trim();
             if (newPhone) {
                 storeData.phone = newPhone;
+                saveToStorage();
                 applyPhoneLinks();
-                alert("تم تحديث رقم الواتساب بنجاح!");
+                alert("تم تحديث وحفظ رقم الواتساب بنجاح!");
             }
         }
 
@@ -383,4 +380,10 @@
                     callback(canvas.toDataURL('image/jpeg', 0.75));
                 };
                 img.src = e.target.result;
- 
+            };
+            reader.readAsDataURL(file);
+        }
+    </script>
+</body>
+                    </html>
+                    
