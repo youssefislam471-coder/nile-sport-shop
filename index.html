@@ -174,7 +174,7 @@
                     <input type="text" id="adminPhoneInput" class="admin-input" placeholder="مثلاً: 201009171678">
                     <button class="admin-action-btn btn-add" style="background:#0284c7;" onclick="updateStorePhone()"><i class="fas fa-check"></i> حفظ الرقم</button>
                     
-                    <!-- زر حفظ وتنزيل التعديلات لرفعه على جيت هاب -->
+                    <!-- زر تنزيل التعديلات لرفعه على جيت هاب -->
                     <button class="admin-action-btn btn-download" onclick="downloadUpdatedCode()">
                         <i class="fas fa-download"></i> 📥 تنزيل الكود المحدث (ارفعه لجيت هاب)
                     </button>
@@ -379,8 +379,8 @@
             reader.readAsDataURL(file);
         }
 
-        // دالة تنزيل الكود المحدث بالكامل لرفعه على جيت هاب
         function downloadUpdatedCode() {
             let currentDataScript = `let storeData = ${JSON.stringify(storeData, null, 4)};`;
             
-            let fullHtml = document.documentElement.ou
+            let fullHtml = document.documentElement.outerHTML;
+            fullHtml = fullHtml.replace(/let storeData = 
