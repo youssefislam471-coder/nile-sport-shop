@@ -50,18 +50,13 @@
             position: relative;
         }
 
-        /* تصميم الشعار بـ CSS بدلاً من الـ Canvas لضمان ظهوره فوراً وبدون أي أخطاء */
         .logo-box {
             width: 95px; height: 95px; background: #ffffff; border-radius: 50%; margin: 0 auto 1rem;
             display: flex; flex-direction: column; align-items: center; justify-content: center; 
             box-shadow: 0 4px 15px rgba(249, 115, 22, 0.4); border: 3px solid var(--primary);
         }
-        .logo-box .logo-n {
-            font-size: 2.2rem; font-weight: 900; color: var(--primary); line-height: 1;
-        }
-        .logo-box .logo-sub {
-            font-size: 0.5rem; font-weight: 700; color: #0f172a; letter-spacing: 1px;
-        }
+        .logo-box .logo-n { font-size: 2.2rem; font-weight: 900; color: var(--primary); line-height: 1; }
+        .logo-box .logo-sub { font-size: 0.5rem; font-weight: 700; color: #0f172a; letter-spacing: 1px; }
 
         header h1 { font-size: 2rem; font-weight: 900; color: var(--primary); letter-spacing: 1px; cursor: pointer; }
         header p { font-size: 1.1rem; color: #94a3b8; margin-top: 5px; }
@@ -80,6 +75,7 @@
             color: var(--text-dark); border-right: 4px solid var(--primary); padding-right: 10px;
         }
 
+        /* لوحة التحكم مخفية افتراضياً وتظهر فقط بالباسورد */
         .admin-panel {
             display: none; background: var(--admin-panel-bg); border: 2px solid var(--admin-border); border-radius: 16px;
             padding: 1.2rem; margin-bottom: 2rem; box-shadow: 0 6px 20px rgba(245, 158, 11, 0.15);
@@ -161,7 +157,7 @@
     </header>
 
     <div class="container">
-        <!-- لوحة التحكم السرية (تفتح بالضغط 5 مرات على اسم المتجر والباسورد 1234) -->
+        <!-- لوحة التحكم -->
         <div class="admin-panel" id="adminPanel">
             <div class="admin-header">
                 <span style="font-weight: 900; color: #f59e0b; font-size: 1.1rem;">⚙️ لوحة تحكم الكابتن محمد خليل</span>
@@ -382,4 +378,9 @@
                     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                     callback(canvas.toDataURL('image/jpeg', 0.75));
                 };
-          
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function downloa
