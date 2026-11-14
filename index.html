@@ -84,6 +84,7 @@
         .admin-input { width: 100%; padding: 8px; border: 1px solid var(--border-color); background: var(--card-bg); color: var(--text-dark); border-radius: 8px; margin-bottom: 8px; font-size: 0.9rem; }
         .admin-action-btn { padding: 8px 14px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 5px; width: 100%; justify-content: center; margin-top: 5px; }
         .btn-add { background: #0284c7; color: white; }
+        .btn-download { background: #16a34a; color: white; font-size: 1rem; padding: 12px; margin-top: 10px; }
         .btn-exit { background: #dc2626; color: white; width: auto; margin: 0; }
 
         .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
@@ -169,9 +170,14 @@
                 </div>
 
                 <div class="admin-card">
-                    <h4>📱 رقم الواتساب</h4>
+                    <h4>📱 رقم الواتساب وحفظ التحديثات</h4>
                     <input type="text" id="adminPhoneInput" class="admin-input" placeholder="مثلاً: 201009171678">
-                    <button class="admin-action-btn btn-add" style="background:#16a34a;" onclick="updateStorePhone()"><i class="fas fa-check"></i> حفظ الرقم</button>
+                    <button class="admin-action-btn btn-add" style="background:#0284c7;" onclick="updateStorePhone()"><i class="fas fa-check"></i> حفظ الرقم</button>
+                    
+                    <!-- زر حفظ وتنزيل التعديلات لرفعه على جيت هاب -->
+                    <button class="admin-action-btn btn-download" onclick="downloadUpdatedCode()">
+                        <i class="fas fa-download"></i> 📥 تنزيل الكود المحدث (ارفعه لجيت هاب)
+                    </button>
                 </div>
             </div>
         </div>
@@ -199,7 +205,7 @@
     </footer>
 
     <script>
-        let storeData = JSON.parse(localStorage.getItem('nileStoreData')) || {
+        let storeData = {
             phone: "201009171678",
             products: [
                 { id: 1, title: "كاب نايل سبورت الأصلي", price: "150 ج.م", desc: "كاب رياضي خامة ممتازة مع شعار Nile Sport", img: "" },
@@ -250,10 +256,6 @@
 
         function exitAdmin() { document.body.classList.remove('admin-mode'); }
 
-        function saveToStorage() {
-            localStorage.setItem('nileStoreData', JSON.stringify(storeData));
-        }
-
         function renderProducts() {
             const container = document.getElementById('productsContainer');
             container.innerHTML = '';
@@ -269,7 +271,8 @@
                 card.innerHTML = `
                     <button class="delete-product-btn" onclick="deleteProduct(${index})" title="حذف"><i class="fas fa-trash"></i></button>
                     <div class="product-img">
-                        <span class="price-badge">${prod.price}</span>${imgContent}
+                        <span class="price-badge">${prod.price}</span>
+                        ${imgContent}
                     </div>
                     <div class="product-info">
                         <h3 class="product-title">${prod.title}</h3>
@@ -294,7 +297,6 @@
 
         function editProduct(index, field, value) {
             storeData.products[index][field] = value;
-            saveToStorage();
         }
 
         function changeProductImg(event, index) {
@@ -302,7 +304,6 @@
             if (!file) return;
             compressImage(file, (base64) => {
                 storeData.products[index].img = base64;
-                saveToStorage();
                 renderProducts();
             });
         }
@@ -318,13 +319,11 @@
             if (fileInput.files[0]) {
                 compressImage(fileInput.files[0], (base64) => {
                     storeData.products.unshift({ id: Date.now(), title, price, desc, img: base64 });
-                    saveToStorage();
                     clearInputs();
                     renderProducts();
                 });
             } else {
                 storeData.products.unshift({ id: Date.now(), title, price, desc, img: "" });
-                saveToStorage();
                 clearInputs();
                 renderProducts();
             }
@@ -340,7 +339,6 @@
         function deleteProduct(index) {
             if (confirm("متأكد من حذف المنتج ده؟")) {
                 storeData.products.splice(index, 1);
-                saveToStorage();
                 renderProducts();
             }
         }
@@ -349,16 +347,16 @@
             const newPhone = document.getElementById('adminPhoneInput').value.trim();
             if (newPhone) {
                 storeData.phone = newPhone;
-                saveToStorage();
                 applyPhoneLinks();
-                alert("تم تحديث وحفظ رقم الواتساب بنجاح!");
+                alert("تم تحديث رقم الواتساب بنجاح!");
             }
         }
 
         function applyPhoneLinks() {
             const localNum = storeData.phone.startsWith('20') ? '0' + storeData.phone.slice(2) : storeData.phone;
             document.getElementById('topWaBtn').href = `https://wa.me/${storeData.phone}`;
-            document.getElementById('floatWaBtn').href = `https://wa.me/${storeData.phone}`; document.getElementById('topCallBtn').href = `tel:${localNum}`;
+            document.getElementById('floatWaBtn').href = `https://wa.me/${storeData.phone}`;
+            document.getElementById('topCallBtn').href = `tel:${localNum}`;
             document.getElementById('displayPhone').innerText = localNum;
         }
 
@@ -380,6 +378,9 @@
             };
             reader.readAsDataURL(file);
         }
-    </script>
-</body>
-</html>
+
+        // دالة تنزيل الكود المحدث بالكامل لرفعه على جيت هاب
+        function downloadUpdatedCode() {
+            let currentDataScript = `let storeData = ${JSON.stringify(storeData, null, 4)};`;
+            
+            let fullHtml = document.documentElement.ou
