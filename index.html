@@ -84,7 +84,6 @@
         .admin-input { width: 100%; padding: 8px; border: 1px solid var(--border-color); background: var(--card-bg); color: var(--text-dark); border-radius: 8px; margin-bottom: 8px; font-size: 0.9rem; }
         .admin-action-btn { padding: 8px 14px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 5px; width: 100%; justify-content: center; margin-top: 5px; }
         .btn-add { background: #0284c7; color: white; }
-        .btn-download { background: #16a34a; color: white; font-size: 1rem; padding: 12px; }
         .btn-exit { background: #dc2626; color: white; width: auto; margin: 0; }
 
         .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
@@ -170,9 +169,9 @@
                 </div>
 
                 <div class="admin-card">
-                    <h4>📱 رقم الواتساب وحفظ التحديثات</h4>
+                    <h4>📱 رقم الواتساب</h4>
                     <input type="text" id="adminPhoneInput" class="admin-input" placeholder="مثلاً: 201009171678">
-                    <button class="admin-action-btn btn-add" style="background:#0284c7;" onclick="updateStorePhone()"><i class="fas fa-check"></i> حفظ الرقم</button>
+                    <button class="admin-action-btn btn-add" style="background:#16a34a;" onclick="updateStorePhone()"><i class="fas fa-check"></i> حفظ الرقم</button>
                 </div>
             </div>
         </div>
@@ -270,8 +269,7 @@
                 card.innerHTML = `
                     <button class="delete-product-btn" onclick="deleteProduct(${index})" title="حذف"><i class="fas fa-trash"></i></button>
                     <div class="product-img">
-                        <span class="price-badge">${prod.price}</span>
-                        ${imgContent}
+                        <span class="price-badge">${prod.price}</span>${imgContent}
                     </div>
                     <div class="product-info">
                         <h3 class="product-title">${prod.title}</h3>
@@ -360,8 +358,7 @@
         function applyPhoneLinks() {
             const localNum = storeData.phone.startsWith('20') ? '0' + storeData.phone.slice(2) : storeData.phone;
             document.getElementById('topWaBtn').href = `https://wa.me/${storeData.phone}`;
-            document.getElementById('floatWaBtn').href = `https://wa.me/${storeData.phone}`;
-            document.getElementById('topCallBtn').href = `tel:${localNum}`;
+            document.getElementById('floatWaBtn').href = `https://wa.me/${storeData.phone}`; document.getElementById('topCallBtn').href = `tel:${localNum}`;
             document.getElementById('displayPhone').innerText = localNum;
         }
 
@@ -385,5 +382,4 @@
         }
     </script>
 </body>
-                    </html>
-                    
+</html>
