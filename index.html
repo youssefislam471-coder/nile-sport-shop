@@ -170,7 +170,7 @@
                 </div>
 
                 <div class="admin-card">
-                    <h4>📱 رقم الواتساب وحفظ التحديثات</h4>
+                    <h4>📱 رقم الواتساب وتنزيل التحديثات</h4>
                     <input type="text" id="adminPhoneInput" class="admin-input" placeholder="مثلاً: 201009171678">
                     <button class="admin-action-btn btn-add" style="background:#0284c7;" onclick="updateStorePhone()"><i class="fas fa-check"></i> حفظ الرقم</button>
                     
@@ -379,7 +379,7 @@
             reader.readAsDataURL(file);
         }
 
+        // دالة تنزيل الكود المحدث بالكامل مع حفظ البيانات الجديدة داخل الملف
         function downloadUpdatedCode() {
-            let currentDataScript = "let storeData = " + JSON.stringify(storeData, null, 4) + ";";
-            let fullHtml = document.documentElement.outerHTML;
-            fullHtml = fullHtml.replace(/let storeData = \{[\s\S]
+            let dataString = "let storeData = " + JSON.stringify(storeData, null, 4) + ";";
+            let pageHtml = document.documentElement.out
