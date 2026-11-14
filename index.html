@@ -26,487 +26,237 @@
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
-margin:0;
-background:#f5f7fb;
-color:var(--ink);
+margin:0;background:#f5f7fb;color:var(--ink);
 font-family:'Cairo',Tahoma,Arial,sans-serif
 }
 button,input,textarea{font:inherit}
 button{cursor:pointer}
-
 .welcome{
-padding:11px 14px;
-text-align:center;
-color:#fff;
-font-weight:800;
-font-size:clamp(14px,2.6vw,19px);
+padding:11px 14px;text-align:center;color:#fff;
+font-weight:800;font-size:clamp(14px,2.6vw,19px);
 background:linear-gradient(100deg,#16bd68,#078bc7)
 }
-
 .hero{
-position:relative;
-overflow:hidden;
-text-align:center;
-color:#fff;
+position:relative;overflow:hidden;text-align:center;color:#fff;
 padding:42px 18px 38px;
 background:radial-gradient(circle at 15% 20%,#203b62 0,transparent 35%),radial-gradient(circle at 90% 80%,#263754 0,transparent 32%),linear-gradient(135deg,#0b1427,#172744);
 border-bottom:6px solid var(--orange)
 }
 .hero:before,.hero:after{
-content:"";
-position:absolute;
-border:1px solid #ffffff12;
-border-radius:50%;
-width:290px;
-height:290px;
-pointer-events:none
+content:"";position:absolute;border:1px solid #ffffff12;
+border-radius:50%;width:290px;height:290px;pointer-events:none
 }
 .hero:before{top:-205px;right:-90px}
 .hero:after{bottom:-250px;left:-80px;width:360px;height:360px}
-
 .brandmark{
-position:relative;
-z-index:1;
-margin:0 auto 16px;
-width:104px;
-height:104px;
-border-radius:50%;
-display:grid;
-place-items:center;
+position:relative;z-index:1;margin:0 auto 16px;
+width:104px;height:104px;border-radius:50%;
+display:grid;place-items:center;
 background:linear-gradient(145deg,#14233d,#091326);
 border:2px solid #344563;
 box-shadow:0 0 0 7px #ffffff08,0 12px 32px #0005
 }
 .brandmark b{
-font-family:Arial,sans-serif;
-font-size:55px;
-line-height:1;
-color:var(--orange);
-text-shadow:4px 0 var(--blue);
-font-style:italic
+font-family:Arial,sans-serif;font-size:55px;line-height:1;
+color:var(--orange);text-shadow:4px 0 var(--blue);font-style:italic
 }
 .brandmark span{
-position:absolute;
-bottom:17px;
-font-size:9px;
-font-weight:900;
-letter-spacing:2px;
-color:#fff
+position:absolute;bottom:17px;font-size:9px;
+font-weight:900;letter-spacing:2px;color:#fff
 }
 .hero h1{
-position:relative;
-z-index:1;
-margin:0;
-color:var(--orange);
+position:relative;z-index:1;margin:0;color:var(--orange);
 font:900 clamp(31px,6vw,48px)/1.2 Arial,sans-serif;
-letter-spacing:1.8px
+letter-spacing:1.8px;cursor:pointer;user-select:none
 }
 .hero p{
-position:relative;
-z-index:1;
-margin:12px 0 0;
-color:#c3cede;
-font-size:clamp(14px,2.6vw,19px);
-font-weight:600
+position:relative;z-index:1;margin:12px 0 0;color:#c3cede;
+font-size:clamp(14px,2.6vw,19px);font-weight:600;
+cursor:pointer;user-select:none
 }
 .hero .tagline{
-display:inline-block;
-margin-top:20px;
-padding:7px 17px;
-border:1px solid #ffffff22;
-border-radius:50px;
-color:#e4ebf5;
-font-size:12px
+display:inline-block;margin-top:20px;padding:7px 17px;
+border:1px solid #ffffff22;border-radius:50px;
+color:#e4ebf5;font-size:12px
 }
-
-main{
-width:min(1100px,100%);
-margin:30px auto 0;
-padding:0 18px
-}
+main{width:min(1100px,100%);margin:30px auto 0;padding:0 18px}
 .admin{
-background:var(--paper);
-border:2px solid #f0a21c;
-border-radius:25px;
+display:none;background:var(--paper);
+border:2px solid #f0a21c;border-radius:25px;
 padding:clamp(17px,3vw,28px);
-box-shadow:var(--shadow);
-margin-bottom:28px
+box-shadow:var(--shadow);margin-bottom:28px
 }
+.admin.admin-open{display:block}
 .admin-heading{text-align:center;margin-bottom:20px}
 .admin-heading .gear{
-display:inline-grid;
-place-items:center;
-width:48px;
-height:48px;
-border-radius:15px;
-background:#fff0d8;
-color:#e88c12;
-font-size:23px;
-margin-bottom:8px
+display:inline-grid;place-items:center;width:48px;height:48px;
+border-radius:15px;background:#fff0d8;color:#e88c12;
+font-size:23px;margin-bottom:8px
 }
 .admin-heading h2{
-margin:0;
-color:#d98612;
-font-size:clamp(21px,3.5vw,28px);
-font-weight:900
+margin:0;color:#d98612;font-size:clamp(21px,3.5vw,28px);font-weight:900
 }
-.admin-heading p{
-margin:5px 0 0;
-color:#8b8b83;
-font-size:13px
-}
+.admin-heading p{margin:5px 0 0;color:#8b8b83;font-size:13px}
 .admin-top{
-display:flex;
-justify-content:space-between;
-align-items:center;
-gap:12px;
-flex-wrap:wrap;
-padding:13px 15px;
-background:#fff;
-border:1px solid #f0e7d4;
-border-radius:15px;
-margin-bottom:16px
+display:flex;justify-content:space-between;align-items:center;
+gap:12px;flex-wrap:wrap;padding:13px 15px;background:#fff;
+border:1px solid #f0e7d4;border-radius:15px;margin-bottom:16px
 }
-.admin-top .status{
-font-size:13px;
-color:#667286;
-font-weight:700
-}
+.admin-top .status{font-size:13px;color:#667286;font-weight:700}
 .admin-top .status i{
-display:inline-block;
-width:8px;
-height:8px;
-background:var(--green);
-border-radius:50%;
-margin-left:6px
+display:inline-block;width:8px;height:8px;background:var(--green);
+border-radius:50%;margin-left:6px
 }
 .toggle{
-border:0;
-background:var(--navy);
-color:#fff;
-border-radius:10px;
-padding:9px 15px;
-font-weight:800;
-font-size:13px
+border:0;background:var(--navy);color:#fff;border-radius:10px;
+padding:9px 15px;font-weight:800;font-size:13px
 }
 .panel{
-background:#fff;
-border:1px solid var(--line);
-border-radius:19px;
-padding:clamp(15px,2.5vw,23px);
-margin-top:14px
+background:#fff;border:1px solid var(--line);
+border-radius:19px;padding:clamp(15px,2.5vw,23px);margin-top:14px
 }
 .panel h3{
-display:flex;
-align-items:center;
-gap:9px;
-margin:0 0 17px;
-color:var(--orange);
-font-size:19px;
-font-weight:900
+display:flex;align-items:center;gap:9px;margin:0 0 17px;
+color:var(--orange);font-size:19px;font-weight:900
 }
 .panel h3 span{
-display:grid;
-place-items:center;
-width:34px;
-height:34px;
-border-radius:10px;
-background:#fff2e6
+display:grid;place-items:center;width:34px;height:34px;
+border-radius:10px;background:#fff2e6
 }
-.fields{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:12px
-}
-.field{
-display:flex;
-flex-direction:column;
-gap:6px
-}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field{display:flex;flex-direction:column;gap:6px}
 .field.wide{grid-column:1/-1}
-.field label{
-font-size:13px;
-font-weight:800;
-color:#4b5870
-}
+.field label{font-size:13px;font-weight:800;color:#4b5870}
 .field input,.field textarea,.phone-input{
-width:100%;
-padding:13px 15px;
-border:1.5px solid #e4e8ef;
-border-radius:12px;
-background:#fbfcfe;
-color:var(--ink);
-outline:0;
-transition:.2s
+width:100%;padding:13px 15px;border:1.5px solid #e4e8ef;
+border-radius:12px;background:#fbfcfe;color:var(--ink);outline:0
 }
 .field input:focus,.field textarea:focus,.phone-input:focus{
-border-color:var(--blue);
-background:#fff;
-box-shadow:0 0 0 3px #078bc71a
+border-color:var(--blue);background:#fff;box-shadow:0 0 0 3px #078bc71a
 }
 .field textarea{min-height:88px;resize:vertical}
 .field input[type=file]{padding:10px;background:#fff}
 .hint{font-size:11px;color:#8c96a7}
 .primary,.save{
-width:100%;
-border:0;
-border-radius:12px;
-padding:14px 16px;
-color:white;
-font-weight:900;
-font-size:16px;
-transition:transform .18s,filter .18s
+width:100%;border:0;border-radius:12px;padding:14px 16px;
+color:white;font-weight:900;font-size:16px;transition:.18s
 }
-.primary{
-background:linear-gradient(100deg,#078bc7,#0877b4);
-box-shadow:0 7px 16px #078bc72a
-}
-.save{
-background:linear-gradient(100deg,#19b85f,#13a653);
-margin-top:11px
-}
-.primary:hover,.save:hover,.contact a:hover,.buy:hover{
-filter:brightness(1.05);
-transform:translateY(-2px)
-}
-.phone-panel{max-width:100%}
-.phone-input{
-font-size:17px;
-direction:ltr;
-text-align:right
-}
+.primary{background:linear-gradient(100deg,#078bc7,#0877b4)}
+.save{background:linear-gradient(100deg,#19b85f,#13a653);margin-top:11px}
+.phone-input{font-size:17px;direction:ltr;text-align:right}
 .admin-hidden{display:none!important}
-
 .contact{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:13px;
-margin:25px 0 42px
+display:grid;grid-template-columns:1fr 1fr;gap:13px;margin:25px 0 42px
 }
 .contact a{
-min-height:72px;
-display:flex;
-justify-content:center;
-align-items:center;
-gap:12px;
-text-decoration:none;
-color:white;
-border-radius:16px;
-font-size:clamp(16px,2.5vw,21px);
-font-weight:900;
-box-shadow:0 9px 20px #0000000c;
-transition:.2s
+min-height:72px;display:flex;justify-content:center;align-items:center;
+gap:12px;text-decoration:none;color:white;border-radius:16px;
+font-size:clamp(16px,2.5vw,21px);font-weight:900;
+box-shadow:0 9px 20px #0000000c;transition:.2s
 }
 .contact .wa{background:linear-gradient(110deg,#20c96b,#13ae5a)}
 .contact .call{background:linear-gradient(110deg,#078bc7,#0879b8)}
 .contact .ico{font-size:25px}
-
 .section-head{
-display:flex;
-align-items:center;
-justify-content:space-between;
-gap:12px;
-margin:0 0 20px
+display:flex;align-items:center;justify-content:space-between;
+gap:12px;margin:0 0 20px
 }
 .section-title{
-margin:0;
-padding:5px 15px 5px 0;
-border-right:7px solid var(--orange);
-font-size:clamp(23px,4vw,34px);
-font-weight:900;
-line-height:1.35
+margin:0;padding:5px 15px 5px 0;border-right:7px solid var(--orange);
+font-size:clamp(23px,4vw,34px);font-weight:900;line-height:1.35
 }
 .count{
-background:#eaf3fa;
-color:#087fb5;
-border-radius:30px;
-padding:7px 13px;
-font-size:12px;
-font-weight:900;
-white-space:nowrap
+background:#eaf3fa;color:#087fb5;border-radius:30px;
+padding:7px 13px;font-size:12px;font-weight:900;white-space:nowrap
 }
-.products{
-display:grid;
-grid-template-columns:repeat(3,minmax(0,1fr));
-gap:20px
-}
+.products{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
 .product{
-position:relative;
-background:#fff;
-border:1px solid #e8ebf1;
-border-radius:21px;
-overflow:hidden;
-box-shadow:0 8px 25px #18243b0b;
+position:relative;background:#fff;border:1px solid #e8ebf1;
+border-radius:21px;overflow:hidden;box-shadow:0 8px 25px #18243b0b;
 transition:transform .22s,box-shadow .22s
 }
-.product:hover{
-transform:translateY(-5px);
-box-shadow:0 17px 34px #18243b16
-}
+.product:hover{transform:translateY(-5px);box-shadow:0 17px 34px #18243b16}
 .photo{
-height:270px;
-background:linear-gradient(145deg,#edf1f8,#dfe6f1);
-display:grid;
-place-items:center;
-overflow:hidden
+height:270px;background:linear-gradient(145deg,#edf1f8,#dfe6f1);
+display:grid;place-items:center;overflow:hidden
 }
-.photo img{
-width:100%;
-height:100%;
-object-fit:cover;
-display:block
-}
+.photo img{width:100%;height:100%;object-fit:cover;display:block}
 .placeholder{font-size:88px;color:#94a4bd}
 .price{
-position:absolute;
-top:15px;
-left:15px;
-background:var(--orange);
-color:#fff;
-border-radius:30px;
-padding:9px 16px;
-font-weight:900;
-font-size:17px;
-box-shadow:0 5px 13px #0002
+position:absolute;top:15px;left:15px;background:var(--orange);
+color:#fff;border-radius:30px;padding:9px 16px;
+font-weight:900;font-size:17px
 }
 .delete{
-position:absolute;
-top:14px;
-right:14px;
-background:#e52d32;
-color:#fff;
-border:0;
-border-radius:50%;
-width:42px;
-height:42px;
-font-size:19px;
-display:none;
-box-shadow:0 4px 12px #0002
+position:absolute;top:14px;right:14px;background:#e52d32;
+color:#fff;border:0;border-radius:50%;width:42px;height:42px;
+font-size:19px;display:none
 }
 .admin-mode .delete{display:block}
 .details{padding:17px 18px 19px}
-.details h3{
-margin:0 0 6px;
-font-size:19px;
-font-weight:900
-}
-.details p{
-margin:0;
-color:var(--muted);
-line-height:1.8;
-font-size:13px;
-min-height:24px
-}
+.details h3{margin:0 0 6px;font-size:19px;font-weight:900}
+.details p{margin:0;color:var(--muted);line-height:1.8;font-size:13px;min-height:24px}
 .buy{
-display:flex;
-justify-content:center;
-align-items:center;
-gap:8px;
-text-decoration:none;
-background:linear-gradient(100deg,#f47712,#f28b1b);
-color:#fff;
-border-radius:11px;
-padding:12px;
-margin-top:15px;
-font-weight:900;
-font-size:14px;
-transition:.2s
+display:flex;justify-content:center;align-items:center;gap:8px;
+text-decoration:none;background:linear-gradient(100deg,#f47712,#f28b1b);
+color:#fff;border-radius:11px;padding:12px;margin-top:15px;
+font-weight:900;font-size:14px;transition:.2s
 }
 .empty{
-grid-column:1/-1;
-text-align:center;
-color:#8792a4;
-padding:44px 20px;
-background:#fff;
-border:1px dashed #d6dce7;
-border-radius:18px
+grid-column:1/-1;text-align:center;color:#8792a4;padding:44px 20px;
+background:#fff;border:1px dashed #d6dce7;border-radius:18px
 }
-.empty b{
-display:block;
-color:#536176;
-font-size:17px;
-margin-bottom:5px
-}
+.empty b{display:block;color:#536176;font-size:17px;margin-bottom:5px}
 .float-wa{
-position:fixed;
-bottom:22px;
-left:20px;
-width:62px;
-height:62px;
-border-radius:50%;
-display:grid;
-place-items:center;
-background:#20c96b;
-color:#fff;
-text-decoration:none;
-font-size:29px;
-box-shadow:0 8px 24px #20c96b66;
-z-index:5;
-border:4px solid #ffffffb8
+position:fixed;bottom:22px;left:20px;width:62px;height:62px;
+border-radius:50%;display:grid;place-items:center;background:#20c96b;
+color:#fff;text-decoration:none;font-size:29px;
+box-shadow:0 8px 24px #20c96b66;z-index:5;border:4px solid #ffffffb8
 }
 .footer{
-margin-top:55px;
-text-align:center;
-color:#929bad;
-padding:25px 12px 30px;
-background:#fff;
-border-top:1px solid #edf0f4;
-font-size:13px
+margin-top:55px;text-align:center;color:#929bad;
+padding:25px 12px 30px;background:#fff;border-top:1px solid #edf0f4;font-size:13px
 }
 .footer b{color:#26354d}
-
 @media(max-width:760px){
 main{margin-top:22px;padding:0 14px}
 .products{grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
-.photo{height:220px}
-.details{padding:14px}
-.details h3{font-size:16px}
-.details p{font-size:12px}
+.photo{height:220px}.details{padding:14px}
+.details h3{font-size:16px}.details p{font-size:12px}
 .price{font-size:14px;padding:7px 12px}
-.delete{width:36px;height:36px}
-.admin{border-radius:21px}
-.panel{padding:15px}
+.delete{width:36px;height:36px}.admin{border-radius:21px}.panel{padding:15px}
 }
 @media(max-width:480px){
 .hero{padding:32px 14px 30px}
 .brandmark{width:88px;height:88px}
-.brandmark b{font-size:47px}
-.brandmark span{bottom:13px}
+.brandmark b{font-size:47px}.brandmark span{bottom:13px}
 .contact{grid-template-columns:1fr;gap:10px;margin:20px 0 34px}
-.contact a{min-height:62px}
-.fields{grid-template-columns:1fr}
+.contact a{min-height:62px}.fields{grid-template-columns:1fr}
 .field.wide{grid-column:auto}
 .products{grid-template-columns:1fr;gap:16px}
-.photo{height:290px}
-.details h3{font-size:19px}
-.details p{font-size:13px}
-.section-head{align-items:flex-start}
-.section-title{font-size:23px}
+.photo{height:290px}.details h3{font-size:19px}.details p{font-size:13px}
+.section-head{align-items:flex-start}.section-title{font-size:23px}
 .float-wa{width:56px;height:56px;bottom:15px;left:14px}
 }
 </style>
 </head>
-
 <body>
 
 <div class="welcome">
 🎉 أهلاً وسهلاً بنورت متجر NILE SPORT 🎉
-<br>
-للملابس الرياضية
+<br>للملابس الرياضية
 </div>
 
 <header class="hero">
 <div class="brandmark">
-<b>N</b>
-<span>NILE SPORT</span>
+<b>N</b><span>NILE SPORT</span>
 </div>
-<h1>NILE SPORT</h1>
-<p>تحت إدارة الكابتن / محمد خليل</p>
+<h1 id="brandLogin">NILE SPORT</h1>
+<p id="managerLogin">تحت إدارة الكابتن / محمد خليل</p>
 <div class="tagline">ملابس رياضية • جودة وأناقة</div>
 </header>
 
 <main>
-
 <section class="admin" id="admin">
 <div class="admin-heading">
 <div class="gear">⚙</div>
@@ -517,69 +267,50 @@ main{margin-top:22px;padding:0 14px}
 <div class="admin-top">
 <span class="status"><i></i> لوحة التحكم جاهزة</span>
 <div style="display:flex;gap:8px;flex-wrap:wrap">
-<button class="toggle" id="exportBtn" type="button">
-⬇ حفظ التعديلات وتنزيل الموقع
-</button>
-<button class="toggle" id="modeBtn" type="button">
-🔒 إخفاء لوحة التحكم
-</button>
+<button class="toggle" id="exportBtn" type="button">⬇ حفظ التعديلات وتنزيل الموقع</button>
+<button class="toggle" id="modeBtn" type="button">🔒 تسجيل الخروج</button>
 </div>
 </div>
 
 <div id="adminContent">
-
 <div class="panel">
 <h3><span>＋</span> إضافة منتج جديد</h3>
-
 <form id="productForm" class="fields">
-
 <div class="field">
 <label for="pname">اسم المنتج</label>
 <input id="pname" placeholder="مثال: تيشيرت رياضي" required maxlength="70">
 </div>
-
 <div class="field">
 <label for="pprice">السعر بالجنيه</label>
 <input id="pprice" type="number" min="0" step="1" placeholder="150" required>
 </div>
-
 <div class="field wide">
 <label for="pdesc">وصف المنتج</label>
 <textarea id="pdesc" placeholder="اكتب تفاصيل ومميزات المنتج..."></textarea>
 </div>
-
 <div class="field wide">
 <label for="pimage">صورة المنتج</label>
 <input id="pimage" type="file" accept="image/*">
 <span class="hint">اختر صورة من جهازك، أو اتركها فارغة لاستخدام الصورة الافتراضية.</span>
 </div>
-
-<button class="primary wide" type="submit">
-＋ إضافة المنتج للمتجر
-</button>
-
+<button class="primary wide" type="submit">＋ إضافة المنتج للمتجر</button>
 </form>
 </div>
 
 <div class="panel phone-panel">
 <h3><span>📱</span> رقم الواتساب</h3>
 <input id="phone" class="phone-input" inputmode="tel" placeholder="201009171678">
-<button class="save" id="savePhone" type="button">
-✓ حفظ الرقم
-</button>
+<button class="save" id="savePhone" type="button">✓ حفظ الرقم</button>
 </div>
-
 </div>
 </section>
 
 <div class="contact">
 <a class="wa" id="whatsapp" href="https://wa.me/201009171678" target="_blank" rel="noopener">
-<span class="ico">◉</span>
-تواصل عبر الواتساب
+<span class="ico">◉</span>تواصل عبر الواتساب
 </a>
 <a class="call" id="call" href="tel:+201009171678">
-<span class="ico">☎</span>
-اتصل بنا 01009171678
+<span class="ico">☎</span>اتصل بنا 01009171678
 </a>
 </div>
 
@@ -587,9 +318,7 @@ main{margin-top:22px;padding:0 14px}
 <h2 class="section-title">أحدث المنتجات الرياضية</h2>
 <span class="count" id="productCount">0 منتجات</span>
 </div>
-
 <section class="products" id="products"></section>
-
 </main>
 
 <a class="float-wa" id="floatWa" href="https://wa.me/201009171678" target="_blank" rel="noopener" aria-label="تواصل واتساب">◉</a>
@@ -600,10 +329,31 @@ main{margin-top:22px;padding:0 14px}
 
 <script>
 const $=id=>document.getElementById(id);
+const ADMIN_PASSWORD='600600';
 
 let products=[];
 let phone='201009171678';
-let adminMode=true;
+let adminMode=false;
+
+function openAdminLogin(){
+const password=prompt('من فضلك أدخل الرقم السري للإدارة');
+if(password===null)return;
+
+if(password===ADMIN_PASSWORD){
+adminMode=true;
+$('admin').classList.add('admin-open');
+$('adminContent').classList.remove('admin-hidden');
+$('modeBtn').textContent='🔒 تسجيل الخروج';
+document.body.classList.add('admin-mode');
+$('admin').scrollIntoView({behavior:'smooth',block:'start'});
+alert('تم تسجيل الدخول بنجاح');
+}else{
+alert('الرقم السري غير صحيح');
+}
+}
+
+$('brandLogin').addEventListener('click',openAdminLogin);
+$('managerLogin').addEventListener('click',openAdminLogin);
 
 try{
 if(window.NILE_EXPORTED_DATA){
@@ -615,80 +365,53 @@ localStorage.setItem('nile_phone',phone);
 products=JSON.parse(localStorage.getItem('nile_products')||'[]');
 phone=localStorage.getItem('nile_phone')||phone;
 }
-}catch(e){
-products=[];
-}
+}catch(e){products=[];}
 
 $('phone').value=phone;
 
 function persist(){
-try{
-localStorage.setItem('nile_products',JSON.stringify(products));
-}catch(e){
-alert('مساحة التخزين ممتلئة. جرّب صورة أصغر.');
-}
+try{localStorage.setItem('nile_products',JSON.stringify(products));}
+catch(e){alert('مساحة التخزين ممتلئة. جرّب صورة أصغر.');}
 }
 
 function exportSite(){
 try{
 persist();
 localStorage.setItem('nile_phone',phone);
-
 const data={products,phone};
 let html='<!DOCTYPE html>'+document.documentElement.outerHTML;
-
 const marker='<script>';
 const payload='<script>window.NILE_EXPORTED_DATA='+JSON.stringify(data).replace(/</g,'\\u003c')+';<\/script>';
-
 html=html.replace(marker,payload+marker);
-
 const blob=new Blob([html],{type:'text/html;charset=utf-8'});
 const url=URL.createObjectURL(blob);
-
 const a=document.createElement('a');
-a.href=url;
-a.download='nile-sport-updated.html';
-document.body.appendChild(a);
-a.click();
-a.remove();
-
+a.href=url;a.download='nile-sport-updated.html';
+document.body.appendChild(a);a.click();a.remove();
 setTimeout(()=>URL.revokeObjectURL(url),1500);
-
 alert('تم تنزيل نسخة جديدة من الموقع بالتعديلات الحالية. ارفع ملف nile-sport-updated.html مكان النسخة القديمة.');
-
-}catch(err){
-alert('حصلت مشكلة أثناء تجهيز الملف. حاول مرة أخرى.');
-}
+}catch(err){alert('حصلت مشكلة أثناء تجهيز الملف. حاول مرة أخرى.');}
 }
 
-function cleanPhone(v){
-return String(v).replace(/\D/g,'');
-}
+function cleanPhone(v){return String(v).replace(/\D/g,'');}
 
 function updateContact(){
 const n=cleanPhone(phone);
-
 $('whatsapp').href='https://wa.me/'+n;
 $('floatWa').href='https://wa.me/'+n;
 $('call').href='tel:+'+n;
-
 $('call').innerHTML='<span class="ico">☎</span> اتصل بنا '+phone;
 }
 
 function escapeHtml(v){
 return String(v??'').replace(/[&<>"']/g,c=>({
-'&':'&amp;',
-'<':'&lt;',
-'>':'&gt;',
-'"':'&quot;',
-"'":'&#39;'
+'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
 }[c]));
 }
 
 function render(){
 const root=$('products');
 root.innerHTML='';
-
 $('productCount').textContent=products.length+' منتجات';
 
 if(!products.length){
@@ -697,10 +420,8 @@ return;
 }
 
 products.forEach((p,i)=>{
-
 const card=document.createElement('article');
 card.className='product';
-
 const image=p.image
 ?`<img src="${p.image}" alt="${escapeHtml(p.name)}">`
 :'<span class="placeholder">👕</span>';
@@ -713,38 +434,29 @@ card.innerHTML=`
 <h3>${escapeHtml(p.name)}</h3>
 <p>${escapeHtml(p.desc||'ملابس ومنتجات رياضية')}</p>
 <a class="buy" href="https://wa.me/${cleanPhone(phone)}?text=${encodeURIComponent('مرحباً، أريد الاستفسار عن '+p.name)}" target="_blank" rel="noopener">اطلب عبر الواتساب　↗</a>
-</div>
-`;
+</div>`;
 
 card.querySelector('.delete').addEventListener('click',()=>{
 if(confirm('هل تريد حذف هذا المنتج؟')){
-products.splice(i,1);
-persist();
-render();
+products.splice(i,1);persist();render();
 }
 });
-
 root.appendChild(card);
 });
 }
 
 $('productForm').addEventListener('submit',async e=>{
 e.preventDefault();
-
 const file=$('pimage').files[0];
 let image='';
 
 if(file){
 if(!file.type.startsWith('image/')){
-alert('من فضلك اختر ملف صورة صحيح');
-return;
+alert('من فضلك اختر ملف صورة صحيح');return;
 }
-
 if(file.size>1500000){
-alert('حجم الصورة كبير. اختر صورة أقل من 1.5 ميجابايت');
-return;
+alert('حجم الصورة كبير. اختر صورة أقل من 1.5 ميجابايت');return;
 }
-
 image=await new Promise((resolve,reject)=>{
 const r=new FileReader();
 r.onload=()=>resolve(r.result);
@@ -759,51 +471,32 @@ price:$('pprice').value,
 desc:$('pdesc').value.trim(),
 image
 });
-
-persist();
-render();
-e.target.reset();
-
-document.querySelector('.section-head').scrollIntoView({
-behavior:'smooth',
-block:'start'
-});
+persist();render();e.target.reset();
+document.querySelector('.section-head').scrollIntoView({behavior:'smooth',block:'start'});
 });
 
 $('savePhone').addEventListener('click',()=>{
 const value=$('phone').value.trim();
-
 if(cleanPhone(value).length<10){
-alert('من فضلك أدخل رقم واتساب صحيحاً مع كود الدولة');
-return;
+alert('من فضلك أدخل رقم واتساب صحيحاً مع كود الدولة');return;
 }
-
 phone=value;
 localStorage.setItem('nile_phone',phone);
-
-updateContact();
-render();
-
+updateContact();render();
 alert('تم حفظ رقم التواصل داخل المتصفح. اضغط حفظ التعديلات وتنزيل الموقع لتنزيل نسخة محدثة');
 });
 
 $('exportBtn').addEventListener('click',exportSite);
 
 $('modeBtn').addEventListener('click',()=>{
-adminMode=!adminMode;
-
-$('adminContent').classList.toggle('admin-hidden',!adminMode);
-document.body.classList.toggle('admin-mode',adminMode);
-
-$('modeBtn').textContent=adminMode
-?'🔒 إخفاء لوحة التحكم'
-:'⚙ إظهار لوحة التحكم';
+adminMode=false;
+$('admin').classList.remove('admin-open');
+$('adminContent').classList.add('admin-hidden');
+document.body.classList.remove('admin-mode');
 });
 
 updateContact();
 render();
-document.body.classList.add('admin-mode');
 </script>
-
 </body>
 </html>
