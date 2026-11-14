@@ -71,6 +71,7 @@
             color: var(--text-dark); border-right: 4px solid var(--primary); padding-right: 10px;
         }
 
+        /* لوحة التحكم مخفية افتراضياً */
         .admin-panel {
             display: none; background: var(--admin-panel-bg); border: 2px solid var(--admin-border); border-radius: 16px;
             padding: 1.2rem; margin-bottom: 2rem; box-shadow: 0 6px 20px rgba(245, 158, 11, 0.15);
@@ -82,10 +83,10 @@
         .admin-card { background: var(--card-bg); padding: 12px; border-radius: 10px; border: 1px solid var(--border-color); }
         .admin-card h4 { color: var(--primary); margin-bottom: 8px; font-size: 0.95rem; }
         .admin-input { width: 100%; padding: 8px; border: 1px solid var(--border-color); background: var(--card-bg); color: var(--text-dark); border-radius: 8px; margin-bottom: 8px; font-size: 0.9rem; }
-        .admin-action-btn { padding: 8px 14px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 5px; width: 100%; justify-content: center; margin-top: 5px; }
-        .btn-add { background: #0284c7; color: white; }
-        .btn-download { background: #16a34a; color: white; font-size: 1rem; padding: 12px; margin-top: 10px; }
-        .btn-exit { background: #dc2626; color: white; width: auto; margin: 0; }
+        .admin-action-btn { padding: 8px 14px; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 5px; }
+        .btn-add { background: #0284c7; color: white; width: 100%; justify-content: center; }
+        .btn-exit { background: #dc2626; color: white; }
+        .btn-save-file { background: #16a34a; color: white; width: 100%; justify-content: center; margin-top: 10px; }
 
         .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
         .product-card {
@@ -151,7 +152,7 @@
     </header>
 
     <div class="container">
-        <!-- لوحة التحكم -->
+        <!-- لوحة التحكم (مخفية وتفتح بالضغط 5 مرات على اسم المتجر والباسورد 1234) -->
         <div class="admin-panel" id="adminPanel">
             <div class="admin-header">
                 <span style="font-weight: 900; color: #f59e0b; font-size: 1.1rem;">⚙️ لوحة تحكم الكابتن محمد خليل</span>
@@ -170,23 +171,20 @@
                 </div>
 
                 <div class="admin-card">
-                    <h4>📱 رقم الواتساب وتنزيل التحديثات</h4>
+                    <h4>📱 إعدادات المتجر ورقم الواتساب</h4>
                     <input type="text" id="adminPhoneInput" class="admin-input" placeholder="مثلاً: 201009171678">
-                    <button class="admin-action-btn btn-add" style="background:#0284c7;" onclick="updateStorePhone()"><i class="fas fa-check"></i> حفظ الرقم</button>
-                    
-                    <!-- زر تنزيل التعديلات لرفعه على جيت هاب -->
-                    <button class="admin-action-btn btn-download" onclick="downloadUpdatedCode()">
-                        <i class="fas fa-download"></i> 📥 تنزيل الكود المحدث (ارفعه لجيت هاب)
-                    </button>
+                    <button class="admin-action-btn btn-add" style="background:#16a34a; margin-bottom: 8px;" onclick="updateStorePhone()"><i class="fas fa-check"></i> حفظ الرقم</button>
+                    <!-- زر حفظ وتنزيل التعديلات للزباين -->
+                    <button class="admin-action-btn btn-save-file" onclick="downloadUpdatedFile()"><i class="fas fa-download"></i> حفظ وتنزيل ملف التحديث للزباين</button>
                 </div>
             </div>
         </div>
 
         <div class="contact-bar">
-            <a id="topWaBtn" href="#" target="_blank" class="btn btn-whatsapp">
+            <a id="topWaBtn" href="https://wa.me/201009171678" target="_blank" class="btn btn-whatsapp">
                 <i class="fab fa-whatsapp"></i> تواصل عبر الواتساب
             </a>
-            <a id="topCallBtn" href="#" class="btn btn-phone">
+            <a id="topCallBtn" href="tel:01009171678" class="btn btn-phone">
                 <i class="fas fa-phone-alt"></i> اتصل بنا <span id="displayPhone">01009171678</span>
             </a>
         </div>
@@ -196,7 +194,7 @@
         <div class="products-grid" id="productsContainer"></div>
     </div>
 
-    <a id="floatWaBtn" href="#" target="_blank" class="floating-wa">
+    <a id="floatWaBtn" href="https://wa.me/201009171678" target="_blank" class="floating-wa">
         <i class="fab fa-whatsapp"></i>
     </a>
 
@@ -207,7 +205,7 @@
     <script>
         let storeData = {
             phone: "201009171678",
-            products: [
+            products: JSON.parse(localStorage.getItem('nileProducts')) || [
                 { id: 1, title: "كاب نايل سبورت الأصلي", price: "150 ج.م", desc: "كاب رياضي خامة ممتازة مع شعار Nile Sport", img: "" },
                 { id: 2, title: "ترنج رياضي كامل", price: "450 ج.م", desc: "خامة خفيفة ومناسبة للتمارين والجيم", img: "" },
                 { id: 3, title: "تيشرتات أندية ومستلزمات", price: "250 ج.م", desc: "جميع المقاسات والخامات الرياضية", img: "" }
@@ -256,8 +254,13 @@
 
         function exitAdmin() { document.body.classList.remove('admin-mode'); }
 
+        function saveToStorage() {
+            localStorage.setItem('nileProducts', JSON.stringify(storeData.products));
+        }
+
         function renderProducts() {
             const container = document.getElementById('productsContainer');
+            if(!container) return;
             container.innerHTML = '';
 
             storeData.products.forEach((prod, index) => {
@@ -297,6 +300,7 @@
 
         function editProduct(index, field, value) {
             storeData.products[index][field] = value;
+            saveToStorage();
         }
 
         function changeProductImg(event, index) {
@@ -304,6 +308,7 @@
             if (!file) return;
             compressImage(file, (base64) => {
                 storeData.products[index].img = base64;
+                saveToStorage();
                 renderProducts();
             });
         }
@@ -319,11 +324,13 @@
             if (fileInput.files[0]) {
                 compressImage(fileInput.files[0], (base64) => {
                     storeData.products.unshift({ id: Date.now(), title, price, desc, img: base64 });
+                    saveToStorage();
                     clearInputs();
                     renderProducts();
                 });
             } else {
                 storeData.products.unshift({ id: Date.now(), title, price, desc, img: "" });
+                saveToStorage();
                 clearInputs();
                 renderProducts();
             }
@@ -339,6 +346,7 @@
         function deleteProduct(index) {
             if (confirm("متأكد من حذف المنتج ده؟")) {
                 storeData.products.splice(index, 1);
+                saveToStorage();
                 renderProducts();
             }
         }
@@ -372,14 +380,4 @@
                     canvas.height = img.height * scale;
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                    callback(canvas.toDataURL('image/jpeg', 0.75));
-                };
-                img.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
-
-        // دالة تنزيل الكود المحدث بالكامل مع حفظ البيانات الجديدة داخل الملف
-        function downloadUpdatedCode() {
-            let dataString = "let storeData = " + JSON.stringify(storeData, null, 4) + ";";
-            let pageHtml = document.documentElement.out
+        
