@@ -17,6 +17,8 @@
 --orange:#f47712;
 --orange2:#ff963d;
 --green:#19bd68;
+--red:#e52d32;
+--blue:#078bc7;
 --ink:#172238;
 --muted:#788397;
 --line:#e8ecf2;
@@ -34,7 +36,7 @@ color:var(--ink);
 font-family:'Cairo',Tahoma,Arial,sans-serif
 }
 
-button,input,textarea{font:inherit}
+button,input,textarea,select{font:inherit}
 button{cursor:pointer}
 button:disabled{opacity:.6;cursor:not-allowed}
 
@@ -267,7 +269,7 @@ border-radius:50%;
 margin-left:6px
 }
 
-.toggle{
+.toggle,.cancel-edit{
 border:0;
 background:var(--navy);
 color:#fff;
@@ -275,6 +277,12 @@ border-radius:10px;
 padding:9px 13px;
 font-weight:800;
 font-size:12px
+}
+
+.cancel-edit{
+background:#64748b;
+margin-top:8px;
+width:100%
 }
 
 .panel{
@@ -324,7 +332,7 @@ font-weight:800;
 color:#4b5870
 }
 
-.field input,.field textarea,.phone-input{
+.field input,.field textarea,.field select,.phone-input,.search-input{
 width:100%;
 padding:12px 14px;
 border:1.5px solid #e4e8ef;
@@ -334,20 +342,36 @@ color:var(--ink);
 outline:0
 }
 
-.field input:focus,.field textarea:focus,.phone-input:focus{
-border-color:#078bc7;
+.field input:focus,.field textarea:focus,.field select:focus,.phone-input:focus,.search-input:focus{
+border-color:var(--blue);
 background:#fff;
 box-shadow:0 0 0 3px #078bc71a
 }
 
 .field textarea{
-min-height:82px;
+min-height:80px;
 resize:vertical
 }
 
 .field input[type=file]{
 padding:9px;
 background:#fff
+}
+
+.check-row{
+display:flex;
+align-items:center;
+gap:8px;
+font-size:13px;
+font-weight:800;
+color:#334155;
+padding-top:4px
+}
+
+.check-row input[type=checkbox]{
+width:18px;
+height:18px;
+accent-color:var(--green)
 }
 
 .hint{
@@ -388,7 +412,7 @@ text-align:right
 display:grid;
 grid-template-columns:1fr 1fr;
 gap:13px;
-margin:24px 0 42px
+margin:24px 0 34px
 }
 
 .contact a{
@@ -418,12 +442,13 @@ background:linear-gradient(110deg,#078bc7,#0879b8)
 
 .contact .ico{font-size:23px}
 
-/* عنوان المنتجات */
+/* شريط البحث والفلترة */
 .section-head{
 display:flex;
 align-items:center;
 justify-content:space-between;
-gap:12px;
+gap:14px;
+flex-wrap:wrap;
 margin:0 0 19px
 }
 
@@ -434,6 +459,17 @@ border-right:6px solid var(--orange);
 font-size:clamp(21px,4vw,30px);
 font-weight:900;
 line-height:1.4
+}
+
+.search-box{
+flex:1;
+min-width:220px;
+max-width:340px
+}
+
+.search-input{
+padding:10px 14px;
+background:#fff
 }
 
 /* المنتجات */
@@ -450,7 +486,9 @@ border:1px solid #e8ebf1;
 border-radius:18px;
 overflow:hidden;
 box-shadow:0 7px 22px #18243b09;
-transition:transform .2s,box-shadow .2s
+transition:transform .2s,box-shadow .2s;
+display:flex;
+flex-direction:column
 }
 
 .product:hover{
@@ -459,20 +497,23 @@ box-shadow:0 15px 30px #18243b14
 }
 
 .photo{
-height:260px;
-background:linear-gradient(145deg,#f3f5f9,#e6ebf3);
-display:grid;
-place-items:center;
+height:250px;
+background:#f2f4f8;
+display:flex;
+align-items:center;
+justify-content:center;
 overflow:hidden;
-padding:8px
+padding:10px
 }
 
 .photo img{
-width:100%;
-height:100%;
+max-width:100%;
+max-height:100%;
+width:auto;
+height:auto;
 object-fit:contain;
 display:block;
-mix-blend-mode:multiply
+border-radius:8px
 }
 
 .placeholder{
@@ -493,23 +534,72 @@ font-size:15px;
 box-shadow:0 4px 12px #f4771230
 }
 
-.delete{
+.admin-actions{
 position:absolute;
 top:11px;
 right:11px;
-background:#e52d32;
+display:none;
+gap:6px
+}
+
+.admin-mode .admin-actions{display:flex}
+
+.delete,.edit-btn{
 color:#fff;
 border:0;
 border-radius:50%;
-width:36px;
-height:36px;
-font-size:17px;
-display:none
+width:34px;
+height:34px;
+font-size:15px;
+display:grid;
+place-items:center;
+box-shadow:0 4px 10px #00000024
 }
 
-.admin-mode .delete{display:block}
+.delete{background:var(--red)}
+.edit-btn{background:var(--blue)}
 
-.details{padding:14px 15px 16px}
+.details{
+padding:14px 15px 16px;
+display:flex;
+flex-direction:column;
+flex:1
+}
+
+.meta-row{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:6px;
+flex-wrap:wrap;
+margin-bottom:7px
+}
+
+.stock-badge{
+font-size:11px;
+font-weight:800;
+padding:3px 9px;
+border-radius:20px
+}
+
+.stock-in{
+background:#e6f9ef;
+color:#0f9d52
+}
+
+.stock-out{
+background:#feecec;
+color:#c92a2a
+}
+
+.sizes-tag{
+font-size:11px;
+font-weight:800;
+color:#334155;
+background:#f1f5f9;
+padding:3px 9px;
+border-radius:20px
+}
 
 .details h3{
 margin:0 0 5px;
@@ -522,7 +612,7 @@ margin:0;
 color:var(--muted);
 line-height:1.7;
 font-size:12px;
-min-height:22px
+flex:1
 }
 
 .buy{
@@ -542,6 +632,11 @@ transition:.2s
 }
 
 .buy:hover{filter:brightness(1.06)}
+
+.buy.disabled{
+background:#94a3b8;
+pointer-events:none
+}
 
 .empty{
 grid-column:1/-1;
@@ -602,12 +697,12 @@ grid-template-columns:repeat(2,minmax(0,1fr));
 gap:13px
 }
 
-.photo{height:210px}
+.photo{height:205px}
 .details{padding:12px}
 .details h3{font-size:15px}
 .details p{font-size:11px}
 .price{font-size:13px;padding:6px 10px}
-.delete{width:32px;height:32px}
+.delete,.edit-btn{width:30px;height:30px;font-size:13px}
 .admin{border-radius:19px}
 .panel{padding:14px}
 }
@@ -623,7 +718,7 @@ gap:13px
 
 .contact{
 gap:9px;
-margin:19px 0 32px
+margin:19px 0 28px
 }
 
 .contact a{
@@ -640,13 +735,14 @@ gap:10px
 }
 
 .photo{
-height:175px;
-padding:5px
+height:180px;
+padding:7px
 }
 
 .details{padding:10px}
 .details h3{font-size:14px;line-height:1.5}
 .details p{font-size:10px;line-height:1.6}
+.stock-badge,.sizes-tag{font-size:10px;padding:2px 7px}
 
 .buy{
 font-size:11px;
@@ -661,15 +757,14 @@ font-size:11px;
 padding:5px 8px
 }
 
-.delete{
-top:7px;
-right:7px;
-width:29px;
-height:29px;
-font-size:14px
+.delete,.edit-btn{
+width:27px;
+height:27px;
+font-size:12px
 }
 
-.section-head{align-items:center}
+.section-head{align-items:stretch}
+.search-box{max-width:none}
 .section-title{font-size:20px}
 
 .float-wa{
@@ -706,7 +801,7 @@ left:12px
 <div class="admin-heading">
 <div class="gear">⚙</div>
 <h2>لوحة تحكم الكابتن محمد خليل</h2>
-<p>إدارة المنتجات وبيانات التواصل (متصل بالسحابة مباشرة)</p>
+<p>إدارة المنتجات والمقاسات وحالة التوفر وبيانات التواصل</p>
 </div>
 
 <div class="admin-top">
@@ -718,7 +813,7 @@ left:12px
 
 <div id="adminContent">
 <div class="panel">
-<h3><span>＋</span> إضافة منتج جديد</h3>
+<h3 id="formTitle"><span>＋</span> إضافة منتج جديد</h3>
 
 <form id="productForm" class="fields">
 <div class="field">
@@ -731,6 +826,19 @@ left:12px
 <input id="pprice" type="number" min="0" step="1" placeholder="150" required>
 </div>
 
+<div class="field">
+<label for="psizes">المقاسات المتاحة (اختياري)</label>
+<input id="psizes" placeholder="مثال: M, L, XL أو مقاس موحد">
+</div>
+
+<div class="field">
+<label>حالة التوفر</label>
+<label class="check-row">
+<input id="pstock" type="checkbox" checked>
+<span>متوفر حالياً في المتجر</span>
+</label>
+</div>
+
 <div class="field wide">
 <label for="pdesc">وصف المنتج</label>
 <textarea id="pdesc" placeholder="اكتب وصفاً مختصراً للمنتج..."></textarea>
@@ -739,10 +847,11 @@ left:12px
 <div class="field wide">
 <label for="pimage">صورة المنتج</label>
 <input id="pimage" type="file" accept="image/*">
-<span class="hint">اختر صورة من جهازك (حتى 4 ميجابايت)، وسيتم رفعها مباشرة للجميع.</span>
+<span class="hint">يتم ضغط الصورة تلقائياً قبل الرفع لسرعة التحميل وتوفير المساحة.</span>
 </div>
 
 <button class="primary wide" id="addProductBtn" type="submit">＋ إضافة المنتج للمتجر</button>
+<button class="cancel-edit admin-hidden wide" id="cancelEditBtn" type="button">إلغاء التعديل</button>
 </form>
 </div>
 
@@ -766,6 +875,9 @@ left:12px
 
 <div class="section-head">
 <h2 class="section-title">أحدث المنتجات الرياضية</h2>
+<div class="search-box">
+<input id="searchInput" class="search-input" type="search" placeholder="ابحث عن تيشيرت، كاب، مقاس...">
+</div>
 </div>
 
 <section class="products" id="products">
@@ -787,6 +899,8 @@ let products=[];
 let phone='201009171678';
 let adminMode=false;
 let currentPassword='';
+let editingIndex=null;
+let searchQuery='';
 
 let adminClicks=0;
 let clickTimer=null;
@@ -838,6 +952,37 @@ alert('تعذر الاتصال بالسيرفر، تأكد من الإنترنت
 $('brandLogin').addEventListener('click',secretAdminClick);
 $('managerLogin').addEventListener('click',secretAdminClick);
 
+/* ضغط الصورة تلقائياً قبل الرفع */
+function compressImage(file,maxWidth=1000,quality=0.8){
+return new Promise((resolve,reject)=>{
+const reader=new FileReader();
+reader.onerror=reject;
+reader.onload=ev=>{
+const img=new Image();
+img.onerror=reject;
+img.onload=()=>{
+let w=img.width;
+let h=img.height;
+if(w>maxWidth){
+h=Math.round((h*maxWidth)/w);
+w=maxWidth;
+}
+const canvas=document.createElement('canvas');
+canvas.width=w;
+canvas.height=h;
+const ctx=canvas.getContext('2d');
+ctx.drawImage(img,0,0,w,h);
+const mime=file.type==='image/png'?'image/png':'image/jpeg';
+const dataUrl=canvas.toDataURL(mime,quality);
+const cleanName=(file.name||'product').replace(/\.[^.]+$/,'')+(mime==='image/png'?'.png':'.jpg');
+resolve({imageBase64:dataUrl,imageName:cleanName});
+};
+img.src=ev.target.result;
+};
+reader.readAsDataURL(file);
+});
+}
+
 /* تحميل البيانات من السيرفر */
 async function loadStoreData(){
 try{
@@ -879,188 +1024,56 @@ return String(v??'').replace(/[&<>"']/g,c=>({
 }[c]));
 }
 
+/* إعادة ضبط نموذج الإضافة/التعديل */
+function resetProductForm(){
+editingIndex=null;
+$('productForm').reset();
+$('pstock').checked=true;
+$('formTitle').innerHTML='<span>＋</span> إضافة منتج جديد';
+$('addProductBtn').textContent='＋ إضافة المنتج للمتجر';
+$('cancelEditBtn').classList.add('admin-hidden');
+}
+
+$('cancelEditBtn').addEventListener('click',resetProductForm);
+
+/* بدء تعديل منتج */
+function startEditProduct(index){
+const p=products[index];
+if(!p)return;
+editingIndex=index;
+$('pname').value=p.name||'';
+$('pprice').value=p.price||'';
+$('psizes').value=p.sizes||'';
+$('pstock').checked=p.inStock!==false;
+$('pdesc').value=p.desc||'';
+$('pimage').value='';
+$('formTitle').innerHTML='<span>✎</span> تعديل المنتج: '+escapeHtml(p.name);
+$('addProductBtn').textContent='✓ حفظ التعديلات';
+$('cancelEditBtn').classList.remove('admin-hidden');
+$('admin').classList.add('admin-open');
+$('adminContent').classList.remove('admin-hidden');
+$('admin').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+/* البحث المباشر */
+$('searchInput').addEventListener('input',e=>{
+searchQuery=e.target.value.trim().toLowerCase();
+render();
+});
+
 /* عرض المنتجات */
 function render(){
 const root=$('products');
 root.innerHTML='';
 
-if(!products.length){
-root.innerHTML='<div class="empty"><b>لسه مفيش منتجات مضافة</b>قريباً هتلاقوا أحدث المنتجات الرياضية هنا 👕</div>';
-return;
-}
-
-products.forEach((p,i)=>{
-const card=document.createElement('article');
-card.className='product';
-
-const image=p.image
-?`<img src="${p.image}" alt="${escapeHtml(p.name)}" loading="lazy">`
-:'<span class="placeholder">👕</span>';
-
-const message='مرحباً، أريد الاستفسار عن '+p.name+' وسعره '+p.price+' جنيه.';
-
-card.innerHTML=`
-<div class="photo">${image}</div>
-<span class="price">${escapeHtml(p.price)} ج.م</span>
-<button class="delete" type="button" aria-label="حذف المنتج" title="حذف المنتج">×</button>
-<div class="details">
-<h3>${escapeHtml(p.name)}</h3>
-<p>${escapeHtml(p.desc||'ملابس ومنتجات رياضية')}</p>
-<a class="buy" href="https://wa.me/${cleanPhone(phone)}?text=${encodeURIComponent(message)}" target="_blank" rel="noopener">اطلب عبر الواتساب ↗</a>
-</div>`;
-
-card.querySelector('.delete').addEventListener('click',async ()=>{
-if(!confirm('هل تريد حذف هذا المنتج نهائياً من الموقع؟'))return;
-try{
-const res=await fetch('/api/store',{
-method:'POST',
-headers:{'Content-Type':'application/json'},
-body:JSON.stringify({
-action:'deleteProduct',
-password:currentPassword,
-payload:{index:i}
-})
-});
-const result=await res.json();
-if(res.ok && result.data){
-products=result.data.products;
-render();
-}else{
-alert(result.error||'فشل حذف المنتج');
-}
-}catch(err){
-alert('خطأ في الاتصال أثناء الحذف');
-}
+const filtered=products
+.map((p,idx)=>({p,idx}))
+.filter(({p})=>{
+if(!searchQuery)return true;
+const hay=`${p.name||''} ${p.desc||''} ${p.sizes||''} ${p.price||''}`.toLowerCase();
+return hay.includes(searchQuery);
 });
 
-root.appendChild(card);
-});
-}
-
-/* إضافة منتج جديد */
-$('productForm').addEventListener('submit',async e=>{
-e.preventDefault();
-
-const btn=$('addProductBtn');
-const file=$('pimage').files[0];
-let imageBase64='';
-let imageName='';
-
-if(file){
-if(!file.type.startsWith('image/')){
-alert('من فضلك اختر ملف صورة صحيح');
-return;
-}
-
-if(file.size>4000000){
-alert('حجم الصورة كبير. اختر صورة أقل من 4 ميجابايت');
-return;
-}
-
-imageName=file.name;
-imageBase64=await new Promise((resolve,reject)=>{
-const r=new FileReader();
-r.onload=()=>resolve(r.result);
-r.onerror=reject;
-r.readAsDataURL(file);
-});
-}
-
-btn.disabled=true;
-btn.textContent='جاري الرفع والحفظ...';
-
-try{
-const res=await fetch('/api/store',{
-method:'POST',
-headers:{'Content-Type':'application/json'},
-body:JSON.stringify({
-action:'addProduct',
-password:currentPassword,
-payload:{
-name:$('pname').value.trim(),
-price:$('pprice').value,
-desc:$('pdesc').value.trim(),
-imageBase64,
-imageName
-}
-})
-});
-
-const result=await res.json();
-if(res.ok && result.data){
-products=result.data.products;
-render();
-e.target.reset();
-alert('تم إضافة المنتج ونشره في المتجر بنجاح!');
-document.querySelector('.section-head').scrollIntoView({
-behavior:'smooth',
-block:'start'
-});
-}else{
-alert(result.error||'حصل خطأ أثناء رفع المنتج');
-}
-}catch(err){
-alert('تعذر الاتصال بالسيرفر أثناء الإضافة');
-}finally{
-btn.disabled=false;
-btn.textContent='＋ إضافة المنتج للمتجر';
-}
-});
-
-/* حفظ رقم التواصل */
-$('savePhone').addEventListener('click',async ()=>{
-const btn=$('savePhone');
-const value=$('phone').value.trim();
-
-if(cleanPhone(value).length<10){
-alert('من فضلك أدخل رقم واتساب صحيحاً مع كود الدولة');
-return;
-}
-
-btn.disabled=true;
-btn.textContent='جاري الحفظ...';
-
-try{
-const res=await fetch('/api/store',{
-method:'POST',
-headers:{'Content-Type':'application/json'},
-body:JSON.stringify({
-action:'updatePhone',
-password:currentPassword,
-payload:{phone:value}
-})
-});
-
-const result=await res.json();
-if(res.ok && result.data){
-phone=result.data.phone;
-updateContact();
-render();
-alert('تم حفظ رقم التواصل ونشره للجميع بنجاح!');
-}else{
-alert(result.error||'فشل حفظ الرقم');
-}
-}catch(err){
-alert('خطأ في الاتصال بالسيرفر');
-}finally{
-btn.disabled=false;
-btn.textContent='✓ حفظ الرقم للجميع';
-}
-});
-
-/* تسجيل الخروج */
-$('modeBtn').addEventListener('click',()=>{
-adminMode=false;
-currentPassword='';
-$('admin').classList.remove('admin-open');
-$('adminContent').classList.add('admin-hidden');
-document.body.classList.remove('admin-mode');
-adminClicks=0;
-});
-
-/* تشغيل الموقع */
-loadStoreData();
-</script>
-
-</body>
-</html>
+if(!filtered.length){
+root.innerHTML=searchQuery
+?'<div class="empty"><b>لا توجد منتجات مطابقة للبحث</b>جرب كلمة أو مقاساً آخر 🔍</div>'
