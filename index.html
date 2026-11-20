@@ -893,7 +893,8 @@ left:12px
 </footer>
 
 <script>
-const $=id=>document.getElementById(id);
+(function(){
+const $=function(id){return document.getElementById(id);};
 
 let products=[];
 let phone='201009171678';
@@ -905,14 +906,12 @@ let searchQuery='';
 let adminClicks=0;
 let clickTimer=null;
 
-/* الدخول السري: خمس ضغطات */
 function secretAdminClick(){
 adminClicks++;
 clearTimeout(clickTimer);
-
-clickTimer=setTimeout(()=>{
+clickTimer=setTimeout(function(){
 adminClicks=0;
-},2500);
+},3000);
 
 if(adminClicks>=5){
 adminClicks=0;
@@ -922,7 +921,7 @@ openAdminLogin();
 }
 
 async function openAdminLogin(){
-const password=prompt('تم تفعيل الدخول السري. أدخل الرقم السري للإدارة:');
+const password=prompt('أدخل الرقم السري للإدارة:');
 if(password===null || !password.trim())return;
 
 try{
@@ -952,15 +951,16 @@ alert('تعذر الاتصال بالسيرفر، تأكد من الإنترنت
 $('brandLogin').addEventListener('click',secretAdminClick);
 $('managerLogin').addEventListener('click',secretAdminClick);
 
-/* ضغط الصورة تلقائياً قبل الرفع */
-function compressImage(file,maxWidth=1000,quality=0.8){
-return new Promise((resolve,reject)=>{
+function compressImage(file,maxWidth,quality){
+maxWidth=maxWidth||1000;
+quality=quality||0.8;
+return new Promise(function(resolve,reject){
 const reader=new FileReader();
 reader.onerror=reject;
-reader.onload=ev=>{
+reader.onload=function(ev){
 const img=new Image();
 img.onerror=reject;
-img.onload=()=>{
+img.onload=function(){
 let w=img.width;
 let h=img.height;
 if(w>maxWidth){
@@ -972,9 +972,11 @@ canvas.width=w;
 canvas.height=h;
 const ctx=canvas.getContext('2d');
 ctx.drawImage(img,0,0,w,h);
-const mime=file.type==='image/png'?'image/png':'image/jpeg';
+const isPng=file.type==='image/png';
+const mime=isPng?'image/png':'image/jpeg';
 const dataUrl=canvas.toDataURL(mime,quality);
-const cleanName=(file.name||'product').replace(/\.[^.]+$/,'')+(mime==='image/png'?'.png':'.jpg');
+const baseName=(file.name||'product').split('.')[0]||'product';
+const cleanName=baseName+(isPng?'.png':'.jpg');
 resolve({imageBase64:dataUrl,imageName:cleanName});
 };
 img.src=ev.target.result;
@@ -983,10 +985,9 @@ reader.readAsDataURL(file);
 });
 }
 
-/* تحميل البيانات من السيرفر */
 async function loadStoreData(){
 try{
-const res=await fetch('/api/store');
+const res=await fetch('/api/store',{cache:'no-store'});
 if(!res.ok)throw new Error('Failed');
 const data=await res.json();
 products=Array.isArray(data.products)?data.products:[];
@@ -1000,31 +1001,26 @@ render();
 }
 
 function cleanPhone(v){
-return String(v).replace(/\D/g,'');
+return String(v||'').replace(/[^0-9]/g,'');
 }
 
-/* تحديث بيانات التواصل */
 function updateContact(){
 const n=cleanPhone(phone);
-
 $('whatsapp').href='https://wa.me/'+n;
 $('floatWa').href='https://wa.me/'+n;
 $('call').href='tel:+'+n;
 $('call').innerHTML='<span class="ico">☎</span> اتصل بنا '+phone;
 }
 
-/* حماية النصوص */
 function escapeHtml(v){
-return String(v??'').replace(/[&<>"']/g,c=>({
-'&':'&amp;',
-'<':'&lt;',
-'>':'&gt;',
-'"':'&quot;',
-"'":'&#39;'
-}[c]));
+return String(v==null?'':v)
+.replace(/&/g,'&amp;')
+.replace(/</g,'&lt;')
+.replace(/>/g,'&gt;')
+.replace(/"/g,'&quot;')
+.replace(/'/g,'&#39;');
 }
 
-/* إعادة ضبط نموذج الإضافة/التعديل */
 function resetProductForm(){
 editingIndex=null;
 $('productForm').reset();
@@ -1036,7 +1032,6 @@ $('cancelEditBtn').classList.add('admin-hidden');
 
 $('cancelEditBtn').addEventListener('click',resetProductForm);
 
-/* بدء تعديل منتج */
 function startEditProduct(index){
 const p=products[index];
 if(!p)return;
@@ -1055,25 +1050,25 @@ $('adminContent').classList.remove('admin-hidden');
 $('admin').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
-/* البحث المباشر */
-$('searchInput').addEventListener('input',e=>{
+$('searchInput').addEventListener('input',function(e){
 searchQuery=e.target.value.trim().toLowerCase();
 render();
 });
 
-/* عرض المنتجات */
 function render(){
 const root=$('products');
 root.innerHTML='';
 
 const filtered=products
-.map((p,idx)=>({p,idx}))
-.filter(({p})=>{
+.map(function(p,idx){return {p:p,idx:idx};})
+.filter(function(item){
 if(!searchQuery)return true;
-const hay=`${p.name||''} ${p.desc||''} ${p.sizes||''} ${p.price||''}`.toLowerCase();
-return hay.includes(searchQuery);
+const p=item.p;
+const hay=((p.name||'')+' '+(p.desc||'')+' '+(p.sizes||'')+' '+(p.price||'')).toLowerCase();
+return hay.indexOf(searchQuery)!==-1;
 });
 
 if(!filtered.length){
 root.innerHTML=searchQuery
 ?'<div class="empty"><b>لا توجد منتجات مطابقة للبحث</b>جرب كلمة أو مقاساً آخر 🔍</div>'
+:'<div class="empty"><b
