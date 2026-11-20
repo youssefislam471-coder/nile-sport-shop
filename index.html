@@ -36,6 +36,7 @@ font-family:'Cairo',Tahoma,Arial,sans-serif
 
 button,input,textarea{font:inherit}
 button{cursor:pointer}
+button:disabled{opacity:.6;cursor:not-allowed}
 
 /* شريط الترحيب المتحرك */
 .welcome{
@@ -705,13 +706,12 @@ left:12px
 <div class="admin-heading">
 <div class="gear">⚙</div>
 <h2>لوحة تحكم الكابتن محمد خليل</h2>
-<p>إدارة المنتجات وبيانات التواصل</p>
+<p>إدارة المنتجات وبيانات التواصل (متصل بالسحابة مباشرة)</p>
 </div>
 
 <div class="admin-top">
-<span class="status"><i></i> لوحة التحكم جاهزة</span>
+<span class="status"><i></i> متصل بـ Vercel Blob</span>
 <div style="display:flex;gap:8px;flex-wrap:wrap">
-<button class="toggle" id="exportBtn" type="button">⬇ تنزيل الموقع بالتعديلات</button>
 <button class="toggle" id="modeBtn" type="button">🔒 تسجيل الخروج</button>
 </div>
 </div>
@@ -739,7 +739,7 @@ left:12px
 <div class="field wide">
 <label for="pimage">صورة المنتج</label>
 <input id="pimage" type="file" accept="image/*">
-<span class="hint">اختر صورة من جهازك، أو اتركها فارغة لاستخدام الصورة الافتراضية. الحد الأقصى 1.5 ميجابايت.</span>
+<span class="hint">اختر صورة من جهازك (حتى 4 ميجابايت)، وسيتم رفعها مباشرة للجميع.</span>
 </div>
 
 <button class="primary wide" id="addProductBtn" type="submit">＋ إضافة المنتج للمتجر</button>
@@ -749,7 +749,7 @@ left:12px
 <div class="panel phone-panel">
 <h3><span>📱</span> رقم الواتساب</h3>
 <input id="phone" class="phone-input" inputmode="tel" placeholder="201009171678">
-<button class="save" id="savePhone" type="button">✓ حفظ الرقم</button>
+<button class="save" id="savePhone" type="button">✓ حفظ الرقم للجميع</button>
 </div>
 </div>
 </section>
@@ -768,7 +768,9 @@ left:12px
 <h2 class="section-title">أحدث المنتجات الرياضية</h2>
 </div>
 
-<section class="products" id="products"></section>
+<section class="products" id="products">
+  <div class="empty"><b>جاري تحميل المنتجات...</b>لحظات وتظهر أحدث التشكيلات الرياضية 👕</div>
+</section>
 
 </main>
 
@@ -780,11 +782,11 @@ left:12px
 
 <script>
 const $=id=>document.getElementById(id);
-const ADMIN_PASSWORD='600600';
 
 let products=[];
 let phone='201009171678';
 let adminMode=false;
+let currentPassword='';
 
 let adminClicks=0;
 let clickTimer=null;
@@ -805,11 +807,19 @@ openAdminLogin();
 }
 }
 
-function openAdminLogin(){
+async function openAdminLogin(){
 const password=prompt('تم تفعيل الدخول السري. أدخل الرقم السري للإدارة:');
-if(password===null)return;
+if(password===null || !password.trim())return;
 
-if(password===ADMIN_PASSWORD){
+try{
+const res=await fetch('/api/store',{
+method:'POST',
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify({action:'login',password:password.trim()})
+});
+
+if(res.ok){
+currentPassword=password.trim();
 adminMode=true;
 $('admin').classList.add('admin-open');
 $('adminContent').classList.remove('admin-hidden');
@@ -820,69 +830,28 @@ alert('تم تسجيل الدخول بنجاح');
 }else{
 alert('الرقم السري غير صحيح');
 }
+}catch(err){
+alert('تعذر الاتصال بالسيرفر، تأكد من الإنترنت.');
+}
 }
 
 $('brandLogin').addEventListener('click',secretAdminClick);
 $('managerLogin').addEventListener('click',secretAdminClick);
 
-/* تحميل البيانات */
+/* تحميل البيانات من السيرفر */
+async function loadStoreData(){
 try{
-if(window.NILE_EXPORTED_DATA){
-products=window.NILE_EXPORTED_DATA.products||[];
-phone=window.NILE_EXPORTED_DATA.phone||phone;
-localStorage.setItem('nile_products',JSON.stringify(products));
-localStorage.setItem('nile_phone',phone);
-}else{
-products=JSON.parse(localStorage.getItem('nile_products')||'[]');
-phone=localStorage.getItem('nile_phone')||phone;
-}
+const res=await fetch('/api/store');
+if(!res.ok)throw new Error('Failed');
+const data=await res.json();
+products=Array.isArray(data.products)?data.products:[];
+phone=data.phone||phone;
 }catch(e){
 products=[];
 }
-
-products=Array.isArray(products)?products:[];
 $('phone').value=phone;
-
-/* حفظ المنتجات */
-function persist(){
-try{
-localStorage.setItem('nile_products',JSON.stringify(products));
-}catch(e){
-alert('مساحة التخزين ممتلئة. جرّب صورة أصغر أو عدد صور أقل.');
-}
-}
-
-/* تنزيل نسخة الموقع */
-function exportSite(){
-try{
-persist();
-localStorage.setItem('nile_phone',phone);
-
-const data={products,phone};
-let html='<!DOCTYPE html>'+document.documentElement.outerHTML;
-
-const marker='<script>';
-const payload='<script>window.NILE_EXPORTED_DATA='+JSON.stringify(data).replace(/</g,'\\u003c')+';<\/script>';
-
-html=html.replace(marker,payload+marker);
-
-const blob=new Blob([html],{type:'text/html;charset=utf-8'});
-const url=URL.createObjectURL(blob);
-
-const a=document.createElement('a');
-a.href=url;
-a.download='nile-sport-updated.html';
-
-document.body.appendChild(a);
-a.click();
-a.remove();
-
-setTimeout(()=>URL.revokeObjectURL(url),1500);
-
-alert('تم تنزيل نسخة جديدة من الموقع بالتعديلات الحالية. ارفع ملف nile-sport-updated.html مكان النسخة القديمة.');
-}catch(err){
-alert('حصلت مشكلة أثناء تجهيز الملف. حاول مرة أخرى.');
-}
+updateContact();
+render();
 }
 
 function cleanPhone(v){
@@ -940,11 +909,27 @@ card.innerHTML=`
 <a class="buy" href="https://wa.me/${cleanPhone(phone)}?text=${encodeURIComponent(message)}" target="_blank" rel="noopener">اطلب عبر الواتساب ↗</a>
 </div>`;
 
-card.querySelector('.delete').addEventListener('click',()=>{
-if(confirm('هل تريد حذف هذا المنتج؟')){
-products.splice(i,1);
-persist();
+card.querySelector('.delete').addEventListener('click',async ()=>{
+if(!confirm('هل تريد حذف هذا المنتج نهائياً من الموقع؟'))return;
+try{
+const res=await fetch('/api/store',{
+method:'POST',
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify({
+action:'deleteProduct',
+password:currentPassword,
+payload:{index:i}
+})
+});
+const result=await res.json();
+if(res.ok && result.data){
+products=result.data.products;
 render();
+}else{
+alert(result.error||'فشل حذف المنتج');
+}
+}catch(err){
+alert('خطأ في الاتصال أثناء الحذف');
 }
 });
 
@@ -952,12 +937,14 @@ root.appendChild(card);
 });
 }
 
-/* إضافة منتج جديد بدون حد أقصى */
+/* إضافة منتج جديد */
 $('productForm').addEventListener('submit',async e=>{
 e.preventDefault();
 
+const btn=$('addProductBtn');
 const file=$('pimage').files[0];
-let image='';
+let imageBase64='';
+let imageName='';
 
 if(file){
 if(!file.type.startsWith('image/')){
@@ -965,12 +952,13 @@ alert('من فضلك اختر ملف صورة صحيح');
 return;
 }
 
-if(file.size>1500000){
-alert('حجم الصورة كبير. اختر صورة أقل من 1.5 ميجابايت');
+if(file.size>4000000){
+alert('حجم الصورة كبير. اختر صورة أقل من 4 ميجابايت');
 return;
 }
 
-image=await new Promise((resolve,reject)=>{
+imageName=file.name;
+imageBase64=await new Promise((resolve,reject)=>{
 const r=new FileReader();
 r.onload=()=>resolve(r.result);
 r.onerror=reject;
@@ -978,25 +966,50 @@ r.readAsDataURL(file);
 });
 }
 
-products.unshift({
+btn.disabled=true;
+btn.textContent='جاري الرفع والحفظ...';
+
+try{
+const res=await fetch('/api/store',{
+method:'POST',
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify({
+action:'addProduct',
+password:currentPassword,
+payload:{
 name:$('pname').value.trim(),
 price:$('pprice').value,
 desc:$('pdesc').value.trim(),
-image
+imageBase64,
+imageName
+}
+})
 });
 
-persist();
+const result=await res.json();
+if(res.ok && result.data){
+products=result.data.products;
 render();
 e.target.reset();
-
+alert('تم إضافة المنتج ونشره في المتجر بنجاح!');
 document.querySelector('.section-head').scrollIntoView({
 behavior:'smooth',
 block:'start'
 });
+}else{
+alert(result.error||'حصل خطأ أثناء رفع المنتج');
+}
+}catch(err){
+alert('تعذر الاتصال بالسيرفر أثناء الإضافة');
+}finally{
+btn.disabled=false;
+btn.textContent='＋ إضافة المنتج للمتجر';
+}
 });
 
 /* حفظ رقم التواصل */
-$('savePhone').addEventListener('click',()=>{
+$('savePhone').addEventListener('click',async ()=>{
+const btn=$('savePhone');
 const value=$('phone').value.trim();
 
 if(cleanPhone(value).length<10){
@@ -1004,20 +1017,41 @@ alert('من فضلك أدخل رقم واتساب صحيحاً مع كود ال�
 return;
 }
 
-phone=value;
-localStorage.setItem('nile_phone',phone);
-updateContact();
-render();
+btn.disabled=true;
+btn.textContent='جاري الحفظ...';
 
-alert('تم حفظ رقم التواصل داخل المتصفح. اضغط تنزيل الموقع بالتعديلات لتنزيل نسخة محدثة.');
+try{
+const res=await fetch('/api/store',{
+method:'POST',
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify({
+action:'updatePhone',
+password:currentPassword,
+payload:{phone:value}
+})
 });
 
-/* تنزيل الموقع */
-$('exportBtn').addEventListener('click',exportSite);
+const result=await res.json();
+if(res.ok && result.data){
+phone=result.data.phone;
+updateContact();
+render();
+alert('تم حفظ رقم التواصل ونشره للجميع بنجاح!');
+}else{
+alert(result.error||'فشل حفظ الرقم');
+}
+}catch(err){
+alert('خطأ في الاتصال بالسيرفر');
+}finally{
+btn.disabled=false;
+btn.textContent='✓ حفظ الرقم للجميع';
+}
+});
 
 /* تسجيل الخروج */
 $('modeBtn').addEventListener('click',()=>{
 adminMode=false;
+currentPassword='';
 $('admin').classList.remove('admin-open');
 $('adminContent').classList.add('admin-hidden');
 document.body.classList.remove('admin-mode');
@@ -1025,10 +1059,8 @@ adminClicks=0;
 });
 
 /* تشغيل الموقع */
-updateContact();
-render();
+loadStoreData();
 </script>
 
 </body>
-  </html>
-  
+</html>
