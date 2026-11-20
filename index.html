@@ -460,22 +460,19 @@ box-shadow:0 15px 30px #18243b14
 
 .photo{
 height:260px;
-background:#f2f4f8;
-display:flex;
-align-items:center;
-justify-content:center;
+background:linear-gradient(145deg,#f3f5f9,#e6ebf3);
+display:grid;
+place-items:center;
 overflow:hidden;
-padding:10px
+padding:8px
 }
 
 .photo img{
-max-width:100%;
-max-height:100%;
-width:auto;
-height:auto;
+width:100%;
+height:100%;
 object-fit:contain;
 display:block;
-border-radius:8px
+mix-blend-mode:multiply
 }
 
 .placeholder{
@@ -643,8 +640,8 @@ gap:10px
 }
 
 .photo{
-height:185px;
-padding:7px
+height:175px;
+padding:5px
 }
 
 .details{padding:10px}
@@ -824,5 +821,246 @@ body:JSON.stringify({action:'login',password:password.trim()})
 if(res.ok){
 currentPassword=password.trim();
 adminMode=true;
-$('admin').classList.add('admin-open');$('adminContent').classList.remove('admin-hidden');
+$('admin').classList.add('admin-open');
+$('adminContent').classList.remove('admin-hidden');
 document.body.classList.add('admin-mode');
+$('modeBtn').textContent='🔒 تسجيل الخروج';
+$('admin').scrollIntoView({behavior:'smooth',block:'start'});
+alert('تم تسجيل الدخول بنجاح');
+}else{
+alert('الرقم السري غير صحيح');
+}
+}catch(err){
+alert('تعذر الاتصال بالسيرفر، تأكد من الإنترنت.');
+}
+}
+
+$('brandLogin').addEventListener('click',secretAdminClick);
+$('managerLogin').addEventListener('click',secretAdminClick);
+
+/* تحميل البيانات من السيرفر */
+async function loadStoreData(){
+try{
+const res=await fetch('/api/store');
+if(!res.ok)throw new Error('Failed');
+const data=await res.json();
+products=Array.isArray(data.products)?data.products:[];
+phone=data.phone||phone;
+}catch(e){
+products=[];
+}
+$('phone').value=phone;
+updateContact();
+render();
+}
+
+function cleanPhone(v){
+return String(v).replace(/\D/g,'');
+}
+
+/* تحديث بيانات التواصل */
+function updateContact(){
+const n=cleanPhone(phone);
+
+$('whatsapp').href='https://wa.me/'+n;
+$('floatWa').href='https://wa.me/'+n;
+$('call').href='tel:+'+n;
+$('call').innerHTML='<span class="ico">☎</span> اتصل بنا '+phone;
+}
+
+/* حماية النصوص */
+function escapeHtml(v){
+return String(v??'').replace(/[&<>"']/g,c=>({
+'&':'&amp;',
+'<':'&lt;',
+'>':'&gt;',
+'"':'&quot;',
+"'":'&#39;'
+}[c]));
+}
+
+/* عرض المنتجات */
+function render(){
+const root=$('products');
+root.innerHTML='';
+
+if(!products.length){
+root.innerHTML='<div class="empty"><b>لسه مفيش منتجات مضافة</b>قريباً هتلاقوا أحدث المنتجات الرياضية هنا 👕</div>';
+return;
+}
+
+products.forEach((p,i)=>{
+const card=document.createElement('article');
+card.className='product';
+
+const image=p.image
+?`<img src="${p.image}" alt="${escapeHtml(p.name)}" loading="lazy">`
+:'<span class="placeholder">👕</span>';
+
+const message='مرحباً، أريد الاستفسار عن '+p.name+' وسعره '+p.price+' جنيه.';
+
+card.innerHTML=`
+<div class="photo">${image}</div>
+<span class="price">${escapeHtml(p.price)} ج.م</span>
+<button class="delete" type="button" aria-label="حذف المنتج" title="حذف المنتج">×</button>
+<div class="details">
+<h3>${escapeHtml(p.name)}</h3>
+<p>${escapeHtml(p.desc||'ملابس ومنتجات رياضية')}</p>
+<a class="buy" href="https://wa.me/${cleanPhone(phone)}?text=${encodeURIComponent(message)}" target="_blank" rel="noopener">اطلب عبر الواتساب ↗</a>
+</div>`;
+
+card.querySelector('.delete').addEventListener('click',async ()=>{
+if(!confirm('هل تريد حذف هذا المنتج نهائياً من الموقع؟'))return;
+try{
+const res=await fetch('/api/store',{
+method:'POST',
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify({
+action:'deleteProduct',
+password:currentPassword,
+payload:{index:i}
+})
+});
+const result=await res.json();
+if(res.ok && result.data){
+products=result.data.products;
+render();
+}else{
+alert(result.error||'فشل حذف المنتج');
+}
+}catch(err){
+alert('خطأ في الاتصال أثناء الحذف');
+}
+});
+
+root.appendChild(card);
+});
+}
+
+/* إضافة منتج جديد */
+$('productForm').addEventListener('submit',async e=>{
+e.preventDefault();
+
+const btn=$('addProductBtn');
+const file=$('pimage').files[0];
+let imageBase64='';
+let imageName='';
+
+if(file){
+if(!file.type.startsWith('image/')){
+alert('من فضلك اختر ملف صورة صحيح');
+return;
+}
+
+if(file.size>4000000){
+alert('حجم الصورة كبير. اختر صورة أقل من 4 ميجابايت');
+return;
+}
+
+imageName=file.name;
+imageBase64=await new Promise((resolve,reject)=>{
+const r=new FileReader();
+r.onload=()=>resolve(r.result);
+r.onerror=reject;
+r.readAsDataURL(file);
+});
+}
+
+btn.disabled=true;
+btn.textContent='جاري الرفع والحفظ...';
+
+try{
+const res=await fetch('/api/store',{
+method:'POST',
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify({
+action:'addProduct',
+password:currentPassword,
+payload:{
+name:$('pname').value.trim(),
+price:$('pprice').value,
+desc:$('pdesc').value.trim(),
+imageBase64,
+imageName
+}
+})
+});
+
+const result=await res.json();
+if(res.ok && result.data){
+products=result.data.products;
+render();
+e.target.reset();
+alert('تم إضافة المنتج ونشره في المتجر بنجاح!');
+document.querySelector('.section-head').scrollIntoView({
+behavior:'smooth',
+block:'start'
+});
+}else{
+alert(result.error||'حصل خطأ أثناء رفع المنتج');
+}
+}catch(err){
+alert('تعذر الاتصال بالسيرفر أثناء الإضافة');
+}finally{
+btn.disabled=false;
+btn.textContent='＋ إضافة المنتج للمتجر';
+}
+});
+
+/* حفظ رقم التواصل */
+$('savePhone').addEventListener('click',async ()=>{
+const btn=$('savePhone');
+const value=$('phone').value.trim();
+
+if(cleanPhone(value).length<10){
+alert('من فضلك أدخل رقم واتساب صحيحاً مع كود الدولة');
+return;
+}
+
+btn.disabled=true;
+btn.textContent='جاري الحفظ...';
+
+try{
+const res=await fetch('/api/store',{
+method:'POST',
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify({
+action:'updatePhone',
+password:currentPassword,
+payload:{phone:value}
+})
+});
+
+const result=await res.json();
+if(res.ok && result.data){
+phone=result.data.phone;
+updateContact();
+render();
+alert('تم حفظ رقم التواصل ونشره للجميع بنجاح!');
+}else{
+alert(result.error||'فشل حفظ الرقم');
+}
+}catch(err){
+alert('خطأ في الاتصال بالسيرفر');
+}finally{
+btn.disabled=false;
+btn.textContent='✓ حفظ الرقم للجميع';
+}
+});
+
+/* تسجيل الخروج */
+$('modeBtn').addEventListener('click',()=>{
+adminMode=false;
+currentPassword='';
+$('admin').classList.remove('admin-open');
+$('adminContent').classList.add('admin-hidden');
+document.body.classList.remove('admin-mode');
+adminClicks=0;
+});
+
+/* تشغيل الموقع */
+loadStoreData();
+</script>
+
+</body>
+</html>
