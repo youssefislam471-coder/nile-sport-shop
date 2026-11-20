@@ -17,8 +17,6 @@
 --orange:#f47712;
 --orange2:#ff963d;
 --green:#19bd68;
---red:#e52d32;
---blue:#078bc7;
 --ink:#172238;
 --muted:#788397;
 --line:#e8ecf2;
@@ -36,7 +34,7 @@ color:var(--ink);
 font-family:'Cairo',Tahoma,Arial,sans-serif
 }
 
-button,input,textarea,select{font:inherit}
+button,input,textarea{font:inherit}
 button{cursor:pointer}
 button:disabled{opacity:.6;cursor:not-allowed}
 
@@ -269,7 +267,7 @@ border-radius:50%;
 margin-left:6px
 }
 
-.toggle,.cancel-edit{
+.toggle{
 border:0;
 background:var(--navy);
 color:#fff;
@@ -277,12 +275,6 @@ border-radius:10px;
 padding:9px 13px;
 font-weight:800;
 font-size:12px
-}
-
-.cancel-edit{
-background:#64748b;
-margin-top:8px;
-width:100%
 }
 
 .panel{
@@ -332,7 +324,7 @@ font-weight:800;
 color:#4b5870
 }
 
-.field input,.field textarea,.field select,.phone-input,.search-input{
+.field input,.field textarea,.phone-input{
 width:100%;
 padding:12px 14px;
 border:1.5px solid #e4e8ef;
@@ -342,36 +334,20 @@ color:var(--ink);
 outline:0
 }
 
-.field input:focus,.field textarea:focus,.field select:focus,.phone-input:focus,.search-input:focus{
-border-color:var(--blue);
+.field input:focus,.field textarea:focus,.phone-input:focus{
+border-color:#078bc7;
 background:#fff;
 box-shadow:0 0 0 3px #078bc71a
 }
 
 .field textarea{
-min-height:80px;
+min-height:82px;
 resize:vertical
 }
 
 .field input[type=file]{
 padding:9px;
 background:#fff
-}
-
-.check-row{
-display:flex;
-align-items:center;
-gap:8px;
-font-size:13px;
-font-weight:800;
-color:#334155;
-padding-top:4px
-}
-
-.check-row input[type=checkbox]{
-width:18px;
-height:18px;
-accent-color:var(--green)
 }
 
 .hint{
@@ -412,7 +388,7 @@ text-align:right
 display:grid;
 grid-template-columns:1fr 1fr;
 gap:13px;
-margin:24px 0 34px
+margin:24px 0 42px
 }
 
 .contact a{
@@ -442,13 +418,12 @@ background:linear-gradient(110deg,#078bc7,#0879b8)
 
 .contact .ico{font-size:23px}
 
-/* شريط البحث والفلترة */
+/* عنوان المنتجات */
 .section-head{
 display:flex;
 align-items:center;
 justify-content:space-between;
-gap:14px;
-flex-wrap:wrap;
+gap:12px;
 margin:0 0 19px
 }
 
@@ -459,17 +434,6 @@ border-right:6px solid var(--orange);
 font-size:clamp(21px,4vw,30px);
 font-weight:900;
 line-height:1.4
-}
-
-.search-box{
-flex:1;
-min-width:220px;
-max-width:340px
-}
-
-.search-input{
-padding:10px 14px;
-background:#fff
 }
 
 /* المنتجات */
@@ -486,9 +450,7 @@ border:1px solid #e8ebf1;
 border-radius:18px;
 overflow:hidden;
 box-shadow:0 7px 22px #18243b09;
-transition:transform .2s,box-shadow .2s;
-display:flex;
-flex-direction:column
+transition:transform .2s,box-shadow .2s
 }
 
 .product:hover{
@@ -497,7 +459,7 @@ box-shadow:0 15px 30px #18243b14
 }
 
 .photo{
-height:250px;
+height:260px;
 background:#f2f4f8;
 display:flex;
 align-items:center;
@@ -534,72 +496,23 @@ font-size:15px;
 box-shadow:0 4px 12px #f4771230
 }
 
-.admin-actions{
+.delete{
 position:absolute;
 top:11px;
 right:11px;
-display:none;
-gap:6px
-}
-
-.admin-mode .admin-actions{display:flex}
-
-.delete,.edit-btn{
+background:#e52d32;
 color:#fff;
 border:0;
 border-radius:50%;
-width:34px;
-height:34px;
-font-size:15px;
-display:grid;
-place-items:center;
-box-shadow:0 4px 10px #00000024
+width:36px;
+height:36px;
+font-size:17px;
+display:none
 }
 
-.delete{background:var(--red)}
-.edit-btn{background:var(--blue)}
+.admin-mode .delete{display:block}
 
-.details{
-padding:14px 15px 16px;
-display:flex;
-flex-direction:column;
-flex:1
-}
-
-.meta-row{
-display:flex;
-align-items:center;
-justify-content:space-between;
-gap:6px;
-flex-wrap:wrap;
-margin-bottom:7px
-}
-
-.stock-badge{
-font-size:11px;
-font-weight:800;
-padding:3px 9px;
-border-radius:20px
-}
-
-.stock-in{
-background:#e6f9ef;
-color:#0f9d52
-}
-
-.stock-out{
-background:#feecec;
-color:#c92a2a
-}
-
-.sizes-tag{
-font-size:11px;
-font-weight:800;
-color:#334155;
-background:#f1f5f9;
-padding:3px 9px;
-border-radius:20px
-}
+.details{padding:14px 15px 16px}
 
 .details h3{
 margin:0 0 5px;
@@ -612,7 +525,7 @@ margin:0;
 color:var(--muted);
 line-height:1.7;
 font-size:12px;
-flex:1
+min-height:22px
 }
 
 .buy{
@@ -632,11 +545,6 @@ transition:.2s
 }
 
 .buy:hover{filter:brightness(1.06)}
-
-.buy.disabled{
-background:#94a3b8;
-pointer-events:none
-}
 
 .empty{
 grid-column:1/-1;
@@ -697,12 +605,12 @@ grid-template-columns:repeat(2,minmax(0,1fr));
 gap:13px
 }
 
-.photo{height:205px}
+.photo{height:210px}
 .details{padding:12px}
 .details h3{font-size:15px}
 .details p{font-size:11px}
 .price{font-size:13px;padding:6px 10px}
-.delete,.edit-btn{width:30px;height:30px;font-size:13px}
+.delete{width:32px;height:32px}
 .admin{border-radius:19px}
 .panel{padding:14px}
 }
@@ -718,7 +626,7 @@ gap:13px
 
 .contact{
 gap:9px;
-margin:19px 0 28px
+margin:19px 0 32px
 }
 
 .contact a{
@@ -735,14 +643,13 @@ gap:10px
 }
 
 .photo{
-height:180px;
+height:185px;
 padding:7px
 }
 
 .details{padding:10px}
 .details h3{font-size:14px;line-height:1.5}
 .details p{font-size:10px;line-height:1.6}
-.stock-badge,.sizes-tag{font-size:10px;padding:2px 7px}
 
 .buy{
 font-size:11px;
@@ -757,14 +664,15 @@ font-size:11px;
 padding:5px 8px
 }
 
-.delete,.edit-btn{
-width:27px;
-height:27px;
-font-size:12px
+.delete{
+top:7px;
+right:7px;
+width:29px;
+height:29px;
+font-size:14px
 }
 
-.section-head{align-items:stretch}
-.search-box{max-width:none}
+.section-head{align-items:center}
 .section-title{font-size:20px}
 
 .float-wa{
@@ -801,7 +709,7 @@ left:12px
 <div class="admin-heading">
 <div class="gear">⚙</div>
 <h2>لوحة تحكم الكابتن محمد خليل</h2>
-<p>إدارة المنتجات والمقاسات وحالة التوفر وبيانات التواصل</p>
+<p>إدارة المنتجات وبيانات التواصل (متصل بالسحابة مباشرة)</p>
 </div>
 
 <div class="admin-top">
@@ -813,7 +721,7 @@ left:12px
 
 <div id="adminContent">
 <div class="panel">
-<h3 id="formTitle"><span>＋</span> إضافة منتج جديد</h3>
+<h3><span>＋</span> إضافة منتج جديد</h3>
 
 <form id="productForm" class="fields">
 <div class="field">
@@ -826,19 +734,6 @@ left:12px
 <input id="pprice" type="number" min="0" step="1" placeholder="150" required>
 </div>
 
-<div class="field">
-<label for="psizes">المقاسات المتاحة (اختياري)</label>
-<input id="psizes" placeholder="مثال: M, L, XL أو مقاس موحد">
-</div>
-
-<div class="field">
-<label>حالة التوفر</label>
-<label class="check-row">
-<input id="pstock" type="checkbox" checked>
-<span>متوفر حالياً في المتجر</span>
-</label>
-</div>
-
 <div class="field wide">
 <label for="pdesc">وصف المنتج</label>
 <textarea id="pdesc" placeholder="اكتب وصفاً مختصراً للمنتج..."></textarea>
@@ -847,11 +742,10 @@ left:12px
 <div class="field wide">
 <label for="pimage">صورة المنتج</label>
 <input id="pimage" type="file" accept="image/*">
-<span class="hint">يتم ضغط الصورة تلقائياً قبل الرفع لسرعة التحميل وتوفير المساحة.</span>
+<span class="hint">اختر صورة من جهازك (حتى 4 ميجابايت)، وسيتم رفعها مباشرة للجميع.</span>
 </div>
 
 <button class="primary wide" id="addProductBtn" type="submit">＋ إضافة المنتج للمتجر</button>
-<button class="cancel-edit admin-hidden wide" id="cancelEditBtn" type="button">إلغاء التعديل</button>
 </form>
 </div>
 
@@ -875,9 +769,6 @@ left:12px
 
 <div class="section-head">
 <h2 class="section-title">أحدث المنتجات الرياضية</h2>
-<div class="search-box">
-<input id="searchInput" class="search-input" type="search" placeholder="ابحث عن تيشيرت، كاب، مقاس...">
-</div>
 </div>
 
 <section class="products" id="products">
@@ -893,25 +784,24 @@ left:12px
 </footer>
 
 <script>
-(function(){
-const $=function(id){return document.getElementById(id);};
+const $=id=>document.getElementById(id);
 
 let products=[];
 let phone='201009171678';
 let adminMode=false;
 let currentPassword='';
-let editingIndex=null;
-let searchQuery='';
 
 let adminClicks=0;
 let clickTimer=null;
 
+/* الدخول السري: خمس ضغطات */
 function secretAdminClick(){
 adminClicks++;
 clearTimeout(clickTimer);
-clickTimer=setTimeout(function(){
+
+clickTimer=setTimeout(()=>{
 adminClicks=0;
-},3000);
+},2500);
 
 if(adminClicks>=5){
 adminClicks=0;
@@ -921,7 +811,7 @@ openAdminLogin();
 }
 
 async function openAdminLogin(){
-const password=prompt('أدخل الرقم السري للإدارة:');
+const password=prompt('تم تفعيل الدخول السري. أدخل الرقم السري للإدارة:');
 if(password===null || !password.trim())return;
 
 try{
@@ -934,141 +824,5 @@ body:JSON.stringify({action:'login',password:password.trim()})
 if(res.ok){
 currentPassword=password.trim();
 adminMode=true;
-$('admin').classList.add('admin-open');
-$('adminContent').classList.remove('admin-hidden');
+$('admin').classList.add('admin-open');$('adminContent').classList.remove('admin-hidden');
 document.body.classList.add('admin-mode');
-$('modeBtn').textContent='🔒 تسجيل الخروج';
-$('admin').scrollIntoView({behavior:'smooth',block:'start'});
-alert('تم تسجيل الدخول بنجاح');
-}else{
-alert('الرقم السري غير صحيح');
-}
-}catch(err){
-alert('تعذر الاتصال بالسيرفر، تأكد من الإنترنت.');
-}
-}
-
-$('brandLogin').addEventListener('click',secretAdminClick);
-$('managerLogin').addEventListener('click',secretAdminClick);
-
-function compressImage(file,maxWidth,quality){
-maxWidth=maxWidth||1000;
-quality=quality||0.8;
-return new Promise(function(resolve,reject){
-const reader=new FileReader();
-reader.onerror=reject;
-reader.onload=function(ev){
-const img=new Image();
-img.onerror=reject;
-img.onload=function(){
-let w=img.width;
-let h=img.height;
-if(w>maxWidth){
-h=Math.round((h*maxWidth)/w);
-w=maxWidth;
-}
-const canvas=document.createElement('canvas');
-canvas.width=w;
-canvas.height=h;
-const ctx=canvas.getContext('2d');
-ctx.drawImage(img,0,0,w,h);
-const isPng=file.type==='image/png';
-const mime=isPng?'image/png':'image/jpeg';
-const dataUrl=canvas.toDataURL(mime,quality);
-const baseName=(file.name||'product').split('.')[0]||'product';
-const cleanName=baseName+(isPng?'.png':'.jpg');
-resolve({imageBase64:dataUrl,imageName:cleanName});
-};
-img.src=ev.target.result;
-};
-reader.readAsDataURL(file);
-});
-}
-
-async function loadStoreData(){
-try{
-const res=await fetch('/api/store',{cache:'no-store'});
-if(!res.ok)throw new Error('Failed');
-const data=await res.json();
-products=Array.isArray(data.products)?data.products:[];
-phone=data.phone||phone;
-}catch(e){
-products=[];
-}
-$('phone').value=phone;
-updateContact();
-render();
-}
-
-function cleanPhone(v){
-return String(v||'').replace(/[^0-9]/g,'');
-}
-
-function updateContact(){
-const n=cleanPhone(phone);
-$('whatsapp').href='https://wa.me/'+n;
-$('floatWa').href='https://wa.me/'+n;
-$('call').href='tel:+'+n;
-$('call').innerHTML='<span class="ico">☎</span> اتصل بنا '+phone;
-}
-
-function escapeHtml(v){
-return String(v==null?'':v)
-.replace(/&/g,'&amp;')
-.replace(/</g,'&lt;')
-.replace(/>/g,'&gt;')
-.replace(/"/g,'&quot;')
-.replace(/'/g,'&#39;');
-}
-
-function resetProductForm(){
-editingIndex=null;
-$('productForm').reset();
-$('pstock').checked=true;
-$('formTitle').innerHTML='<span>＋</span> إضافة منتج جديد';
-$('addProductBtn').textContent='＋ إضافة المنتج للمتجر';
-$('cancelEditBtn').classList.add('admin-hidden');
-}
-
-$('cancelEditBtn').addEventListener('click',resetProductForm);
-
-function startEditProduct(index){
-const p=products[index];
-if(!p)return;
-editingIndex=index;
-$('pname').value=p.name||'';
-$('pprice').value=p.price||'';
-$('psizes').value=p.sizes||'';
-$('pstock').checked=p.inStock!==false;
-$('pdesc').value=p.desc||'';
-$('pimage').value='';
-$('formTitle').innerHTML='<span>✎</span> تعديل المنتج: '+escapeHtml(p.name);
-$('addProductBtn').textContent='✓ حفظ التعديلات';
-$('cancelEditBtn').classList.remove('admin-hidden');
-$('admin').classList.add('admin-open');
-$('adminContent').classList.remove('admin-hidden');
-$('admin').scrollIntoView({behavior:'smooth',block:'start'});
-}
-
-$('searchInput').addEventListener('input',function(e){
-searchQuery=e.target.value.trim().toLowerCase();
-render();
-});
-
-function render(){
-const root=$('products');
-root.innerHTML='';
-
-const filtered=products
-.map(function(p,idx){return {p:p,idx:idx};})
-.filter(function(item){
-if(!searchQuery)return true;
-const p=item.p;
-const hay=((p.name||'')+' '+(p.desc||'')+' '+(p.sizes||'')+' '+(p.price||'')).toLowerCase();
-return hay.indexOf(searchQuery)!==-1;
-});
-
-if(!filtered.length){
-root.innerHTML=searchQuery
-?'<div class="empty"><b>لا توجد منتجات مطابقة للبحث</b>جرب كلمة أو مقاساً آخر 🔍</div>'
-:'<div class="empty"><b
