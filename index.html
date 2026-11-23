@@ -388,6 +388,7 @@ text-align:right
 .abtn{flex:1 1 auto;min-width:48px;min-height:44px;border:0;border-radius:10px;background:#eef1f6;color:#172238;font-size:14px;font-weight:800;line-height:1}
 .abtn.del{background:#fde8e8;color:#c62828}
 .abtn:disabled{opacity:.35}
+body.busy .abtn,body.busy #addProductBtn,body.busy #savePhone{pointer-events:none;opacity:.35;filter:grayscale(1)}
 .product.is-hidden .photo,.product.is-hidden .details{opacity:.45}
 .product.is-hidden:before{content:'مخفي عن الزبائن';position:absolute;z-index:2;right:50%;transform:translateX(50%);top:calc(50% - 90px);background:#172238;color:#fff;border-radius:20px;padding:5px 12px;font-size:12px;font-weight:800;white-space:nowrap}
 @media(max-width:760px){.admin-mode .products{grid-template-columns:1fr}}
@@ -827,7 +828,13 @@ toastTimer=setTimeout(hideToast,opts.undo?8000:4000);
 function hideToast(){$('toast').classList.remove('on');}
 
 /* الاتصال بالسيرفر: الباسورد بيتبعت مرة واحدة بس عند الدخول */
+let inflight=false;
 async function api(action,payload){
+/* عملية واحدة في المرة: منع الضغط المتكرر قبل ما الحفظ اللي فات يخلص */
+if(inflight)throw new Error('استنى لحظة، لسه بيتم الحفظ');
+inflight=true;
+document.body.classList.add('busy');
+try{
 const res=await fetch('/api/store',{
 method:'POST',
 headers:{'Content-Type':'application/json','x-admin-token':token},
@@ -835,9 +842,14 @@ body:JSON.stringify({action,payload})
 });
 const result=await res.json().catch(()=>({}));
 if(res.status===401){logout();throw new Error('سجّل الدخول من جديد');}
-if(res.status===409&&result.data){products=result.data.products;render();}
+/* 409: بيانات السيرفر ممكن تكون لسه قديمة، فنحمّل من جديد بعد ثانيتين بدل ما نعرض نسخة قديمة */
+if(res.status===409){setTimeout(loadStoreData,2000);}
 if(!res.ok)throw new Error(result.error||'حصل خطأ');
 return result;
+}finally{
+inflight=false;
+document.body.classList.remove('busy');
+}
 }
 
 function enterAdmin(){
