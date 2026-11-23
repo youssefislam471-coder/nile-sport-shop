@@ -14,7 +14,18 @@ const DEFAULT_PHONE = '201009171678';
 const TOKEN_HOURS = 8;
 const MAX_FAILS = 5;
 const FAIL_WINDOW_MS = 15 * 60 * 1000;
-const MAX_WRITE_ATTEMPTS = 4;
+const MAX_WRITE_ATTEMPTS = 5;
+// Pause before each retry. Blob can serve the previous version for a few seconds after a save,
+// so an instant retry would fail again on the same stale ETag.
+const RETRY_DELAYS_MS = [0, 250, 600, 1100, 1800];
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+// Time bounds. The Blob SDK retries failed requests up to 10 times with doubling waits by
+// default, which can take far longer than a visitor will wait. Every Blob call gets a cutoff,
+// and the save loop stops starting new tries after the overall budget is used.
+const BLOB_CALL_TIMEOUT_MS = 4000;
+const IMAGE_UPLOAD_TIMEOUT_MS = 25000;
+const WRITE_BUDGET_MS = 15000;
+const cutoff = (ms = BLOB_CALL_TIMEOUT_MS) => ({ abortSignal: AbortSignal.timeout(ms) });
 const MAX_IMAGE_BYTES = 4 * 1024 * 1024;
 
 // Best effort only: this memory lives per server instance and resets on cold start.
@@ -77,7 +88,7 @@ function normalizeData(raw) {
 // Reads the store file together with its ETag. useCache:false reads from origin so the
 // body and the ETag always belong to the same version (a CDN copy could be older).
 async function readSnapshot(fresh) {
-  const r = await get(DATA_FILENAME, { access: 'public', useCache: !fresh ? true : false });
+  const r = await get(DATA_FILENAME, { access: 'public', useCache: !fresh ? true : false, ...cutoff() });
   if (!r || r.statusCode !== 200) return { data: normalizeData(null), etag: null };
   const text = await new Response(r.stream).text();
   return { data: normalizeData(JSON.parse(text)), etag: r.blob.etag };
@@ -88,7 +99,7 @@ async function readSnapshot(fresh) {
 async function writeSnapshot(data, etag) {
   const opts = { access: 'public', addRandomSuffix: false, contentType: 'application/json' };
   if (etag) { opts.ifMatch = etag; opts.allowOverwrite = true; } else { opts.allowOverwrite = false; }
-  await put(DATA_FILENAME, JSON.stringify(data), opts);
+  await put(DATA_FILENAME, JSON.stringify(data), { ...opts, ...cutoff() });
 }
 
 function isConflict(err) {
@@ -128,7 +139,7 @@ async function uploadImage(payload) {
   if (buffer.length > MAX_IMAGE_BYTES) return { error: 'حجم الصورة كبير' };
   if (!looksLikeImage(buffer, contentType)) return { error: 'ملف الصورة غير صالح' };
   const safeName = `products/${Date.now()}-${cleanText(payload.imageName, 60).replace(/[^a-zA-Z0-9._-]/g, '') || 'photo.jpg'}`;
-  const blob = await put(safeName, buffer, { access: 'public', contentType });
+  const blob = await put(safeName, buffer, { access: 'public', contentType, ...cutoff(IMAGE_UPLOAD_TIMEOUT_MS) });
   return { url: blob.url };
 }
 
@@ -142,15 +153,21 @@ export default async function handler(req, res) {
   const isAdmin = tokenValid(token, secret);
 
   if (req.method === 'GET') {
+    res.setHeader('Cache-Control', 'no-store');
     try {
       let data;
       try {
-        ({ data } = await readSnapshot(isAdmin));
+        // Always read from origin: a CDN copy can lag a few seconds behind the last save.
+        ({ data } = await readSnapshot(true));
       } catch (e) {
         // Safety net for the public shop: if the new read path fails, fall back to the old one.
-        const { blobs } = await list({ prefix: DATA_FILENAME });
+        try {
+          ({ data } = await readSnapshot(false));
+          return res.status(200).json(isAdmin ? { ...data, admin: true } : publicView(data));
+        } catch (e2) { /* fall through to the list-based read */ }
+        const { blobs } = await list({ prefix: DATA_FILENAME, ...cutoff() });
         const latest = blobs.sort((a, b) => new Date(b.uploadedAt) - new Date(a.uploadedAt))[0];
-        data = normalizeData(latest ? await (await fetch(latest.url, { cache: 'no-store' })).json() : null);
+        data = normalizeData(latest ? await (await fetch(latest.url, { cache: 'no-store', signal: AbortSignal.timeout(BLOB_CALL_TIMEOUT_MS) })).json() : null);
       }
       return res.status(200).json(isAdmin ? { ...data, admin: true } : publicView(data));
     } catch (err) {
@@ -246,10 +263,18 @@ export default async function handler(req, res) {
       return { ok: true, extra };
     };
 
+    const startedAt = Date.now();
     for (let attempt = 0; attempt < MAX_WRITE_ATTEMPTS; attempt++) {
+      if (attempt > 0 && Date.now() - startedAt > WRITE_BUDGET_MS) break;
+      if (RETRY_DELAYS_MS[attempt]) await sleep(RETRY_DELAYS_MS[attempt]);
       const snap = await readSnapshot(true);
       const result = apply(snap.data);
-      if (!result.ok) return res.status(result.status).json({ error: result.error });
+      if (!result.ok) {
+        // A "not found" can come from a stale read right after a save, so confirm it with
+        // a later read before telling the admin. Other errors depend on the request only.
+        if (result.status === 404 && attempt < MAX_WRITE_ATTEMPTS - 1) continue;
+        return res.status(result.status).json({ error: result.error });
+      }
       try {
         await writeSnapshot(snap.data, snap.etag);
         return res.status(200).json({ ok: true, data: snap.data, ...result.extra });
