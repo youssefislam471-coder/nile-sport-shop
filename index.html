@@ -381,6 +381,25 @@ direction:ltr;
 text-align:right
 }
 
+
+/* لوحة الإدارة: أزرار المنتج والرسائل */
+.admin-actions{display:none;gap:6px;flex-wrap:wrap;padding:0 12px 12px;border-top:1px dashed #e4e8ef;padding-top:10px;margin-top:2px}
+.admin-mode .admin-actions{display:flex}
+.abtn{flex:1 1 auto;min-width:48px;min-height:44px;border:0;border-radius:10px;background:#eef1f6;color:#172238;font-size:14px;font-weight:800;line-height:1}
+.abtn.del{background:#fde8e8;color:#c62828}
+.abtn:disabled{opacity:.35}
+.product.is-hidden .photo,.product.is-hidden .details{opacity:.45}
+.product.is-hidden:before{content:'مخفي عن الزبائن';position:absolute;z-index:2;right:50%;transform:translateX(50%);top:calc(50% - 90px);background:#172238;color:#fff;border-radius:20px;padding:5px 12px;font-size:12px;font-weight:800;white-space:nowrap}
+@media(max-width:760px){.admin-mode .products{grid-template-columns:1fr}}
+.preview-box{display:none;align-items:center;gap:12px;margin-top:6px}
+.preview-box.on{display:flex}
+.preview-box img{width:96px;height:96px;object-fit:cover;border-radius:12px;border:1px solid var(--line)}
+.ghost{width:100%;border:1.5px solid #d5dbe6;background:#fff;color:#4b5870;border-radius:11px;padding:11px;font-weight:800;font-size:14px}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%) translateY(30px);opacity:0;pointer-events:none;background:#172238;color:#fff;border-radius:12px;padding:12px 16px;display:flex;gap:14px;align-items:center;font-size:14px;font-weight:700;z-index:50;max-width:calc(100% - 28px);transition:.2s}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0);pointer-events:auto}
+.toast.err{background:#c62828}
+.toast button{background:transparent;border:1px solid #ffffff80;color:#fff;border-radius:8px;padding:6px 12px;font-weight:800;min-height:34px}
+
 .admin-hidden{display:none!important}
 
 /* التواصل */
@@ -459,24 +478,24 @@ box-shadow:0 15px 30px #18243b14
 }
 
 .photo{
-height:260px;
-background:linear-gradient(145deg,#f3f5f9,#e6ebf3);
-display:grid;
-place-items:center;
+display:flex;align-items:center;justify-content:center;
+aspect-ratio:1/1;
+height:auto;
+background:#eef1f6;
 overflow:hidden;
-padding:8px
+padding:0
 }
 
 .photo img{
 width:100%;
 height:100%;
-object-fit:contain;
-display:block;
-mix-blend-mode:multiply
+object-fit:cover;
+object-position:50% 47%;
+display:block
 }
 
 .placeholder{
-font-size:80px;
+font-size:18px;font-weight:800;
 color:#94a4bd
 }
 
@@ -602,10 +621,9 @@ grid-template-columns:repeat(2,minmax(0,1fr));
 gap:13px
 }
 
-.photo{height:210px}
 .details{padding:12px}
 .details h3{font-size:15px}
-.details p{font-size:11px}
+.details p{font-size:12px}
 .price{font-size:13px;padding:6px 10px}
 .delete{width:32px;height:32px}
 .admin{border-radius:19px}
@@ -639,18 +657,15 @@ grid-template-columns:repeat(2,minmax(0,1fr));
 gap:10px
 }
 
-.photo{
-height:175px;
-padding:5px
-}
 
 .details{padding:10px}
 .details h3{font-size:14px;line-height:1.5}
-.details p{font-size:10px;line-height:1.6}
+.details p{font-size:12px;line-height:1.6}
 
 .buy{
-font-size:11px;
-padding:9px 5px;
+font-size:13px;
+padding:12px 6px;
+min-height:44px;
 margin-top:10px
 }
 
@@ -718,7 +733,7 @@ left:12px
 
 <div id="adminContent">
 <div class="panel">
-<h3><span>＋</span> إضافة منتج جديد</h3>
+<h3><span>＋</span> <b id="formTitle">إضافة منتج جديد</b></h3>
 
 <form id="productForm" class="fields">
 <div class="field">
@@ -738,11 +753,13 @@ left:12px
 
 <div class="field wide">
 <label for="pimage">صورة المنتج</label>
-<input id="pimage" type="file" accept="image/*">
-<span class="hint">اختر صورة من جهازك (حتى 4 ميجابايت)، وسيتم رفعها مباشرة للجميع.</span>
+<input id="pimage" type="file" accept="image/jpeg,image/png,image/webp">
+<span class="hint">اختر صورة، وهتتقص مربعة وتتصغر تلقائياً قبل الرفع. شوف المعاينة قبل الحفظ.</span>
+<div class="preview-box" id="previewBox"><img id="previewImg" alt="معاينة الصورة"><span class="hint" id="previewNote"></span></div>
 </div>
 
 <button class="primary wide" id="addProductBtn" type="submit">＋ إضافة المنتج للمتجر</button>
+<button class="ghost wide admin-hidden" id="cancelEdit" type="button">إلغاء التعديل</button>
 </form>
 </div>
 
@@ -769,7 +786,7 @@ left:12px
 </div>
 
 <section class="products" id="products">
-  <div class="empty"><b>جاري تحميل المنتجات...</b>لحظات وتظهر أحدث التشكيلات الرياضية 👕</div>
+  <div class="empty"><b>جاري تحميل المنتجات...</b>لحظات وتظهر أحدث التشكيلات الرياضية</div>
 </section>
 
 </main>
@@ -780,26 +797,74 @@ left:12px
 <b>NILE SPORT</b> © جميع الحقوق محفوظة
 </footer>
 
+<div class="toast" id="toast" role="status" aria-live="polite"><span id="toastMsg"></span><button type="button" id="toastUndo" class="admin-hidden">تراجع</button></div>
+
 <script>
 const $=id=>document.getElementById(id);
 
 let products=[];
 let phone='201009171678';
 let adminMode=false;
-let currentPassword='';
-
+let token=sessionStorage.getItem('nileToken')||'';
+let editingId=null;
+let pendingImage='';
 let adminClicks=0;
 let clickTimer=null;
+let toastTimer=null;
+
+/* رسائل بدل النوافذ */
+function showToast(msg,opts){
+opts=opts||{};
+$('toastMsg').textContent=msg;
+$('toast').classList.toggle('err',!!opts.error);
+const undo=$('toastUndo');
+undo.classList.toggle('admin-hidden',!opts.undo);
+undo.onclick=opts.undo?()=>{hideToast();opts.undo();}:null;
+$('toast').classList.add('on');
+clearTimeout(toastTimer);
+toastTimer=setTimeout(hideToast,opts.undo?8000:4000);
+}
+function hideToast(){$('toast').classList.remove('on');}
+
+/* الاتصال بالسيرفر: الباسورد بيتبعت مرة واحدة بس عند الدخول */
+async function api(action,payload){
+const res=await fetch('/api/store',{
+method:'POST',
+headers:{'Content-Type':'application/json','x-admin-token':token},
+body:JSON.stringify({action,payload})
+});
+const result=await res.json().catch(()=>({}));
+if(res.status===401){logout();throw new Error('سجّل الدخول من جديد');}
+if(res.status===409&&result.data){products=result.data.products;render();}
+if(!res.ok)throw new Error(result.error||'حصل خطأ');
+return result;
+}
+
+function enterAdmin(){
+adminMode=true;
+$('admin').classList.add('admin-open');
+$('adminContent').classList.remove('admin-hidden');
+document.body.classList.add('admin-mode');
+$('modeBtn').textContent='🔒 تسجيل الخروج';
+}
+
+function logout(){
+adminMode=false;
+token='';
+sessionStorage.removeItem('nileToken');
+$('admin').classList.remove('admin-open');
+$('adminContent').classList.add('admin-hidden');
+document.body.classList.remove('admin-mode');
+adminClicks=0;
+resetForm();
+loadStoreData();
+}
 
 /* الدخول السري: خمس ضغطات */
 function secretAdminClick(){
 adminClicks++;
 clearTimeout(clickTimer);
-
-clickTimer=setTimeout(()=>{
-adminClicks=0;
-},2500);
-
+clickTimer=setTimeout(()=>{adminClicks=0;},2500);
 if(adminClicks>=5){
 adminClicks=0;
 clearTimeout(clickTimer);
@@ -809,29 +874,26 @@ openAdminLogin();
 
 async function openAdminLogin(){
 const password=prompt('تم تفعيل الدخول السري. أدخل الرقم السري للإدارة:');
-if(password===null || !password.trim())return;
-
+if(password===null||!password.trim())return;
 try{
 const res=await fetch('/api/store',{
 method:'POST',
 headers:{'Content-Type':'application/json'},
 body:JSON.stringify({action:'login',password:password.trim()})
 });
-
-if(res.ok){
-currentPassword=password.trim();
-adminMode=true;
-$('admin').classList.add('admin-open');
-$('adminContent').classList.remove('admin-hidden');
-document.body.classList.add('admin-mode');
-$('modeBtn').textContent='🔒 تسجيل الخروج';
+const result=await res.json().catch(()=>({}));
+if(res.ok&&result.token){
+token=result.token;
+sessionStorage.setItem('nileToken',token);
+enterAdmin();
+await loadStoreData();
 $('admin').scrollIntoView({behavior:'smooth',block:'start'});
-alert('تم تسجيل الدخول بنجاح');
+showToast('تم تسجيل الدخول');
 }else{
-alert('الرقم السري غير صحيح');
+showToast(result.error||'الرقم السري غير صحيح',{error:true});
 }
 }catch(err){
-alert('تعذر الاتصال بالسيرفر، تأكد من الإنترنت.');
+showToast('تعذر الاتصال بالسيرفر، تأكد من الإنترنت.',{error:true});
 }
 }
 
@@ -841,11 +903,13 @@ $('managerLogin').addEventListener('click',secretAdminClick);
 /* تحميل البيانات من السيرفر */
 async function loadStoreData(){
 try{
-const res=await fetch('/api/store');
+const res=await fetch('/api/store',{headers:token?{'x-admin-token':token}:{}});
 if(!res.ok)throw new Error('Failed');
 const data=await res.json();
 products=Array.isArray(data.products)?data.products:[];
 phone=data.phone||phone;
+if(token&&data.admin&&!adminMode)enterAdmin();
+if(token&&!data.admin&&adminMode){token='';sessionStorage.removeItem('nileToken');}
 }catch(e){
 products=[];
 }
@@ -861,7 +925,6 @@ return String(v).replace(/\D/g,'');
 /* تحديث بيانات التواصل */
 function updateContact(){
 const n=cleanPhone(phone);
-
 $('whatsapp').href='https://wa.me/'+n;
 $('floatWa').href='https://wa.me/'+n;
 $('call').href='tel:+'+n;
@@ -885,125 +948,180 @@ const root=$('products');
 root.innerHTML='';
 
 if(!products.length){
-root.innerHTML='<div class="empty"><b>لسه مفيش منتجات مضافة</b>قريباً هتلاقوا أحدث المنتجات الرياضية هنا 👕</div>';
+root.innerHTML='<div class="empty"><b>لسه مفيش منتجات مضافة</b>قريباً هتلاقوا أحدث المنتجات الرياضية هنا</div>';
 return;
 }
 
 products.forEach((p,i)=>{
 const card=document.createElement('article');
-card.className='product';
+card.className='product'+(p.hidden?' is-hidden':'');
 
 const image=p.image
-?`<img src="${p.image}" alt="${escapeHtml(p.name)}" loading="lazy">`
-:'<span class="placeholder">👕</span>';
+?`<img src="${escapeHtml(p.image)}" alt="${escapeHtml(p.name)}" loading="lazy">`
+:'<span class="placeholder">بدون صورة</span>';
 
 const message='مرحباً، أريد الاستفسار عن '+p.name+' وسعره '+p.price+' جنيه.';
 
 card.innerHTML=`
 <div class="photo">${image}</div>
 <span class="price">${escapeHtml(p.price)} ج.م</span>
-<button class="delete" type="button" aria-label="حذف المنتج" title="حذف المنتج">×</button>
 <div class="details">
 <h3>${escapeHtml(p.name)}</h3>
 <p>${escapeHtml(p.desc||'ملابس ومنتجات رياضية')}</p>
 <a class="buy" href="https://wa.me/${cleanPhone(phone)}?text=${encodeURIComponent(message)}" target="_blank" rel="noopener">اطلب عبر الواتساب ↗</a>
+</div>
+<div class="admin-actions">
+<button class="abtn" type="button" data-act="edit" aria-label="تعديل المنتج" title="تعديل">✎ تعديل</button>
+<button class="abtn" type="button" data-act="hide" aria-label="${p.hidden?'إظهار المنتج':'إخفاء المنتج'}" title="${p.hidden?'إظهار':'إخفاء'}">${p.hidden?'إظهار':'إخفاء'}</button>
+<button class="abtn" type="button" data-act="up" aria-label="تحريك لفوق" title="لفوق"${i===0?' disabled':''}>↑</button>
+<button class="abtn" type="button" data-act="down" aria-label="تحريك لتحت" title="لتحت"${i===products.length-1?' disabled':''}>↓</button>
+<button class="abtn del" type="button" data-act="del" aria-label="حذف المنتج" title="حذف">حذف</button>
 </div>`;
 
-card.querySelector('.delete').addEventListener('click',async ()=>{
-if(!confirm('هل تريد حذف هذا المنتج نهائياً من الموقع؟'))return;
-try{
-const res=await fetch('/api/store',{
-method:'POST',
-headers:{'Content-Type':'application/json'},
-body:JSON.stringify({
-action:'deleteProduct',
-password:currentPassword,
-payload:{index:i}
-})
-});
-const result=await res.json();
-if(res.ok && result.data){
-products=result.data.products;
-render();
-}else{
-alert(result.error||'فشل حذف المنتج');
-}
-}catch(err){
-alert('خطأ في الاتصال أثناء الحذف');
-}
+const pimg=card.querySelector('.photo img');
+if(pimg)pimg.addEventListener('error',()=>{const ph=document.createElement('span');ph.className='placeholder';ph.textContent='بدون صورة';pimg.replaceWith(ph);},{once:true});
+card.querySelector('.admin-actions').addEventListener('click',e=>{
+const btn=e.target.closest('button[data-act]');
+if(btn)productAction(btn.dataset.act,p,i);
 });
 
 root.appendChild(card);
 });
 }
 
-/* إضافة منتج جديد */
-$('productForm').addEventListener('submit',async e=>{
-e.preventDefault();
-
-const btn=$('addProductBtn');
-const file=$('pimage').files[0];
-let imageBase64='';
-let imageName='';
-
-if(file){
-if(!file.type.startsWith('image/')){
-alert('من فضلك اختر ملف صورة صحيح');
-return;
-}
-
-if(file.size>4000000){
-alert('حجم الصورة كبير. اختر صورة أقل من 4 ميجابايت');
-return;
-}
-
-imageName=file.name;
-imageBase64=await new Promise((resolve,reject)=>{
-const r=new FileReader();
-r.onload=()=>resolve(r.result);
-r.onerror=reject;
-r.readAsDataURL(file);
-});
-}
-
-btn.disabled=true;
-btn.textContent='جاري الرفع والحفظ...';
-
+async function productAction(act,p,index){
+if(act==='edit'){startEdit(p);return;}
 try{
-const res=await fetch('/api/store',{
-method:'POST',
-headers:{'Content-Type':'application/json'},
-body:JSON.stringify({
-action:'addProduct',
-password:currentPassword,
-payload:{
-name:$('pname').value.trim(),
-price:$('pprice').value,
-desc:$('pdesc').value.trim(),
-imageBase64,
-imageName
-}
-})
-});
-
-const result=await res.json();
-if(res.ok && result.data){
-products=result.data.products;
-render();
-e.target.reset();
-alert('تم إضافة المنتج ونشره في المتجر بنجاح!');
-document.querySelector('.section-head').scrollIntoView({
-behavior:'smooth',
-block:'start'
-});
-}else{
-alert(result.error||'حصل خطأ أثناء رفع المنتج');
+if(act==='hide'){
+const r=await api('toggleHidden',{id:p.id,hidden:!p.hidden});
+products=r.data.products;render();
+showToast(p.hidden?'المنتج ظاهر للزبائن':'تم إخفاء المنتج. تقدر تظهره في أي وقت');
+}else if(act==='up'||act==='down'){
+const r=await api('moveProduct',{id:p.id,direction:act});
+products=r.data.products;render();
+}else if(act==='del'){
+const r=await api('deleteProduct',{id:p.id});
+products=r.data.products;render();
+if(editingId===p.id)resetForm();
+showToast('تم حذف المنتج',{undo:async()=>{
+try{
+const back=await api('restoreProduct',{product:r.removed,index:r.removedIndex});
+products=back.data.products;render();
+showToast('تم الرجوع عن الحذف');
+}catch(err){showToast(err.message,{error:true});}
+}});
 }
 }catch(err){
-alert('تعذر الاتصال بالسيرفر أثناء الإضافة');
+showToast(err.message||'خطأ في الاتصال بالسيرفر',{error:true});
+}
+}
+
+/* تعديل منتج */
+function startEdit(p){
+editingId=p.id;
+$('pname').value=p.name;
+$('pprice').value=p.price;
+$('pdesc').value=p.desc||'';
+$('pimage').value='';
+pendingImage='';
+setPreview(p.image||'','الصورة الحالية. اختر صورة جديدة لو عايز تغيّرها');
+$('formTitle').textContent='تعديل المنتج';
+$('addProductBtn').textContent='✓ حفظ التعديل';
+$('cancelEdit').classList.remove('admin-hidden');
+$('admin').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function resetForm(){
+editingId=null;
+pendingImage='';
+$('productForm').reset();
+setPreview('','');
+$('formTitle').textContent='إضافة منتج جديد';
+$('addProductBtn').textContent='＋ إضافة المنتج للمتجر';
+$('cancelEdit').classList.add('admin-hidden');
+}
+$('cancelEdit').addEventListener('click',resetForm);
+
+/* معاينة الصورة وتصغيرها */
+function setPreview(src,note){
+$('previewBox').classList.toggle('on',!!src);
+if(src)$('previewImg').src=src;
+$('previewNote').textContent=note||'';
+}
+
+function squareJpeg(file){
+return new Promise((resolve,reject)=>{
+const url=URL.createObjectURL(file);
+const img=new Image();
+img.onload=()=>{
+const size=Math.min(1000,Math.min(img.naturalWidth,img.naturalHeight));
+const side=Math.min(img.naturalWidth,img.naturalHeight);
+const sx=(img.naturalWidth-side)/2;
+const sy=(img.naturalHeight-side)/2;
+const c=document.createElement('canvas');
+c.width=size;c.height=size;
+const ctx=c.getContext('2d');
+ctx.fillStyle='#fff';ctx.fillRect(0,0,size,size);
+ctx.drawImage(img,sx,sy,side,side,0,0,size,size);
+URL.revokeObjectURL(url);
+resolve(c.toDataURL('image/jpeg',0.85));
+};
+img.onerror=()=>{URL.revokeObjectURL(url);reject(new Error('bad image'));};
+img.src=url;
+});
+}
+
+$('pimage').addEventListener('change',async()=>{
+const file=$('pimage').files[0];
+pendingImage='';
+if(!file){setPreview('','');return;}
+if(!/^image\/(jpeg|png|webp)$/.test(file.type)){
+showToast('اختر صورة JPG أو PNG أو WebP',{error:true});
+$('pimage').value='';setPreview('','');return;
+}
+try{
+pendingImage=await squareJpeg(file);
+const kb=Math.round(pendingImage.length*0.75/1024);
+setPreview(pendingImage,'كده الصورة هتظهر (مربعة، حوالي '+kb+' كيلوبايت). لو القص مش مناسب اختر صورة تانية');
+}catch(err){
+showToast('تعذر قراءة الصورة',{error:true});
+$('pimage').value='';setPreview('','');
+}
+});
+
+/* إضافة أو تعديل منتج */
+$('productForm').addEventListener('submit',async e=>{
+e.preventDefault();
+const btn=$('addProductBtn');
+const label=btn.textContent;
+const payload={
+name:$('pname').value.trim(),
+price:$('pprice').value,
+desc:$('pdesc').value.trim()
+};
+if(pendingImage){payload.imageBase64=pendingImage;payload.imageName='photo.jpg';}
+btn.disabled=true;
+btn.textContent='جاري الحفظ...';
+try{
+let r;
+if(editingId){
+payload.id=editingId;
+r=await api('updateProduct',payload);
+}else{
+r=await api('addProduct',payload);
+}
+products=r.data.products;
+render();
+const wasEdit=!!editingId;
+resetForm();
+showToast(wasEdit?'تم حفظ التعديل':'تم إضافة المنتج');
+}catch(err){
+showToast(err.message||'تعذر الاتصال بالسيرفر',{error:true});
+btn.textContent=label;
 }finally{
 btn.disabled=false;
-btn.textContent='＋ إضافة المنتج للمتجر';
+if(!editingId)btn.textContent='＋ إضافة المنتج للمتجر';
+else btn.textContent='✓ حفظ التعديل';
 }
 });
 
@@ -1011,37 +1129,21 @@ btn.textContent='＋ إضافة المنتج للمتجر';
 $('savePhone').addEventListener('click',async ()=>{
 const btn=$('savePhone');
 const value=$('phone').value.trim();
-
 if(cleanPhone(value).length<10){
-alert('من فضلك أدخل رقم واتساب صحيحاً مع كود الدولة');
+showToast('من فضلك أدخل رقم واتساب صحيحاً مع كود الدولة',{error:true});
 return;
 }
-
 btn.disabled=true;
 btn.textContent='جاري الحفظ...';
-
 try{
-const res=await fetch('/api/store',{
-method:'POST',
-headers:{'Content-Type':'application/json'},
-body:JSON.stringify({
-action:'updatePhone',
-password:currentPassword,
-payload:{phone:value}
-})
-});
-
-const result=await res.json();
-if(res.ok && result.data){
-phone=result.data.phone;
+const r=await api('updatePhone',{phone:value});
+phone=r.data.phone;
+$('phone').value=phone;
 updateContact();
 render();
-alert('تم حفظ رقم التواصل ونشره للجميع بنجاح!');
-}else{
-alert(result.error||'فشل حفظ الرقم');
-}
+showToast('تم حفظ رقم التواصل');
 }catch(err){
-alert('خطأ في الاتصال بالسيرفر');
+showToast(err.message||'خطأ في الاتصال بالسيرفر',{error:true});
 }finally{
 btn.disabled=false;
 btn.textContent='✓ حفظ الرقم للجميع';
@@ -1049,14 +1151,7 @@ btn.textContent='✓ حفظ الرقم للجميع';
 });
 
 /* تسجيل الخروج */
-$('modeBtn').addEventListener('click',()=>{
-adminMode=false;
-currentPassword='';
-$('admin').classList.remove('admin-open');
-$('adminContent').classList.add('admin-hidden');
-document.body.classList.remove('admin-mode');
-adminClicks=0;
-});
+$('modeBtn').addEventListener('click',logout);
 
 /* تشغيل الموقع */
 loadStoreData();
@@ -1064,3 +1159,4 @@ loadStoreData();
 
 </body>
 </html>
+
